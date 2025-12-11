@@ -1,0 +1,21 @@
+[Unit]
+Description=Telegram Promo Bot for Kaliningrad
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/promo_bot_klg
+Environment="TELEGRAM_TOKEN=5101651060:AAFRNVBhdQOT1USx5eEiL7Z5h0GHLgtaQiQ"
+Environment="ADMIN_CHAT_ID=1668456209"
+Environment="SPREADSHEET_URL=https://docs.google.com/spreadsheets/d/1JjQP67Ar039mlQwpoL0Bb3pCk1DZJIVE39xI7RE9FEQ/edit"
+Environment="GOOGLE_CREDENTIALS_FILE=/root/promo_bot_klg/credentials.json"
+Environment="YANDEX_API_KEY=d7810c35-08b8-4b33-99b6-8f98030852b3"
+ExecStart=/usr/bin/python3 /root/promo_bot_klg/promo_bot.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

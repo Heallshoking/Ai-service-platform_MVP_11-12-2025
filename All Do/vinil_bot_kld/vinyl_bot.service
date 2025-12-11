@@ -1,0 +1,24 @@
+[Unit]
+Description=Vinyl Marketplace Telegram Bot
+After=network.target vinyl_bot.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/vinyl_marketplace_RU
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+ExecStart=/usr/bin/python3 vinyl_bot.py
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=telegram_bot
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,266 @@
+# Новые Supabase эндпоинты для добавления в main.py
+
+# ============================================
+# Supabase эндпоинты
+# ============================================
+
+@app.post("/auth/telegram", response_model=TelegramAuthResponse, tags=["Authentication"])
+async def authenticate_telegram(request: TelegramAuthRequest):
+    """
+    Аутентификация пользователя через Telegram ID
+    
+    Создает нового пользователя или возвращает токен существующего
+    """
+    if not SUPABASE_ENABLED:
+        raise HTTPException(status_code=503, detail="Supabase не доступен")
+    
+    try:
+        # Валидация telegram_id
+        if request.telegram_id <= 0:
+            raise HTTPException(status_code=400, detail="Некорректный telegram_id")
+        
+        # Создание/аутентификация пользователя
+        user_data = auth_service.create_user_from_telegram(
+            telegram_id=request.telegram_id,
+            username=request.telegram_username,
+            full_name=request.full_name
+        )
+        
+        return TelegramAuthResponse(
+            access_token=user_data['access_token'],
+            user_id=user_data['user_id'],
+            expires_in=user_data['expires_in']
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Ошибка аутентификации: {e}")
+        raise HTTPException(status_code=500, detail="Ошибка аутентификации")
+
+
+@app.get("/records", tags=["Records"])
+async def get_supabase_records(
+    genre: Optional[str] = Query(None, description="Фильтр по жанру"),
+    year_min: Optional[int] = Query(None, description="Минимальный год"),
+    year_max: Optional[int] = Query(None, description="Максимальный год"),
+    price_min: Optional[float] = Query(None, description="Минимальная цена"),
+    price_max: Optional[float] = Query(None, description="Максимальная цена"),
+    search: Optional[str] = Query(None, description="Поиск по названию и исполнителю"),
+    status: Optional[str] = Query("available", description="Статус записи"),
+    limit: int = Query(50, ge=1, le=100, description="Количество результатов"),
+    offset: int = Query(0, ge=0, description="Смещение для пагинации")
+):
+    """
+    Получение записей из Supabase с фильтрацией
+    
+    Использует Supabase REST API для умной фильтрации на уровне SQL
+    """
+    if not SUPABASE_ENABLED:
+        raise HTTPException(status_code=503, detail="Supabase не доступен")
+    
+    try:
+        # Подготовка фильтров
+        filters = {}
+        if genre:
+            filters['genre'] = genre
+        if year_min:
+            filters['year_min'] = year_min
+        if year_max:
+            filters['year_max'] = year_max
+        if price_min:
+            filters['price_min'] = price_min
+        if price_max:
+            filters['price_max'] = price_max
+        if search:
+            filters['search'] = search
+        if status:
+            filters['status'] = status
+        
+        # Получение записей
+        records = supabase_client.get_records(filters, limit, offset)
+        
+        return {
+            "total": len(records),
+            "records": records
+        }
+        
+    except Exception as e:
+        logger.error(f"Ошибка получения записей из Supabase: {e}")
+        raise HTTPException(status_code=500, detail="Ошибка получения данных")
+
+
+@app.get("/records/{record_id}", tags=["Records"])
+async def get_record_by_id(record_id: str):
+    """Получение записи по ID"""
+    if not SUPABASE_ENABLED:
+        raise HTTPException(status_code=503, detail="Supabase не доступен")
+    
+    try:
+        record = supabase_client.get_record_by_id(record_id)
+        if not record:
+            raise HTTPException(status_code=404, detail="Запись не найдена")
+        
+        return record
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Ошибка получения записи: {e}")
+        raise HTTPException(status_code=500, detail="Ошибка получения записи")
+
+
+@app.patch("/records/{record_id}", tags=["Records"])
+async def update_record(record_id: str, updates: RecordUpdateRequest):
+    """
+    Обновление записи (требуется аутентификация)
+    
+    Обновляет только переданные поля
+    """
+    if not SUPABASE_ENABLED:
+        raise HTTPException(status_code=503, detail="Supabase не доступен")
+    
+    try:
+        # Подготовка обновлений (только непустые поля)
+        update_data = {}
+        if updates.description is not None:
+            update_data['description'] = updates.description
+            update_data['custom_description'] = updates.custom_description or True
+        if updates.image_url is not None:
+            update_data['image_url'] = updates.image_url
+            update_data['custom_image'] = updates.custom_image or True
+        if updates.price is not None:
+            update_data['price'] = updates.price
+        if updates.condition is not None:
+            update_data['condition'] = updates.condition
+        if updates.status is not None:
+            update_data['status'] = updates.status
+        
+        if not update_data:
+            raise HTTPException(status_code=400, detail="Нет полей для обновления")
+        
+        # Обновление записи
+        updated_record = supabase_client.update_record(record_id, update_data)
+        
+        if not updated_record:
+            raise HTTPException(status_code=404, detail="Запись не найдена")
+        
+        return updated_record
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Ошибка обновления записи: {e}")
+        raise HTTPException(status_code=500, detail="Ошибка обновления")
+
+
+@app.post("/admin/import-from-sheets", response_model=ImportSheetsResponse, tags=["Admin"])
+async def import_from_sheets(request: ImportSheetsRequest):
+    """
+    Импорт записей из Google Sheets в Supabase
+    
+    Требует админских прав
+    """
+    if not SUPABASE_ENABLED:
+        raise HTTPException(status_code=503, detail="Supabase не доступен")
+    
+    try:
+        # TODO: Добавить проверку админских прав через Bearer token
+        
+        # Выполнение импорта
+        result = import_service.import_from_sheets(
+            sheet_name=request.sheet_name,
+            update_existing=request.update_existing,
+            preserve_custom_fields=request.preserve_custom_fields,
+            admin_telegram_id=int(os.getenv('ADMIN_TELEGRAM_ID', '0'))
+        )
+        
+        return ImportSheetsResponse(**result)
+        
+    except Exception as e:
+        logger.error(f"Ошибка импорта: {e}")
+        raise HTTPException(status_code=500, detail=f"Ошибка импорта: {str(e)}")
+
+
+@app.post("/ai/generate-description/{record_id}", tags=["AI"])
+async def generate_description_for_record(record_id: str, force_regenerate: bool = False):
+    """
+    Генерация AI-описания для записи из Supabase
+    
+    Использует существующую логику LLM генерации
+    """
+    if not SUPABASE_ENABLED:
+        raise HTTPException(status_code=503, detail="Supabase не доступен")
+    
+    try:
+        # Получаем запись
+        record = supabase_client.get_record_by_id(record_id)
+        if not record:
+            raise HTTPException(status_code=404, detail="Запись не найдена")
+        
+        # Проверяем необходимость генерации
+        if record.get('description') and record.get('custom_description') and not force_regenerate:
+            raise HTTPException(
+                status_code=400,
+                detail="Описание уже существует. Используйте force_regenerate=true"
+            )
+        
+        # Подготовка данных для LLM
+        record_data = {
+            'title': record['title'],
+            'artist': record['artist'],
+            'year': record['year'],
+            'genre': record['genre'],
+            'label': record.get('label', 'неизвестен'),
+            'country': record.get('country', 'неизвестна')
+        }
+        
+        logger.info(f"Генерация описания для: {record_data['title']} - {record_data['artist']}")
+        
+        # Получение LLM адаптера
+        adapter = get_adapter()
+        
+        # Генерация описания
+        description = adapter.generate_description(record_data)
+        
+        # Обновление записи в Supabase
+        supabase_client.update_record(record_id, {
+            'description': description,
+            'custom_description': False  # AI-сгенерированное
+        })
+        
+        logger.info(f"Описание сохранено для записи {record_id}")
+        
+        return {
+            "status": "completed",
+            "record_id": record_id,
+            "description": description,
+            "generated_at": datetime.now().isoformat(),
+            "llm_provider": os.getenv('LLM_PROVIDER', 'qwen')
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Ошибка генерации описания: {e}")
+        
+        # Попытка использовать fallback
+        try:
+            fallback_adapter = get_fallback_adapter()
+            if fallback_adapter:
+                description = fallback_adapter.generate_description(record_data)
+                status = "completed_with_fallback"
+            else:
+                adapter = get_adapter()
+                description = adapter.generate_template_description(record_data)
+                status = "completed_with_template"
+            
+            return {
+                "status": status,
+                "record_id": record_id,
+                "description": description,
+                "generated_at": datetime.now().isoformat()
+            }
+        except Exception as fallback_error:
+            logger.error(f"Ошибка fallback генерации: {fallback_error}")
+            raise HTTPException(status_code=500, detail="Не удалось сгенерировать описание")

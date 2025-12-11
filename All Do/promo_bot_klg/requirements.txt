@@ -1,0 +1,8 @@
+python-telegram-bot==20.7
+gspread==6.1.2
+apscheduler
+requests
+google-auth
+osmnx>=1.9.0
+networkx>=3.0
+
