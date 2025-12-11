@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Service Platform - Вызов мастера</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .result.success {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .result.error {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .loader {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .loader.active {
+            display: block;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Вызов мастера</h1>
+        <p class="subtitle">AI автоматически подберёт специалиста</p>
+        
+        <form id="requestForm">
+            <div class="form-group">
+                <label for="name">Ваше имя</label>
+                <input type="text" id="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Категория</label>
+                <select id="category" required>
+                    <option value="">Выберите категорию</option>
+                    <option value="electrical">⚡ Электрика</option>
+                    <option value="plumbing">🚰 Сантехника</option>
+                    <option value="appliance">🔌 Бытовая техника</option>
+                    <option value="general">🔨 Общие работы</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="problem">Описание проблемы</label>
+                <textarea id="problem" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Адрес</label>
+                <input type="text" id="address" required>
+            </div>
+            
+            <button type="submit">Отправить заявку</button>
+        </form>
+        
+        <div class="loader" id="loader">
+            <p>⏳ Обрабатываем заявку...</p>
+        </div>
+        
+        <div class="result" id="result"></div>
+    </div>
+    
+    <script>
+        const form = document.getElementById('requestForm');
+        const loader = document.getElementById('loader');
+        const result = document.getElementById('result');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Показать загрузку
+            loader.classList.add('active');
+            result.style.display = 'none';
+            
+            // Собрать данные
+            const data = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                category: document.getElementById('category').value,
+                problem_description: document.getElementById('problem').value,
+                address: document.getElementById('address').value
+            };
+            
+            try {
+                // Отправить запрос
+                const response = await fetch('/api/v1/ai/web-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const responseData = await response.json();
+                
+                // Скрыть загрузку
+                loader.classList.remove('active');
+                
+                if (response.ok) {
+                    // Успех
+                    result.className = 'result success';
+                    result.innerHTML = `
+                        <h3>✅ Заявка принята!</h3>
+                        <p><strong>Номер заказа:</strong> #${responseData.job_id}</p>
+                        <p><strong>Примерная стоимость:</strong> ${responseData.estimated_price} ₽</p>
+                        <p>${responseData.message}</p>
+                    `;
+                    result.style.display = 'block';
+                    
+                    // Очистить форму
+                    form.reset();
+                } else {
+                    throw new Error(responseData.detail || 'Ошибка отправки');
+                }
+                
+            } catch (error) {
+                // Ошибка
+                loader.classList.remove('active');
+                result.className = 'result error';
+                result.innerHTML = `
+                    <h3>❌ Ошибка</h3>
+                    <p>${error.message}</p>
+                `;
+                result.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
