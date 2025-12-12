@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Помощник - Вызов мастера | Услуги электрика</title>
+    <meta name="description" content="Умный помощник для вызова мастера. Электрика, сантехника, бытовая техника. Быстро, качественно, с гарантией.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-chat: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 2rem;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .header-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .header-link:hover {
+            color: var(--primary);
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 5rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            opacity: 0.9;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            background: var(--bg-primary);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            max-height: 80vh;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .chat-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .chat-header p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: var(--bg-chat);
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 1rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-right: 0.75rem;
+        }
+
+        .message.user .message-avatar {
+            background: var(--success);
+            margin-left: 0.75rem;
+            order: 2;
+        }
+
+        .message-content {
+            max-width: 70%;
+        }
+
+        .message-bubble {
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message.bot .message-bubble {
+            background: var(--bg-primary);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            padding: 0 0.5rem;
+        }
+
+        /* Typing Indicator */
+        .typing {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-primary);
+            border-radius: 18px;
+            width: fit-content;
+        }
+
+        .typing.active {
+            display: flex;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        /* Quick Buttons */
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .quick-button {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            background: var(--bg-primary);
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Input Area */
+        .chat-input {
+            padding: 1.5rem;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border);
+        }
+
+        .input-container {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 0.875rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            font-size: 0.9375rem;
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .send-button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-title {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .feature-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .chat-container {
+                height: 500px;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">⚡ AI Мастер</div>
+            <div class="header-links">
+                <a href="/" class="header-link">Главная</a>
+                <a href="/admin" class="header-link">Админ</a>
+                <a href="/docs" class="header-link">API</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero -->
+        <div class="hero">
+            <h1>🤖 Умный помощник</h1>
+            <p>Расскажите о проблеме — я помогу вызвать мастера</p>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>💬 AI Диалог</h2>
+                <p>Отвечу на ваши вопросы и оформлю заявку</p>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- Начальное сообщение -->
+                <div class="message bot">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            Здравствуйте! Я помогу вам вызвать мастера. 👋<br><br>
+                            Как вас зовут?
+                        </div>
+                        <div class="message-time" id="initialTime"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input">
+                <div class="input-container">
+                    <input 
+                        type="text" 
+                        class="input-field" 
+                        id="messageInput" 
+                        placeholder="Введите ваш ответ..."
+                        autocomplete="off"
+                    >
+                    <button class="send-button" id="sendButton" onclick="sendMessage()">
+                        ➤
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Быстро</div>
+                <div class="feature-text">Мастер приедет в течение часа</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <div class="feature-title">Качественно</div>
+                <div class="feature-text">Проверенные специалисты</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-title">С гарантией</div>
+                <div class="feature-text">Гарантия на все работы</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <div class="feature-title">Честные цены</div>
+                <div class="feature-text">Оценка до начала работ</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Состояние диалога
+        let conversationState = {
+            step: 'NAME',
+            data: {}
+        };
+
+        const API_URL = window.location.origin;
+
+        // Категории услуг
+        const CATEGORIES = {
+            "⚡ Электрика": "electrical",
+            "🚰 Сантехника": "plumbing",
+            "🔌 Бытовая техника": "appliance",
+            "🔨 Общие работы": "general"
+        };
+
+        // Инициализация
+        document.getElementById('initialTime').textContent = getCurrentTime();
+        document.getElementById('messageInput').focus();
+
+        // Enter для отправки
+        document.getElementById('messageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addMessage(text, isUser = false, buttons = null) {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = isUser ? '👤' : '🤖';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.innerHTML = text;
+            
+            const time = document.createElement('div');
+            time.className = 'message-time';
+            time.textContent = getCurrentTime();
+            
+            content.appendChild(bubble);
+            
+            // Добавить кнопки быстрого ответа
+            if (buttons && buttons.length > 0) {
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.className = 'quick-buttons';
+                
+                buttons.forEach(btn => {
+                    const button = document.createElement('button');
+                    button.className = 'quick-button';
+                    button.textContent = btn;
+                    button.onclick = () => quickReply(btn);
+                    buttonsDiv.appendChild(button);
+                });
+                
+                content.appendChild(buttonsDiv);
+            }
+            
+            content.appendChild(time);
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            messageDiv.id = 'typingIndicator';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = '🤖';
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing active';
+            typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.appendChild(typingDiv);
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) {
+                typing.remove();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Добавить сообщение пользователя
+            addMessage(message, true);
+            input.value = '';
+            
+            // Показать индикатор печатания
+            showTyping();
+            
+            // Обработать сообщение
+            await handleMessage(message);
+            
+            hideTyping();
+        }
+
+        function quickReply(text) {
+            document.getElementById('messageInput').value = text;
+            sendMessage();
+        }
+
+        async function handleMessage(message) {
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            switch (conversationState.step) {
+                case 'NAME':
+                    if (message.length < 2) {
+                        addMessage('❌ Слишком короткое имя. Пожалуйста, укажите ваше имя:');
+                        return;
+                    }
+                    conversationState.data.name = message;
+                    conversationState.step = 'PHONE';
+                    addMessage(`Приятно познакомиться, ${message}! 😊<br><br>Укажите ваш номер телефона в формате:<br>+79001234567`);
+                    break;
+                
+                case 'PHONE':
+                    if (!message.match(/^\+7\d{10}$/)) {
+                        addMessage('❌ Неверный формат номера.<br>Укажите в формате: +79001234567');
+                        return;
+                    }
+                    conversationState.data.phone = message;
+                    conversationState.step = 'CATEGORY';
+                    addMessage(
+                        'Номер принят! 📱<br><br>Выберите категорию услуги:',
+                        false,
+                        Object.keys(CATEGORIES)
+                    );
+                    break;
+                
+                case 'CATEGORY':
+                    if (!CATEGORIES[message]) {
+                        addMessage('❌ Пожалуйста, выберите категорию из списка кнопок выше.');
+                        return;
+                    }
+                    conversationState.data.category = CATEGORIES[message];
+                    conversationState.data.category_name = message;
+                    conversationState.step = 'PROBLEM';
+                    
+                    const tips = {
+                        'electrical': '⚡ Электрика - дело серьёзное! Не пытайтесь чинить сами!',
+                        'plumbing': '🚰 При проблемах с водой перекройте вентиль!',
+                        'appliance': '🔌 Отключите технику от сети до прихода мастера.',
+                        'general': '🔨 Опишите проблему максимально подробно.'
+                    };
+                    
+                    addMessage(`Понял, ${message}! 🔧<br><br>${tips[CATEGORIES[message]]}<br><br>Опишите вашу проблему максимально подробно:`);
+                    break;
+                
+                case 'PROBLEM':
+                    if (message.length < 10) {
+                        addMessage('❌ Описание слишком короткое.<br>Расскажите подробнее о проблеме (минимум 10 символов):');
+                        return;
+                    }
+                    conversationState.data.problem = message;
+                    conversationState.step = 'ADDRESS';
+                    addMessage('Понял проблему! Сейчас оценю сложность... 🤔<br><br>Укажите адрес, куда нужно выехать мастеру:<br>(Например: ул. Ленина, д. 10, кв. 5)');
+                    break;
+                
+                case 'ADDRESS':
+                    if (message.length < 5) {
+                        addMessage('❌ Адрес слишком короткий.<br>Укажите полный адрес:');
+                        return;
+                    }
+                    conversationState.data.address = message;
+                    conversationState.step = 'CONFIRM';
+                    
+                    const summary = `
+                        📋 <b>Итак, ${conversationState.data.name}, давайте проверим:</b><br><br>
+                        🔧 <b>Услуга:</b> ${conversationState.data.category_name}<br>
+                        📝 <b>Проблема:</b> ${conversationState.data.problem}<br>
+                        📍 <b>Адрес:</b> ${conversationState.data.address}<br>
+                        📱 <b>Телефон:</b> ${conversationState.data.phone}<br><br>
+                        Всё верно?
+                    `;
+                    
+                    addMessage(summary, false, ['✅ Да, всё верно', '❌ Нет, исправить']);
+                    break;
+                
+                case 'CONFIRM':
+                    if (message.includes('Нет') || message.includes('исправить')) {
+                        conversationState.step = 'NAME';
+                        conversationState.data = {};
+                        addMessage('Хорошо, начнём заново! 🔄<br><br>Как вас зовут?');
+                        return;
+                    }
+                    
+                    if (message.includes('Да') || message.includes('верно')) {
+                        await submitOrder();
+                    } else {
+                        addMessage('Пожалуйста, подтвердите или отмените заявку кнопками выше.');
+                    }
+                    break;
+            }
+        }
+
+        async function submitOrder() {
+            addMessage('🔍 Ищу подходящего мастера...');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/v1/ai/web-form`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: conversationState.data.name,
+                        phone: conversationState.data.phone,
+                        category: conversationState.data.category,
+                        problem_description: conversationState.data.problem,
+                        address: conversationState.data.address
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    addMessage(`
+                        🎉 <b>Отлично! Заявка #${result.job_id} создана!</b><br><br>
+                        ✅ Мы нашли мастера в вашем районе<br>
+                        📱 Он свяжется с вами в течение 15 минут<br>
+                        💰 Примерная стоимость: ${result.estimated_price} ₽<br><br>
+                        <b>Спасибо что выбрали нас!</b> 🙏<br><br>
+                        Если хотите создать ещё одну заявку, просто напишите "Начать заново"
+                    `);
+                    
+                    conversationState.step = 'DONE';
+                } else {
+                    addMessage('❌ Произошла ошибка при создании заявки.<br>Попробуйте позже или позвоните нам: +7 (900) 123-45-67');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('❌ Ошибка соединения с сервером.<br>Проверьте интернет и попробуйте снова.');
+            }
+        }
+    </script>
+</body>
+</html>

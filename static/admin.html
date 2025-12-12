@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - AI Service Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stats-pills {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .pill {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .pill-success { background: #d1fae5; color: #065f46; }
+        .pill-warning { background: #fef3c7; color: #92400e; }
+        .pill-info { background: #dbeafe; color: #1e40af; }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .icon-primary { background: #dbeafe; }
+        .icon-success { background: #d1fae5; }
+        .icon-warning { background: #fef3c7; }
+
+        .card-title {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .card-change {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .change-positive { color: var(--success); }
+        .change-negative { color: var(--danger); }
+
+        /* Table */
+        .table-container {
+            background: var(--card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        .filters {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem 1.5rem;
+            background: var(--bg);
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.875rem;
+        }
+
+        tr:hover {
+            background: var(--bg);
+        }
+
+        /* Status Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-pending { background: #fef3c7; color: #92400e; }
+        .badge-accepted { background: #dbeafe; color: #1e40af; }
+        .badge-in-progress { background: #e0e7ff; color: #4338ca; }
+        .badge-completed { background: #d1fae5; color: #065f46; }
+        .badge-cancelled { background: #fee2e2; color: #991b1b; }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        /* Button */
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tabs */
+        .tabs {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+            background: var(--bg);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: var(--bg);
+            cursor: pointer;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        .close-btn:hover {
+            background: var(--border);
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkbox-label:hover {
+            background: var(--bg);
+        }
+
+        .checkbox-label input {
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .action-btn-edit {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .action-btn-edit:hover {
+            background: #bfdbfe;
+        }
+
+        .action-btn-delete {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-btn-delete:hover {
+            background: #fecaca;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stats-pills {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .filters {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            table {
+                font-size: 0.75rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🤖 AI Service Admin</div>
+            <div class="stats-pills">
+                <div class="pill pill-success" id="onlineMasters">0 мастеров онлайн</div>
+                <div class="pill pill-warning" id="pendingJobs">0 в очереди</div>
+                <div class="pill pill-info" id="todayJobs">0 сегодня</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </button>
+            <button class="tab-btn" onclick="switchTab('masters')">
+                <i class="fas fa-users"></i> Мастера
+            </button>
+            <button class="tab-btn" onclick="switchTab('jobs')">
+                <i class="fas fa-clipboard-list"></i> Заказы
+            </button>
+            <button class="tab-btn" onclick="switchTab('finance')">
+                <i class="fas fa-dollar-sign"></i> Финансы
+            </button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+        <!-- Stats Cards -->
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-primary">📋</div>
+                    <div>
+                        <div class="card-title">Всего заказов</div>
+                    </div>
+                </div>
+                <div class="card-value" id="totalJobs">0</div>
+                <div class="card-change change-positive" id="jobsChange">+0% за неделю</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-success">👨‍🔧</div>
+                    <div>
+                        <div class="card-title">Активных мастеров</div>
+                    </div>
+                </div>
+                <div class="card-value" id="activeMasters">0</div>
+                <div class="card-change change-positive" id="mastersChange">+0 новых</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-warning">💰</div>
+                    <div>
+                        <div class="card-title">Выручка (месяц)</div>
+                    </div>
+                </div>
+                <div class="card-value" id="monthRevenue">0 ₽</div>
+                <div class="card-change change-positive" id="revenueChange">+0%</div>
+            </div>
+        </div>
+
+        <!-- Jobs Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-title">📋 Последние заказы</div>
+                <div class="filters">
+                    <button class="filter-btn active" onclick="filterJobs('all')">Все</button>
+                    <button class="filter-btn" onclick="filterJobs('pending')">Ожидают</button>
+                    <button class="filter-btn" onclick="filterJobs('in_progress')">В работе</button>
+                    <button class="filter-btn" onclick="filterJobs('completed')">Завершены</button>
+                </div>
+            </div>
+            <div id="jobsTableContainer">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Загрузка заказов...</p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Masters Tab -->
+        <div id="masters" class="tab-content">
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-title">👨‍🔧 Управление мастерами</div>
+                    <button class="btn btn-primary" onclick="openAddMasterModal()">
+                        <i class="fas fa-plus"></i> Добавить мастера
+                    </button>
+                </div>
+                <div id="mastersTableContainer">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Загрузка мастеров...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jobs Management Tab -->
+        <div id="jobs" class="tab-content">
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-title">📋 Управление заказами</div>
+                <div class="filters">
+                    <button class="filter-btn active" onclick="filterJobsManagement('all')">Все</button>
+                    <button class="filter-btn" onclick="filterJobsManagement('pending')">Ожидают</button>
+                    <button class="filter-btn" onclick="filterJobsManagement('in_progress')">В работе</button>
+                    <button class="filter-btn" onclick="filterJobsManagement('completed')">Завершены</button>
+                </div>
+            </div>
+            <div id="jobsManagementTableContainer">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Загрузка заказов...</p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Finance Tab -->
+        <div id="finance" class="tab-content">
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon icon-success">💰</div>
+                        <div>
+                            <div class="card-title">Ваша прибыль (25%)</div>
+                        </div>
+                    </div>
+                    <div class="card-value" id="platformProfit">0 ₽</div>
+                    <div class="card-change">За всё время</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon icon-primary">👨‍🔧</div>
+                        <div>
+                            <div class="card-title">Выплаты мастерам (75%)</div>
+                        </div>
+                    </div>
+                    <div class="card-value" id="mastersPayout">0 ₽</div>
+                    <div class="card-change">За всё время</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon icon-warning">📊</div>
+                        <div>
+                            <div class="card-title">Средний чек</div>
+                        </div>
+                    </div>
+                    <div class="card-value" id="avgCheck">0 ₽</div>
+                    <div class="card-change">На основе завершённых</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-title">💰 Финансовая статистика</div>
+                </div>
+                <div id="financeTableContainer">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Загрузка данных...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Master Modal -->
+    <div id="addMasterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">➕ Добавить мастера</div>
+                <button class="close-btn" onclick="closeAddMasterModal()">×</button>
+            </div>
+            <form id="addMasterForm" onsubmit="handleAddMaster(event)">
+                <div class="form-group">
+                    <label class="form-label">ФИО мастера *</label>
+                    <input type="text" class="form-input" name="full_name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Телефон *</label>
+                    <input type="tel" class="form-input" name="phone" placeholder="+79001234567" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Город *</label>
+                    <input type="text" class="form-input" name="city" value="Калининград" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Специализации *</label>
+                    <div class="form-checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="specializations" value="electrical">
+                            Электрика
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="specializations" value="plumbing">
+                            Сантехника
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="specializations" value="appliances">
+                            Бытовая техника
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="specializations" value="general">
+                            Общие работы
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Начальный рейтинг</label>
+                    <input type="number" class="form-input" name="rating" min="1" max="5" step="0.1" value="5.0">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddMasterModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Добавить мастера
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Master Modal -->
+    <div id="editMasterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">✏️ Редактировать мастера</div>
+                <button class="close-btn" onclick="closeEditMasterModal()">×</button>
+            </div>
+            <form id="editMasterForm" onsubmit="handleEditMaster(event)">
+                <input type="hidden" name="master_id">
+                <div class="form-group">
+                    <label class="form-label">ФИО мастера *</label>
+                    <input type="text" class="form-input" name="full_name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Телефон *</label>
+                    <input type="tel" class="form-input" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Город *</label>
+                    <input type="text" class="form-input" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Рейтинг</label>
+                    <input type="number" class="form-input" name="rating" min="1" max="5" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Статус</label>
+                    <select class="form-select" name="is_active">
+                        <option value="true">Активен</option>
+                        <option value="false">Заблокирован</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-danger" onclick="handleDeleteMaster()">
+                        <i class="fas fa-trash"></i> Удалить
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditMasterModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Сохранить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+        <div class="table-container">
+
+
+    <script>
+        const API_URL = window.location.origin;
+        let allJobs = [];
+        let allMasters = [];
+        let currentFilter = 'all';
+        let currentJobsFilter = 'all';
+        let currentEditingMasterId = null;
+
+        // Переключение вкладок
+        function switchTab(tabName) {
+            // Скрыть все вкладки
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Убрать активность у кнопок
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Показать выбранную вкладку
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Загрузить данные для вкладки
+            if (tabName === 'masters') {
+                loadMasters();
+            } else if (tabName === 'jobs') {
+                loadJobsManagement();
+            } else if (tabName === 'finance') {
+                loadFinance();
+            }
+        }
+
+        // Модальные окна мастеров
+        function openAddMasterModal() {
+            document.getElementById('addMasterModal').classList.add('active');
+        }
+
+        function closeAddMasterModal() {
+            document.getElementById('addMasterModal').classList.remove('active');
+            document.getElementById('addMasterForm').reset();
+        }
+
+        function openEditMasterModal(master) {
+            currentEditingMasterId = master.id;
+            const form = document.getElementById('editMasterForm');
+            form.querySelector('[name="master_id"]').value = master.id;
+            form.querySelector('[name="full_name"]').value = master.full_name;
+            form.querySelector('[name="phone"]').value = master.phone;
+            form.querySelector('[name="city"]').value = master.city;
+            form.querySelector('[name="rating"]').value = master.rating;
+            form.querySelector('[name="is_active"]').value = master.is_active.toString();
+            
+            document.getElementById('editMasterModal').classList.add('active');
+        }
+
+        function closeEditMasterModal() {
+            document.getElementById('editMasterModal').classList.remove('active');
+            currentEditingMasterId = null;
+        }
+
+        // Добавление мастера
+        async function handleAddMaster(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            // Собрать специализации
+            const specializations = Array.from(form.querySelectorAll('[name="specializations"]:checked'))
+                .map(cb => cb.value);
+            
+            if (specializations.length === 0) {
+                alert('Выберите хотя бы одну специализацию!');
+                return;
+            }
+            
+            const masterData = {
+                full_name: formData.get('full_name'),
+                phone: formData.get('phone'),
+                city: formData.get('city'),
+                specializations: specializations,
+                rating: parseFloat(formData.get('rating'))
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/api/v1/masters/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(masterData)
+                });
+                
+                if (response.ok) {
+                    alert('✅ Мастер успешно добавлен!');
+                    closeAddMasterModal();
+                    loadMasters();
+                } else {
+                    const error = await response.json();
+                    alert('❌ Ошибка: ' + (error.detail || 'Не удалось добавить мастера'));
+                }
+            } catch (error) {
+                console.error('Ошибка добавления мастера:', error);
+                alert('❌ Ошибка сети');
+            }
+        }
+
+        // Редактирование мастера
+        async function handleEditMaster(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const masterId = formData.get('master_id');
+            
+            const masterData = {
+                full_name: formData.get('full_name'),
+                phone: formData.get('phone'),
+                city: formData.get('city'),
+                rating: parseFloat(formData.get('rating')),
+                is_active: formData.get('is_active') === 'true'
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/api/v1/masters/${masterId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(masterData)
+                });
+                
+                if (response.ok) {
+                    alert('✅ Мастер успешно обновлён!');
+                    closeEditMasterModal();
+                    loadMasters();
+                } else {
+                    alert('❌ Ошибка обновления мастера');
+                }
+            } catch (error) {
+                console.error('Ошибка редактирования мастера:', error);
+                alert('❌ Ошибка сети');
+            }
+        }
+
+        // Удаление мастера
+        async function handleDeleteMaster() {
+            if (!confirm('Вы уверены, что хотите удалить этого мастера?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/api/v1/masters/${currentEditingMasterId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    alert('✅ Мастер успешно удалён!');
+                    closeEditMasterModal();
+                    loadMasters();
+                } else {
+                    alert('❌ Ошибка удаления мастера');
+                }
+            } catch (error) {
+                console.error('Ошибка удаления мастера:', error);
+                alert('❌ Ошибка сети');
+            }
+        }
+
+        // Загрузка мастеров
+        async function loadMasters() {
+            try {
+                const response = await fetch(`${API_URL}/api/v1/masters`);
+                allMasters = await response.json();
+                renderMastersTable();
+            } catch (error) {
+                console.error('Ошибка загрузки мастеров:', error);
+                document.getElementById('mastersTableContainer').innerHTML = `
+                    <div class="loading">
+                        <p style="color: var(--danger);">❌ Ошибка загрузки мастеров</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Отображение таблицы мастеров
+        function renderMastersTable() {
+            if (allMasters.length === 0) {
+                document.getElementById('mastersTableContainer').innerHTML = `
+                    <div class="loading">
+                        <p>👨‍🔧 Нет мастеров. Добавьте первого мастера!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>ФИО</th>
+                            <th>Телефон</th>
+                            <th>Город</th>
+                            <th>Специализации</th>
+                            <th>Рейтинг</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${allMasters.map(master => {
+                            const specs = (master.specializations || [])
+                                .map(s => {
+                                    const names = {
+                                        'electrical': '⚡ Электрика',
+                                        'plumbing': '🚰 Сантехника',
+                                        'appliances': '🔧 Техника',
+                                        'general': '🛠️ Общие'
+                                    };
+                                    return names[s] || s;
+                                })
+                                .join(', ');
+                            
+                            return `
+                                <tr>
+                                    <td><strong>#${master.id}</strong></td>
+                                    <td>
+                                        <div style="font-weight: 600;">${master.full_name}</div>
+                                    </td>
+                                    <td>${master.phone}</td>
+                                    <td>${master.city}</td>
+                                    <td style="font-size: 0.75rem;">${specs || 'Не указано'}</td>
+                                    <td>
+                                        <span style="color: var(--warning); font-weight: 700;">
+                                            ⭐ ${master.rating.toFixed(1)}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge ${master.is_active ? 'badge-completed' : 'badge-cancelled'}">
+                                            <span class="status-dot"></span>
+                                            ${master.is_active ? 'Активен' : 'Заблокирован'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-btn-edit" 
+                                                onclick='openEditMasterModal(${JSON.stringify(master).replace(/'/g, "\\'")})'
+                                                title="Редактировать">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('mastersTableContainer').innerHTML = html;
+            
+            // Обновить счётчик в header
+            const activeMasters = allMasters.filter(m => m.is_active).length;
+            document.getElementById('onlineMasters').textContent = `${activeMasters} мастеров активно`;
+            document.getElementById('activeMasters').textContent = activeMasters;
+        }
+
+       // Загрузка данных
+        async function loadData() {
+            try {
+                // Загрузка заказов
+                const jobsRes = await fetch(`${API_URL}/api/v1/jobs`);
+                allJobs = await jobsRes.json();
+                
+                // Обновление статистики
+                updateStats();
+                
+                // Отображение таблицы
+                renderJobsTable();
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+                document.getElementById('jobsTableContainer').innerHTML = `
+                    <div class="loading">
+                        <p style="color: var(--danger);">❌ Ошибка загрузки данных</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Загрузка управления заказами
+        async function loadJobsManagement() {
+            try {
+                const response = await fetch(`${API_URL}/api/v1/jobs`);
+                allJobs = await response.json();
+                renderJobsManagementTable();
+            } catch (error) {
+                console.error('Ошибка загрузки заказов:', error);
+                document.getElementById('jobsManagementTableContainer').innerHTML = `
+                    <div class="loading">
+                        <p style="color: var(--danger);">❌ Ошибка загрузки заказов</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Загрузка финансов
+        async function loadFinance() {
+            try {
+                const response = await fetch(`${API_URL}/api/v1/jobs`);
+                allJobs = await response.json();
+                renderFinanceStats();
+            } catch (error) {
+                console.error('Ошибка загрузки финансов:', error);
+            }
+        }
+
+        // Отображение таблицы управления заказами
+        function renderJobsManagementTable() {
+            const filteredJobs = currentJobsFilter === 'all' 
+                ? allJobs 
+                : allJobs.filter(j => j.status === currentJobsFilter);
+
+            if (filteredJobs.length === 0) {
+                document.getElementById('jobsManagementTableContainer').innerHTML = `
+                    <div class="loading">
+                        <p>📭 Нет заказов</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const statusNames = {
+                'pending': 'Ожидает',
+                'accepted': 'Принят',
+                'in_progress': 'В работе',
+                'completed': 'Завершён',
+                'cancelled': 'Отменён'
+            };
+
+            const html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Клиент</th>
+                            <th>Категория</th>
+                            <th>Проблема</th>
+                            <th>Мастер</th>
+                            <th>Статус</th>
+                            <th>Цена</th>
+                            <th>Комиссия (25%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredJobs.map(job => {
+                            const commission = (job.estimated_price || 0) * 0.25;
+                            return `
+                                <tr>
+                                    <td><strong>#${job.id}</strong></td>
+                                    <td>
+                                        <div style="font-weight: 600;">${job.client_name || 'Неизвестно'}</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-muted);">${job.client_phone || ''}</div>
+                                    </td>
+                                    <td style="font-size: 0.75rem;">${job.category_name || job.category || ''}</td>
+                                    <td style="max-width: 200px; font-size: 0.75rem;">
+                                        ${(job.problem_description || '').substring(0, 50)}...
+                                    </td>
+                                    <td>
+                                        ${job.master_id ? `<span class="badge badge-accepted">Назначен #${job.master_id}</span>` : '<span class="badge badge-pending">Не назначен</span>'}
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-${job.status}">
+                                            <span class="status-dot"></span>
+                                            ${statusNames[job.status] || job.status}
+                                        </span>
+                                    </td>
+                                    <td><strong>${(job.estimated_price || 0).toLocaleString('ru-RU')} ₽</strong></td>
+                                    <td>
+                                        <strong style="color: var(--success);">${commission.toLocaleString('ru-RU')} ₽</strong>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('jobsManagementTableContainer').innerHTML = html;
+        }
+
+        // Отображение финансовой статистики
+        function renderFinanceStats() {
+            const completedJobs = allJobs.filter(j => j.status === 'completed');
+            const totalRevenue = completedJobs.reduce((sum, j) => sum + (j.estimated_price || 0), 0);
+            const platformProfit = totalRevenue * 0.25;
+            const mastersPayout = totalRevenue * 0.75;
+            const avgCheck = completedJobs.length > 0 ? totalRevenue / completedJobs.length : 0;
+
+            document.getElementById('platformProfit').textContent = `${platformProfit.toLocaleString('ru-RU')} ₽`;
+            document.getElementById('mastersPayout').textContent = `${mastersPayout.toLocaleString('ru-RU')} ₽`;
+            document.getElementById('avgCheck').textContent = `${avgCheck.toLocaleString('ru-RU')} ₽`;
+
+            // Таблица по заказам
+            const html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Заказ</th>
+                            <th>Мастер</th>
+                            <th>Сумма</th>
+                            <th>Комиссия (25%)</th>
+                            <th>Мастеру (75%)</th>
+                            <th>Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${completedJobs.slice(0, 20).map(job => {
+                            const price = job.estimated_price || 0;
+                            const commission = price * 0.25;
+                            const masterPayout = price * 0.75;
+                            
+                            return `
+                                <tr>
+                                    <td><strong>#${job.id}</strong></td>
+                                    <td>${job.master_id ? `Мастер #${job.master_id}` : '-'}</td>
+                                    <td>${price.toLocaleString('ru-RU')} ₽</td>
+                                    <td><strong style="color: var(--success);">${commission.toLocaleString('ru-RU')} ₽</strong></td>
+                                    <td>${masterPayout.toLocaleString('ru-RU')} ₽</td>
+                                    <td style="font-size: 0.75rem; color: var(--text-muted);">
+                                        ${job.created_at ? new Date(job.created_at).toLocaleDateString('ru-RU') : ''}
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('financeTableContainer').innerHTML = completedJobs.length > 0 ? html : `
+                <div class="loading">
+                    <p>💰 Пока нет завершённых заказов</p>
+                </div>
+            `;
+        }
+
+        // Фильтрация заказов управления
+        function filterJobsManagement(filter) {
+            currentJobsFilter = filter;
+            
+            // Обновление активной кнопки
+            const buttons = document.querySelectorAll('#jobs .filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(filter === 'all' ? 'все' : filter)) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            renderJobsManagementTable();
+        }
+
+        // Обновление статистики
+        function updateStats() {
+            const totalJobs = allJobs.length;
+            const pendingJobs = allJobs.filter(j => j.status === 'pending').length;
+            const completedJobs = allJobs.filter(j => j.status === 'completed').length;
+            const todayJobs = allJobs.filter(j => {
+                const today = new Date().toISOString().split('T')[0];
+                return j.created_at && j.created_at.startsWith(today);
+            }).length;
+
+            document.getElementById('totalJobs').textContent = totalJobs;
+            document.getElementById('pendingJobs').textContent = `${pendingJobs} в очереди`;
+            document.getElementById('todayJobs').textContent = `${todayJobs} сегодня`;
+            
+            // Подсчет выручки
+            const revenue = allJobs
+                .filter(j => j.status === 'completed')
+                .reduce((sum, j) => sum + (j.estimated_price || 0), 0);
+            
+            document.getElementById('monthRevenue').textContent = `${revenue.toLocaleString('ru-RU')} ₽`;
+        }
+
+        // Отображение таблицы заказов
+        function renderJobsTable() {
+            const filteredJobs = currentFilter === 'all' 
+                ? allJobs 
+                : allJobs.filter(j => j.status === currentFilter);
+
+            if (filteredJobs.length === 0) {
+                document.getElementById('jobsTableContainer').innerHTML = `
+                    <div class="loading">
+                        <p>📭 Нет заказов</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const statusNames = {
+                'pending': 'Ожидает',
+                'accepted': 'Принят',
+                'in_progress': 'В работе',
+                'completed': 'Завершён',
+                'cancelled': 'Отменён'
+            };
+
+            const html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Клиент</th>
+                            <th>Категория</th>
+                            <th>Адрес</th>
+                            <th>Статус</th>
+                            <th>Цена</th>
+                            <th>Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredJobs.slice(0, 20).map(job => `
+                            <tr>
+                                <td><strong>#${job.id}</strong></td>
+                                <td>
+                                    <div style="font-weight: 600;">${job.client_name || 'Неизвестно'}</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">${job.client_phone || ''}</div>
+                                </td>
+                                <td>${job.category_name || job.category || ''}</td>
+                                <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    ${job.address || 'Не указан'}
+                                </td>
+                                <td>
+                                    <span class="badge badge-${job.status}">
+                                        <span class="status-dot"></span>
+                                        ${statusNames[job.status] || job.status}
+                                    </span>
+                                </td>
+                                <td><strong>${(job.estimated_price || 0).toLocaleString('ru-RU')} ₽</strong></td>
+                                <td style="font-size: 0.75rem; color: var(--text-muted);">
+                                    ${job.created_at ? new Date(job.created_at).toLocaleDateString('ru-RU') : ''}
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('jobsTableContainer').innerHTML = html;
+        }
+
+        // Фильтрация заказов
+        function filterJobs(filter) {
+            currentFilter = filter;
+            
+            // Обновление активной кнопки
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderJobsTable();
+        }
+
+        // Автообновление каждые 10 секунд
+        setInterval(loadData, 10000);
+
+        // Первоначальная загрузка
+        loadData();
+    </script>
+</body>
+</html>
