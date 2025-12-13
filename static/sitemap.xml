@@ -43,5 +43,13 @@
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
+    
+    <!-- Админка каталога -->
+    <url>
+        <loc>https://app.balt-set.ru/admin-catalog.html</loc>
+        <lastmod>2024-12-13</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
 
 </urlset>
