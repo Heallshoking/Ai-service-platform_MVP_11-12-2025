@@ -1447,6 +1447,7 @@ async def admin_panel():
     return HTMLResponse(content=html_content)
 
 @app.get("/calculator.html")
+@app.get("/calculator")
 async def calculator():
     """Калькулятор стоимости электромонтажных работ"""
     from fastapi.responses import FileResponse
