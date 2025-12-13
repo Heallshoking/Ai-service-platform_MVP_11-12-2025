@@ -3,7 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-    
+
     <!-- Главная страница -->
     <url>
         <loc>https://app.balt-set.ru/</loc>
@@ -11,37 +11,37 @@
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
-    
-    <!-- Каталог услуг (SEO-страница) -->
+
+    <!-- Каталог услуг (SEO) -->
     <url>
-        <loc>https://app.balt-set.ru/services</loc>
+        <loc>https://app.balt-set.ru/catalog.html</loc>
         <lastmod>2024-12-13</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
-    
-    <!-- Калькулятор стоимости -->
+
+    <!-- Услуги электрика -->
     <url>
-        <loc>https://app.balt-set.ru/calculator</loc>
+        <loc>https://app.balt-set.ru/services.html</loc>
+        <lastmod>2024-12-13</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Калькулятор -->
+    <url>
+        <loc>https://app.balt-set.ru/calculator.html</loc>
         <lastmod>2024-12-13</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
-    
-    <!-- Админка -->
+
+    <!-- AI-чат -->
     <url>
-        <loc>https://app.balt-set.ru/admin</loc>
+        <loc>https://app.balt-set.ru/ai-chat.html</loc>
         <lastmod>2024-12-13</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.3</priority>
+        <priority>0.7</priority>
     </url>
-    
-    <!-- Кабинет мастера -->
-    <url>
-        <loc>https://app.balt-set.ru/master</loc>
-        <lastmod>2024-12-13</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    
+
 </urlset>

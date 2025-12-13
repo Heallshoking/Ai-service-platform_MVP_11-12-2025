@@ -3,49 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор стоимости электромонтажа | AI Service Platform</title>
+    <title>Калькулятор стоимости электромонтажа | БАЛТСЕТЬ</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
-        :root {
-            --primary: #4B8FE8;
-            --primary-dark: #3A7AD6;
-            --accent: #10b981;
-            --bg: #F7F9FC;
-            --card-bg: #FFFFFF;
-            --text: #2D3748;
-            --text-muted: #718096;
-            --border: #E2E8F0;
-            --shadow: 0 4px 6px rgba(0,0,0,0.05);
-            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
         body {
-            font-family: 'Open Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1d1d1f;
             line-height: 1.6;
+            position: relative;
             min-height: 100vh;
         }
         
-        h1, h2, h3 {
-            font-family: 'Montserrat', sans-serif;
+        /* Фоновое изображение как на эталонном сайте */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+        }
+        
+        /* Паттерн поверх градиента */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
         /* Header */
         .header {
-            background: var(--card-bg);
-            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             padding: 1rem 0;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
         
         .header-content {
@@ -60,8 +77,12 @@
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--primary);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-decoration: none;
+            cursor: pointer;
         }
         
         .nav-links {
@@ -70,14 +91,14 @@
         }
         
         .nav-links a {
-            color: var(--text);
+            color: #1d1d1f;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.2s;
         }
         
         .nav-links a:hover {
-            color: var(--primary);
+            color: #667eea;
         }
         
         /* Burger Menu */
@@ -94,7 +115,7 @@
         .burger-menu span {
             width: 24px;
             height: 3px;
-            background: var(--text);
+            background: #1d1d1f;
             border-radius: 2px;
             transition: all 0.3s;
         }
@@ -125,29 +146,45 @@
         
         .hero h1 {
             font-size: 2.5rem;
-            color: var(--text);
+            color: white;
             margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-weight: 800;
         }
         
         .hero p {
             font-size: 1.125rem;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
-        /* Card */
+        /* Card - глассморфизм как на эталонном сайте */
         .card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: var(--shadow-lg);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.3) inset;
             margin-bottom: 2rem;
+            animation: cardAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
         
         .card-title {
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
-            color: var(--text);
+            color: #1d1d1f;
         }
         
         /* Form Groups */
@@ -159,7 +196,7 @@
             display: block;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--text);
+            color: #1d1d1f;
         }
         
         .radio-group {
@@ -172,26 +209,31 @@
             display: flex;
             align-items: flex-start;
             padding: 1rem;
-            border: 2px solid var(--border);
+            border: 2px solid #e0e0e0;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: white;
         }
         
         .radio-option:hover {
-            border-color: var(--primary);
-            background: #F0F7FF;
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
         
         .radio-option.selected {
-            border-color: var(--primary);
-            background: #E6F2FF;
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
         }
         
         .radio-option input[type="radio"] {
             margin-right: 0.75rem;
             margin-top: 0.25rem;
             cursor: pointer;
+            accent-color: #667eea;
         }
         
         .radio-label {
@@ -201,11 +243,11 @@
         .radio-label strong {
             display: block;
             margin-bottom: 0.25rem;
-            color: var(--text);
+            color: #1d1d1f;
         }
         
         .radio-label small {
-            color: var(--text-muted);
+            color: #666;
             font-size: 0.875rem;
         }
         
@@ -213,18 +255,19 @@
         select {
             width: 100%;
             padding: 0.75rem 1rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             font-size: 1rem;
             font-family: inherit;
             background: white;
             cursor: pointer;
-            transition: border-color 0.2s;
+            transition: all 0.3s;
         }
         
         select:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
         /* Counter */
@@ -250,29 +293,36 @@
         }
         
         .counter-btn {
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             background: white;
-            color: var(--text);
-            font-size: 1.25rem;
+            color: #1d1d1f;
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 300;
         }
         
         .counter-btn:hover {
-            border-color: var(--primary);
-            background: #F0F7FF;
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            transform: scale(1.1);
+        }
+        
+        .counter-btn:active {
+            transform: scale(0.95);
         }
         
         .counter-value {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
             min-width: 60px;
+            color: #667eea;
         }
         
         /* Checkbox Group */
@@ -286,32 +336,36 @@
             display: flex;
             align-items: center;
             padding: 0.75rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: white;
         }
         
         .checkbox-option:hover {
-            border-color: var(--primary);
-            background: #F0F7FF;
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateX(4px);
         }
         
         .checkbox-option.checked {
-            border-color: var(--accent);
-            background: #ECFDF5;
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.08);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
         }
         
         .checkbox-option input[type="checkbox"] {
             margin-right: 0.75rem;
             cursor: pointer;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
+            accent-color: #10b981;
         }
         
         /* Result */
         .result-section {
-            border-top: 2px solid var(--border);
+            border-top: 2px solid #f0f0f0;
             padding-top: 1.5rem;
             margin-top: 1.5rem;
         }
@@ -331,38 +385,64 @@
         .result-value {
             font-size: 2rem;
             font-weight: 700;
-            color: var(--primary);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .result-note {
             font-size: 0.875rem;
-            color: var(--text-muted);
+            color: #666;
             margin-top: 0.5rem;
         }
         
         /* CTA Button */
         .cta-button {
             width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
             font-size: 1.125rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s;
-            margin-top: 1rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
         }
         
         .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button:active {
+            transform: translateY(-1px);
         }
         
         .cta-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
         
         /* Hidden */
@@ -406,7 +486,7 @@
 <body>
     <header class="header">
         <div class="header-content">
-            <a href="/" class="logo">⚡ AI Platform</a>
+            <a href="/" class="logo">⚡ БАЛТСЕТЬ</a>
             
             <button class="burger-menu" id="burger-btn" onclick="toggleMenu()">
                 <span></span>
@@ -415,9 +495,11 @@
             </button>
             
             <nav class="nav-links" id="nav-menu">
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог</a>
+                <a href="/services.html">Услуги</a>
                 <a href="/calculator.html">Калькулятор</a>
-                <a href="/">Услуги</a>
-                <a href="/admin">Админ</a>
+                <a href="/ai-chat.html">AI-чат</a>
             </nav>
         </div>
     </header>
@@ -428,31 +510,31 @@
             <p>Рассчитайте примерную стоимость электромонтажных работ</p>
             
             <!-- Шкала скидок -->
-            <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05)); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; border: 2px solid var(--accent);">
-                <h3 style="font-size: 1.125rem; margin-bottom: 1rem; color: var(--accent);">🎁 Система скидок за объём:</h3>
+            <div style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 20px; margin-top: 1.5rem; border: 2px solid rgba(255, 255, 255, 0.3);">
+                <h3 style="font-size: 1.125rem; margin-bottom: 1rem; color: white; font-weight: 700;">🎁 Система скидок за объём:</h3>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; font-size: 0.875rem;">
-                    <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 8px;">
-                        <div style="font-weight: 700; color: var(--accent);">10+ точек</div>
-                        <div style="color: var(--text-muted);">-5%</div>
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div style="font-weight: 700; color: white; font-size: 1rem;">🟢 10+ точек</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-top: 4px;">-5%</div>
                     </div>
-                    <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 8px;">
-                        <div style="font-weight: 700; color: var(--accent);">20+ точек</div>
-                        <div style="color: var(--text-muted);">-10%</div>
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div style="font-weight: 700; color: white; font-size: 1rem;">🟡 20+ точек</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-top: 4px;">-10%</div>
                     </div>
-                    <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 8px;">
-                        <div style="font-weight: 700; color: var(--accent);">30+ точек</div>
-                        <div style="color: var(--text-muted);">-15%</div>
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div style="font-weight: 700; color: white; font-size: 1rem;">🟠 30+ точек</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-top: 4px;">-15%</div>
                     </div>
-                    <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 8px;">
-                        <div style="font-weight: 700; color: var(--accent);">50+ точек</div>
-                        <div style="color: var(--text-muted);">-20%</div>
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div style="font-weight: 700; color: white; font-size: 1rem;">🔴 50+ точек</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-top: 4px;">-20%</div>
                     </div>
-                    <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 8px; border: 2px solid var(--accent);">
-                        <div style="font-weight: 700; color: var(--accent);">80+ точек</div>
-                        <div style="color: var(--accent); font-weight: 600;">-25% 🔥</div>
+                    <div style="text-align: center; padding: 0.75rem; background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 193, 7, 0.4)); backdrop-filter: blur(5px); border-radius: 12px; border: 2px solid rgba(255, 215, 0, 0.6); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);">
+                        <div style="font-weight: 800; color: white; font-size: 1.1rem;">🔥 80+ точек</div>
+                        <div style="color: white; font-weight: 700; margin-top: 4px; font-size: 1.1rem;">-25% 🔥</div>
                     </div>
                 </div>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.75rem; text-align: center;">
+                <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.9); margin-top: 0.75rem; text-align: center; font-weight: 500;">
                     ✨ Чем больше объём — тем выгоднее! На 50+ точек экономия до 10 000₽
                 </p>
             </div>

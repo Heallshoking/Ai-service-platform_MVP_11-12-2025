@@ -1,29 +1,31 @@
+# Robots.txt для БАЛТСЕТЬ - Услуги мастеров в Калининграде
+# https://app.balt-set.ru
+
 User-agent: *
 Allow: /
-Allow: /services
-Allow: /calculator
-Disallow: /admin
+Allow: /catalog.html
+Allow: /services.html
+Allow: /calculator.html
+Allow: /ai-chat.html
+
+# Закрываем админку от индексации
+Disallow: /admin.html
+Disallow: /admin-catalog.html
+Disallow: /master-dashboard.html
 Disallow: /api/
 
-# Sitemap
+# Закрываем служебные файлы
+Disallow: /*.json$
+Disallow: /electric-service-automation-main/
+
+# Карта сайта
 Sitemap: https://app.balt-set.ru/sitemap.xml
 
-# Crawl-delay для вежливого поведения
-Crawl-delay: 1
-
-# Яндекс
+# Основные поисковики
 User-agent: Yandex
 Allow: /
-Allow: /services
-Allow: /calculator
-Disallow: /admin
-Disallow: /api/
 Crawl-delay: 0.5
 
-# Google
 User-agent: Googlebot
 Allow: /
-Allow: /services
-Allow: /calculator
-Disallow: /admin
-Disallow: /api/
+Crawl-delay: 0.5
