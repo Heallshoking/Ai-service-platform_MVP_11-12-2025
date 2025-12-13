@@ -51,13 +51,13 @@ export default function Products() {
         onContinueClick={handleAddToCart}
       />
 
-      <div className="max-w-md md:max-w-4xl lg:max-w-6xl mx-auto px-4">
-        <div className="py-6 space-y-6">
+      <div className="max-w-md md:max-w-4xl lg:max-w-6xl mx-auto px-3">
+        <div className="py-4 space-y-4">
 
 
-          <div className="space-y-8">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-3">
+          <div className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-3">
+              <div className="space-y-2">
                 <h3 className="text-lg font-semibold text-gray-700 mb-3 hidden">Быстрые услуги</h3>
                 {servicesContainers.map((container) => {
                   const actualIndex = containers.findIndex(c => c.productId === container.productId);
@@ -76,7 +76,7 @@ export default function Products() {
                 })}
               </div>
                 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {wiringContainers.map((container) => {
                   const actualIndex = containers.findIndex(c => c.productId === container.productId);
                   return (
@@ -107,11 +107,11 @@ export default function Products() {
           </div>
 
           {hasAnyEnabledOptions && (
-            <Card className="mt-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200">
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-4">
+            <Card className="mt-4 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200">
+              <div className="p-4">
+                <div className="flex justify-between items-center mb-3">
                   <div className="flex flex-col">
-                    <span className="text-lg font-bold text-gray-800">ИТОГО</span>
+                    <span className="text-base font-bold text-gray-800">ИТОГО</span>
                     <button
                       onClick={clearAllOptions}
                       className="text-xs text-red-600 hover:text-red-700 underline mt-1 text-left"
@@ -119,7 +119,7 @@ export default function Products() {
                       Очистить всё
                     </button>
                   </div>
-                  <span className="text-3xl font-bold text-green-600">
+                  <span className="text-2xl font-bold text-green-600">
                     {calculateGrandTotal().toLocaleString('ru-RU')} ₽
                   </span>
                 </div>

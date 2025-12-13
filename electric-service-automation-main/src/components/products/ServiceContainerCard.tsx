@@ -245,10 +245,10 @@ export default function ServiceContainerCard({
         className="overflow-hidden bg-white border-2 border-gray-100 hover:border-blue-200 transition-all cursor-pointer shadow-sm"
         onClick={() => toggleContainer(actualIndex)}
       >
-        <div className="p-5">
-          <div className="flex items-center gap-4">
-            <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${colors.bg} flex items-center justify-center flex-shrink-0 transition-all ${container.expanded ? 'scale-110 shadow-lg' : ''}`}>
-              <Icon name={iconName} size={28} className={`${colors.icon} transition-all`} />
+        <div className="p-3">
+          <div className="flex items-center gap-3">
+            <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${colors.bg} flex items-center justify-center flex-shrink-0 transition-all ${container.expanded ? 'scale-110 shadow-lg' : ''}`}>
+              <Icon name={iconName} size={24} className={`${colors.icon} transition-all`} />
             </div>
             
             <div className="flex-1">
@@ -258,28 +258,28 @@ export default function ServiceContainerCard({
             </div>
             
             <div className="text-right">
-              <div className="text-xs text-gray-500 mb-1">от</div>
-              <div className="text-2xl font-bold text-amber-600">
-                {singleOption.price} <span className="text-lg">₽</span>
+              <div className="text-xs text-gray-500 mb-0.5">от</div>
+              <div className="text-xl font-bold text-amber-600">
+                {singleOption.price} <span className="text-base">₽</span>
               </div>
             </div>
             
             <Icon 
               name={container.expanded ? 'ChevronUp' : 'ChevronDown'} 
-              size={24} 
+              size={20} 
               className="text-gray-400 flex-shrink-0"
             />
           </div>
 
           {container.expanded && (
-            <div className="mt-4 pt-4 border-t border-gray-100">
+            <div className="mt-3 pt-3 border-t border-gray-100">
               {renderOption(singleOption)}
               
               {calculateContainerTotal(container) > 0 && (
-                <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="mt-3 pt-3 border-t border-gray-200">
                   <div className="flex justify-between items-center">
-                    <span className="font-semibold text-gray-800">Итого за услугу:</span>
-                    <span className="text-2xl font-bold text-green-600">
+                    <span className="font-semibold text-sm text-gray-800">Итого за услугу:</span>
+                    <span className="text-xl font-bold text-green-600">
                       {calculateContainerTotal(container).toLocaleString('ru-RU')} ₽
                     </span>
                   </div>
@@ -306,12 +306,12 @@ export default function ServiceContainerCard({
       className="overflow-hidden bg-white border-2 border-gray-100 hover:border-blue-200 transition-all shadow-sm"
     >
       <div 
-        className="p-5 flex items-center gap-4 cursor-pointer"
+        className="p-3 flex items-center gap-3 cursor-pointer"
         onClick={() => toggleContainer(actualIndex)}
       >
         {hasIcon && (
-          <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${colors.bg} flex items-center justify-center flex-shrink-0 transition-all ${container.expanded ? 'scale-110 shadow-lg' : ''}`}>
-            <Icon name={iconName} size={28} className={`${colors.icon} transition-all`} />
+          <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${colors.bg} flex items-center justify-center flex-shrink-0 transition-all ${container.expanded ? 'scale-110 shadow-lg' : ''}`}>
+            <Icon name={iconName} size={24} className={`${colors.icon} transition-all`} />
           </div>
         )}
         
@@ -340,15 +340,15 @@ export default function ServiceContainerCard({
         
         <Icon 
           name={container.expanded ? 'ChevronUp' : 'ChevronDown'} 
-          size={24} 
+          size={20} 
           className="text-gray-400 flex-shrink-0"
         />
       </div>
 
       {container.expanded && (
-        <div className="px-5 pb-5 space-y-3">
+        <div className="px-3 pb-3 space-y-2">
           {otherOptions.length > 0 && (
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {otherOptions.map(renderOption)}
             </div>
           )}
@@ -369,7 +369,7 @@ export default function ServiceContainerCard({
                 />
               </button>
               {expandedSections.construction && (
-                <div className="mt-2 space-y-2">
+                <div className="mt-1.5 space-y-1.5">
                   {constructionOptions.map(renderOption)}
                 </div>
               )}
@@ -392,7 +392,7 @@ export default function ServiceContainerCard({
                 />
               </button>
               {expandedSections.panel && (
-                <div className="mt-2 space-y-2">
+                <div className="mt-1.5 space-y-1.5">
                   {panelOptions.map(renderOption)}
                 </div>
               )}
@@ -400,16 +400,16 @@ export default function ServiceContainerCard({
           )}
 
           {infoOptions.length > 0 && (
-            <div className="space-y-2 mt-3">
+            <div className="space-y-1.5 mt-2">
               {infoOptions.map(renderOption)}
             </div>
           )}
 
           {calculateContainerTotal(container) > 0 && (
-            <div className="mt-4 pt-4 border-t-2 border-gray-200">
+            <div className="mt-3 pt-3 border-t-2 border-gray-200">
               <div className="flex justify-between items-center">
-                <span className="font-semibold text-gray-800">Итого за услугу:</span>
-                <span className="text-2xl font-bold text-green-600">
+                <span className="font-semibold text-sm text-gray-800">Итого за услугу:</span>
+                <span className="text-xl font-bold text-green-600">
                   {calculateContainerTotal(container).toLocaleString('ru-RU')} ₽
                 </span>
               </div>
