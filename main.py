@@ -232,6 +232,13 @@ if Path("static").exists():
 else:
     print("⚠️ Static files НЕ монтированы (папка не найдена)")
 
+# React Build - Монтируем если есть dist/
+if Path("electric-service-automation-main/dist").exists():
+    app.mount("/assets", StaticFiles(directory="electric-service-automation-main/dist/assets"), name="assets")
+    print("✅ React assets монтированы через /assets")
+else:
+    print("⚠️ React build НЕ найден (соберите: npm run build)")
+
 # Инициализация БД при старте
 @app.on_event("startup")
 async def startup_event():
@@ -377,7 +384,18 @@ def calculate_platform_fee(amount: float) -> Dict[str, float]:
 
 @app.get("/")
 async def root():
-    """Главная страница - Вызов мастера в стиле baltset.ru"""
+    """Главная страница - React приложение"""
+    # Проверяем есть ли React build
+    react_index = Path("electric-service-automation-main/dist/index.html")
+    if react_index.exists():
+        return FileResponse(react_index)
+    
+    # Если нет build - отдаём из src/ (для dev)
+    react_dev_index = Path("electric-service-automation-main/index.html")
+    if react_dev_index.exists():
+        return FileResponse(react_dev_index)
+    
+    # Fallback - старый HTML
     from fastapi.responses import HTMLResponse
     
     html_content = """
