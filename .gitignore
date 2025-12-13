@@ -1,1 +1,7 @@
 credentials.json
+.qoder/
+ai-service-platform/
+All Do/
+.DS_Store
+venv/
+data/
