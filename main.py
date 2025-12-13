@@ -384,18 +384,13 @@ def calculate_platform_fee(amount: float) -> Dict[str, float]:
 
 @app.get("/")
 async def root():
-    """Главная страница - React приложение"""
-    # Проверяем есть ли React build
-    react_index = Path("electric-service-automation-main/dist/index.html")
-    if react_index.exists():
-        return FileResponse(react_index)
+    """Главная страница - отдаём статичный HTML из /static если есть"""
+    # Проверяем static/index.html (старая версия что работала)
+    static_index = Path("static/index.html")
+    if static_index.exists():
+        return FileResponse(static_index)
     
-    # Если нет build - отдаём из src/ (для dev)
-    react_dev_index = Path("electric-service-automation-main/index.html")
-    if react_dev_index.exists():
-        return FileResponse(react_dev_index)
-    
-    # Fallback - старый HTML
+    # Fallback - встроенный HTML
     from fastapi.responses import HTMLResponse
     
     html_content = """
