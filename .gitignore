@@ -5,3 +5,4 @@ All Do/
 .DS_Store
 venv/
 data/
+.env
