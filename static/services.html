@@ -650,7 +650,10 @@
             <p style="font-size: 1.125rem; color: var(--text-muted); margin-bottom: 1.5rem;">
                 Чем больше заказ — тем выгоднее цена! Экономьте до 25% на больших объёмах.
             </p>
-            <a href="/calculator" class="btn btn-white" style="background: var(--accent); color: white;">Рассчитать стоимость</a>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-white" onclick="window.location.href='/calculator'" style="background: var(--accent); color: white;">📊 Рассчитать стоимость</button>
+                <button class="btn btn-white" onclick="window.location.href='/catalog.html?from=services'" style="background: var(--primary); color: white;">📖 Полный каталог услуг</button>
+            </div>
         </div>
     </div>
 
