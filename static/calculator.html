@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор стоимости электромонтажа | AI Service Platform</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #4B8FE8;
+            --primary-dark: #3A7AD6;
+            --accent: #10b981;
+            --bg: #F7F9FC;
+            --card-bg: #FFFFFF;
+            --text: #2D3748;
+            --text-muted: #718096;
+            --border: #E2E8F0;
+            --shadow: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+        }
+        
+        /* Card */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+        
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .radio-option:hover {
+            border-color: var(--primary);
+            background: #F0F7FF;
+        }
+        
+        .radio-option.selected {
+            border-color: var(--primary);
+            background: #E6F2FF;
+        }
+        
+        .radio-option input[type="radio"] {
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+            cursor: pointer;
+        }
+        
+        .radio-label {
+            flex: 1;
+        }
+        
+        .radio-label strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+        
+        .radio-label small {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        /* Select */
+        select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* Counter */
+        .counter-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .counter {
+            text-align: center;
+        }
+        
+        .counter label {
+            margin-bottom: 0.75rem;
+        }
+        
+        .counter-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .counter-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            color: var(--text);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .counter-btn:hover {
+            border-color: var(--primary);
+            background: #F0F7FF;
+        }
+        
+        .counter-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            min-width: 60px;
+        }
+        
+        /* Checkbox Group */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .checkbox-option:hover {
+            border-color: var(--primary);
+            background: #F0F7FF;
+        }
+        
+        .checkbox-option.checked {
+            border-color: var(--accent);
+            background: #ECFDF5;
+        }
+        
+        .checkbox-option input[type="checkbox"] {
+            margin-right: 0.75rem;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* Result */
+        .result-section {
+            border-top: 2px solid var(--border);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-label {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .result-note {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 1rem;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .cta-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .counter-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">⚡ AI Platform</a>
+            <nav class="nav-links">
+                <a href="/calculator.html">Калькулятор</a>
+                <a href="/">Услуги</a>
+                <a href="/admin">Админ</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1>💡 Калькулятор стоимости</h1>
+            <p>Рассчитайте примерную стоимость электромонтажных работ</p>
+        </div>
+
+        <div class="card">
+            <div class="form-group">
+                <label class="card-title">Что вам нужно?</label>
+                <div class="radio-group">
+                    <div class="radio-option" onclick="selectScenario('A')">
+                        <input type="radio" name="scenario" value="A" id="scenario-a">
+                        <div class="radio-label">
+                            <strong>Провести электрику в квартире с нуля</strong>
+                            <small>Для новостроек и капитального ремонта</small>
+                        </div>
+                    </div>
+                    <div class="radio-option" onclick="selectScenario('B')">
+                        <input type="radio" name="scenario" value="B" id="scenario-b">
+                        <div class="radio-label">
+                            <strong>Установить розетки/выключатели</strong>
+                            <small>Когда проводка уже есть</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario A -->
+            <div id="scenario-a-content" class="hidden">
+                <div class="form-group">
+                    <label>Тип ремонта</label>
+                    <select id="repair-type" onchange="calculate()">
+                        <option value="">Выберите тип ремонта</option>
+                        <option value="cosmetic">Косметический (только установка)</option>
+                        <option value="major">Капитальный (проводка + установка)</option>
+                    </select>
+                </div>
+
+                <div id="major-repair-options" class="hidden">
+                    <div class="form-group">
+                        <label>Тип расчёта</label>
+                        <div class="radio-group">
+                            <div class="radio-option" onclick="selectCalcType('simple')">
+                                <input type="radio" name="calc-type" value="simple" id="calc-simple">
+                                <div class="radio-label">
+                                    <strong>Упрощённый</strong>
+                                    <small>Дешевле, но менее детальный</small>
+                                </div>
+                            </div>
+                            <div class="radio-option" onclick="selectCalcType('detailed')">
+                                <input type="radio" name="calc-type" value="detailed" id="calc-detailed">
+                                <div class="radio-label">
+                                    <strong>Детальный</strong>
+                                    <small>Точнее, но дороже</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Тип монтажа</label>
+                        <select id="install-type" onchange="calculate()">
+                            <option value="">Выберите тип монтажа</option>
+                            <option value="surface">Открытая проводка</option>
+                            <option value="concealed">Скрытая проводка</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Количество точек</label>
+                    <div class="counter-group">
+                        <div class="counter">
+                            <label>Выключатели</label>
+                            <div class="counter-controls">
+                                <button class="counter-btn" onclick="changeCount('switch', -1)">−</button>
+                                <span class="counter-value" id="switch-count">0</span>
+                                <button class="counter-btn" onclick="changeCount('switch', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="counter">
+                            <label>Розетки</label>
+                            <div class="counter-controls">
+                                <button class="counter-btn" onclick="changeCount('socket', -1)">−</button>
+                                <span class="counter-value" id="socket-count">0</span>
+                                <button class="counter-btn" onclick="changeCount('socket', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Освещение</label>
+                    <select id="lighting-type" onchange="calculate()">
+                        <option value="none">Не требуется</option>
+                        <option value="chandelier">Люстра</option>
+                        <option value="spots">Точечные светильники</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Мощная техника</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option" onclick="toggleEquipment('washer')">
+                            <input type="checkbox" id="equipment-washer">
+                            <label for="equipment-washer">Стиральная машина</label>
+                        </div>
+                        <div class="checkbox-option" onclick="toggleEquipment('dishwasher')">
+                            <input type="checkbox" id="equipment-dishwasher">
+                            <label for="equipment-dishwasher">Посудомоечная машина</label>
+                        </div>
+                        <div class="checkbox-option" onclick="toggleEquipment('oven')">
+                            <input type="checkbox" id="equipment-oven">
+                            <label for="equipment-oven">Электроплита/духовка</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario B -->
+            <div id="scenario-b-content" class="hidden">
+                <div class="form-group">
+                    <label>Количество точек</label>
+                    <div class="counter-group">
+                        <div class="counter">
+                            <label>Выключатели</label>
+                            <div class="counter-controls">
+                                <button class="counter-btn" onclick="changeCount('switch', -1)">−</button>
+                                <span class="counter-value" id="switch-count-b">0</span>
+                                <button class="counter-btn" onclick="changeCount('switch', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="counter">
+                            <label>Розетки</label>
+                            <div class="counter-controls">
+                                <button class="counter-btn" onclick="changeCount('socket', -1)">−</button>
+                                <span class="counter-value" id="socket-count-b">0</span>
+                                <button class="counter-btn" onclick="changeCount('socket', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Есть ли провода в стенах?</label>
+                    <div class="radio-group">
+                        <div class="radio-option" onclick="selectWires('yes')">
+                            <input type="radio" name="has-wires" value="yes" id="wires-yes">
+                            <div class="radio-label">
+                                <strong>Да, провода уже есть</strong>
+                            </div>
+                        </div>
+                        <div class="radio-option" onclick="selectWires('partial')">
+                            <input type="radio" name="has-wires" value="partial" id="wires-partial">
+                            <div class="radio-label">
+                                <strong>Частично есть</strong>
+                            </div>
+                        </div>
+                        <div class="radio-option" onclick="selectWires('no')">
+                            <input type="radio" name="has-wires" value="no" id="wires-no">
+                            <div class="radio-label">
+                                <strong>Нет, нужна прокладка</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result -->
+            <div id="result-section" class="result-section hidden">
+                <div class="result-row">
+                    <span class="result-label">Примерная стоимость:</span>
+                    <span class="result-value" id="total-price">0 ₽</span>
+                </div>
+                <p class="result-note">* Точная стоимость рассчитывается после осмотра объекта</p>
+                
+                <button class="cta-button" onclick="orderService()">
+                    📞 Вызвать мастера
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let state = {
+            scenario: null,
+            repairType: '',
+            calcType: '',
+            installType: '',
+            switchCount: 0,
+            socketCount: 0,
+            lightingType: 'none',
+            powerEquipment: [],
+            hasWires: ''
+        };
+
+        function selectScenario(scenario) {
+            state.scenario = scenario;
+            document.getElementById('scenario-a').checked = (scenario === 'A');
+            document.getElementById('scenario-b').checked = (scenario === 'B');
+            
+            // Update radio option styling
+            document.querySelectorAll('.radio-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // Show/hide content
+            document.getElementById('scenario-a-content').classList.toggle('hidden', scenario !== 'A');
+            document.getElementById('scenario-b-content').classList.toggle('hidden', scenario !== 'B');
+            
+            // Reset state
+            state.switchCount = 0;
+            state.socketCount = 0;
+            updateCounters();
+            calculate();
+        }
+
+        function selectCalcType(type) {
+            state.calcType = type;
+            document.getElementById('calc-simple').checked = (type === 'simple');
+            document.getElementById('calc-detailed').checked = (type === 'detailed');
+            
+            document.querySelectorAll('[name="calc-type"]').forEach(input => {
+                input.parentElement.parentElement.classList.remove('selected');
+                if (input.checked) {
+                    input.parentElement.parentElement.classList.add('selected');
+                }
+            });
+            calculate();
+        }
+
+        function selectWires(value) {
+            state.hasWires = value;
+            document.getElementById('wires-yes').checked = (value === 'yes');
+            document.getElementById('wires-partial').checked = (value === 'partial');
+            document.getElementById('wires-no').checked = (value === 'no');
+            
+            document.querySelectorAll('[name="has-wires"]').forEach(input => {
+                input.parentElement.parentElement.classList.remove('selected');
+                if (input.checked) {
+                    input.parentElement.parentElement.classList.add('selected');
+                }
+            });
+            calculate();
+        }
+
+        function changeCount(type, delta) {
+            if (type === 'switch') {
+                state.switchCount = Math.max(0, state.switchCount + delta);
+            } else {
+                state.socketCount = Math.max(0, state.socketCount + delta);
+            }
+            updateCounters();
+            calculate();
+        }
+
+        function updateCounters() {
+            document.getElementById('switch-count').textContent = state.switchCount;
+            document.getElementById('socket-count').textContent = state.socketCount;
+            document.getElementById('switch-count-b').textContent = state.switchCount;
+            document.getElementById('socket-count-b').textContent = state.socketCount;
+        }
+
+        function toggleEquipment(item) {
+            const checkbox = document.getElementById(`equipment-${item}`);
+            checkbox.checked = !checkbox.checked;
+            
+            const option = checkbox.parentElement;
+            option.classList.toggle('checked', checkbox.checked);
+            
+            if (checkbox.checked) {
+                state.powerEquipment.push(item);
+            } else {
+                state.powerEquipment = state.powerEquipment.filter(i => i !== item);
+            }
+            calculate();
+        }
+
+        // Repair type change handler
+        document.getElementById('repair-type')?.addEventListener('change', (e) => {
+            state.repairType = e.target.value;
+            const majorOptions = document.getElementById('major-repair-options');
+            majorOptions.classList.toggle('hidden', e.target.value !== 'major');
+            calculate();
+        });
+
+        // Install type change handler
+        document.getElementById('install-type')?.addEventListener('change', (e) => {
+            state.installType = e.target.value;
+            calculate();
+        });
+
+        // Lighting type change handler
+        document.getElementById('lighting-type')?.addEventListener('change', (e) => {
+            state.lightingType = e.target.value;
+            calculate();
+        });
+
+        function calculate() {
+            if (!state.scenario) {
+                document.getElementById('result-section').classList.add('hidden');
+                return;
+            }
+
+            let total = 0;
+
+            if (state.scenario === 'A') {
+                if (state.repairType === 'cosmetic') {
+                    total = state.switchCount * 400 + state.socketCount * 500;
+                    
+                    if (state.lightingType === 'chandelier') total += 800;
+                    if (state.lightingType === 'spots') total += 1200;
+                    
+                    if (state.powerEquipment.includes('washer')) total += 1500;
+                    if (state.powerEquipment.includes('dishwasher')) total += 1500;
+                    if (state.powerEquipment.includes('oven')) total += 2000;
+                    
+                } else if (state.repairType === 'major') {
+                    const basePrice = state.calcType === 'simple' ? 1200 : 1800;
+                    const totalPoints = state.switchCount + state.socketCount;
+                    total = totalPoints * basePrice;
+                    
+                    if (state.lightingType === 'spots') total += totalPoints * 200;
+                    if (state.powerEquipment.length > 0) total += state.powerEquipment.length * 1500;
+                    if (state.installType === 'concealed') total += totalPoints * 300;
+                }
+            } else if (state.scenario === 'B') {
+                total = state.switchCount * 250 + state.socketCount * 250;
+                
+                if (state.hasWires === 'yes') {
+                    total *= 0.7;
+                } else if (state.hasWires === 'partial') {
+                    total *= 0.85;
+                }
+            }
+
+            total = Math.round(total);
+            
+            if (total > 0) {
+                document.getElementById('total-price').textContent = total.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('result-section').classList.remove('hidden');
+            } else {
+                document.getElementById('result-section').classList.add('hidden');
+            }
+        }
+
+        function orderService() {
+            // Redirect to order page with calculated price
+            const price = document.getElementById('total-price').textContent;
+            window.location.href = `/?estimated_price=${encodeURIComponent(price)}`;
+        }
+    </script>
+</body>
+</html>
