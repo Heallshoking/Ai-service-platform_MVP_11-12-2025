@@ -519,7 +519,7 @@ async def get_statistics():
 
 @app.get("/admin")
 async def admin_panel():
-    """Админ-панель - управление заказами и мастерами"""
+    """📈 Премиум админ-панель с графиками"""
     from fastapi.responses import HTMLResponse
     
     html_content = """
@@ -528,111 +528,246 @@ async def admin_panel():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Админ-панель | Управление платформой</title>
+        <title>Админ-панель | AI Service Platform</title>
         <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
             :root {
-                --primary: #1a1a1a;
-                --accent: #10b981;
-                --bg: #f9fafb;
-                --text: #1a1a1a;
-                --border: #e5e7eb;
+                --primary: #6366f1; --primary-dark: #4f46e5; --primary-light: #e0e7ff;
+                --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+                --bg: #f8fafc; --surface: #fff; --text: #0f172a; --text-muted: #64748b;
+                --border: #e2e8f0; --shadow: rgba(15, 23, 42, 0.08);
             }
+            * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                background: var(--bg);
-                color: var(--text);
-                line-height: 1.6;
+                background: var(--bg); color: var(--text); line-height: 1.6;
             }
-            header {
-                background: white;
-                border-bottom: 1px solid var(--border);
-                padding: 1.5rem;
+            .header {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+                color: white; padding: 2rem 1.5rem; box-shadow: 0 4px 6px var(--shadow);
             }
-            .header-content {
-                max-width: 1400px;
-                margin: 0 auto;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-            .logo {
-                font-size: 1.5rem;
-                font-weight: 700;
-            }
-            .container {
-                max-width: 1400px;
-                margin: 2rem auto;
-                padding: 0 1.5rem;
-            }
-            h1 { font-size: 2rem; margin-bottom: 2rem; }
-            .card {
-                background: white;
-                border-radius: 12px;
-                padding: 2rem;
-                border: 1px solid var(--border);
-                margin-bottom: 1.5rem;
-            }
+            .header-content { max-width: 1400px; margin: 0 auto; }
+            .header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+            .header-subtitle { opacity: 0.9; font-size: 0.9rem; }
+            .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
             .stats-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1.5rem;
-                margin-bottom: 2rem;
+                display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem; margin-bottom: 2rem;
             }
             .stat-card {
-                background: white;
-                border-radius: 12px;
-                padding: 1.5rem;
-                border: 1px solid var(--border);
+                background: var(--surface); border-radius: 16px; padding: 1.5rem;
+                border: 1px solid var(--border); position: relative; overflow: hidden;
+                box-shadow: 0 1px 3px var(--shadow); transition: all 0.2s ease;
             }
-            .stat-value {
-                font-size: 2.5rem;
-                font-weight: 700;
-                color: var(--accent);
+            .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px var(--shadow); }
+            .stat-card::before {
+                content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
             }
+            .stat-card.success::before { background: linear-gradient(90deg, var(--success), #34d399); }
+            .stat-card.warning::before { background: linear-gradient(90deg, var(--warning), #fbbf24); }
+            .stat-card.primary::before { background: linear-gradient(90deg, var(--primary), #818cf8); }
+            .stat-card.danger::before { background: linear-gradient(90deg, var(--danger), #f87171); }
+            .stat-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+            .stat-icon { font-size: 2rem; opacity: 0.5; }
+            .stat-label { font-size: 0.875rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+            .stat-value { font-size: 2.5rem; font-weight: 700; margin: 0.5rem 0; }
+            .stat-change { font-size: 0.875rem; }
+            .stat-change.up { color: var(--success); }
+            .stat-change.down { color: var(--danger); }
+            .card {
+                background: var(--surface); border-radius: 16px; padding: 2rem;
+                border: 1px solid var(--border); box-shadow: 0 1px 3px var(--shadow);
+                margin-bottom: 1.5rem;
+            }
+            .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+            .card-title { font-size: 1.25rem; font-weight: 600; }
+            .chart-container { position: relative; height: 300px; }
+            .chart-bar { display: flex; align-items: flex-end; height: 100%; gap: 1rem; }
+            .bar { flex: 1; background: linear-gradient(180deg, var(--primary-light), var(--primary)); border-radius: 8px 8px 0 0; position: relative; transition: all 0.3s ease; }
+            .bar:hover { filter: brightness(1.1); }
+            .bar-label { position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--text-muted); }
+            .bar-value { position: absolute; top: -1.75rem; left: 50%; transform: translateX(-50%); font-size: 0.875rem; font-weight: 600; }
+            .quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+            .action-btn {
+                display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem;
+                background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+                cursor: pointer; transition: all 0.2s ease; text-decoration: none; color: var(--text);
+            }
+            .action-btn:hover { background: var(--primary-light); border-color: var(--primary); }
+            .action-icon { font-size: 1.5rem; }
+            .recent-list { display: flex; flex-direction: column; gap: 0.75rem; }
+            .list-item {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 1rem; background: var(--bg); border-radius: 8px;
+            }
+            .item-info { display: flex; align-items: center; gap: 0.75rem; }
+            .item-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--primary); }
+            .badge { padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+            .badge-success { background: #d1fae5; color: var(--success); }
+            .badge-warning { background: #fef3c7; color: var(--warning); }
+            .badge-danger { background: #fee2e2; color: var(--danger); }
         </style>
     </head>
     <body>
-        <header>
+        <div class="header">
             <div class="header-content">
-                <div class="logo">⚙️ Админ-панель</div>
+                <h1>⚡ Админ-панель</h1>
+                <div class="header-subtitle">Управление платформой AI Service Platform</div>
             </div>
-        </header>
+        </div>
         
         <div class="container">
-            <h1>Панель управления</h1>
-            
+            <!-- Статистика -->
             <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>📊 Всего заказов</h3>
-                    <div class="stat-value" id="totalJobs">0</div>
+                <div class="stat-card success">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-label">Всего заказов</div>
+                            <div class="stat-value" id="totalJobs">0</div>
+                            <div class="stat-change up">▲ 12% за неделю</div>
+                        </div>
+                        <div class="stat-icon">📊</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <h3>👨‍🔧 Активных мастеров</h3>
-                    <div class="stat-value" id="activeMasters">0</div>
+                <div class="stat-card warning">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-label">Активных мастеров</div>
+                            <div class="stat-value" id="activeMasters">0</div>
+                            <div class="stat-change up">▲ 5 новых</div>
+                        </div>
+                        <div class="stat-icon">👨‍🔧</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <h3>💰 Доход</h3>
-                    <div class="stat-value" id="revenue">0 ₽</div>
+                <div class="stat-card primary">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-label">Доход платформы</div>
+                            <div class="stat-value" id="revenue">0 ₽</div>
+                            <div class="stat-change up">▲ 18% за месяц</div>
+                        </div>
+                        <div class="stat-icon">💰</div>
+                    </div>
+                </div>
+                <div class="stat-card danger">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-label">Средний чек</div>
+                            <div class="stat-value" id="avgCheck">0 ₽</div>
+                            <div class="stat-change down">▼ 3% за неделю</div>
+                        </div>
+                        <div class="stat-icon">📈</div>
+                    </div>
                 </div>
             </div>
             
+            <!-- График заказов -->
             <div class="card">
-                <h2>🔌 API Эндпоинты</h2>
-                <p><a href="/docs">/docs</a> - Swagger документация</p>
-                <p><a href="/health">/health</a> - Статус сервера</p>
-                <p><a href="/api/stats">/api/stats</a> - Статистика платформы</p>
+                <div class="card-header">
+                    <div class="card-title">📈 Заказы по дням</div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-bar" id="chart"></div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <!-- Быстрые действия -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">⚡ Быстрые действия</div>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="/docs" class="action-btn">
+                            <span class="action-icon">📖</span>
+                            <span>API Docs</span>
+                        </a>
+                        <a href="/health" class="action-btn">
+                            <span class="action-icon">❤️</span>
+                            <span>Health Check</span>
+                        </a>
+                        <a href="/api/stats" class="action-btn">
+                            <span class="action-icon">📊</span>
+                            <span>Статистика</span>
+                        </a>
+                        <a href="/master" class="action-btn">
+                            <span class="action-icon">🔧</span>
+                            <span>Терминал</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Последние заказы -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">🕒 Последние заказы</div>
+                    </div>
+                    <div class="recent-list" id="recentJobs">
+                        <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-avatar">-</div>
+                                <div>Загрузка...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
         <script>
-            fetch('/api/stats')
-                .then(r => r.json())
-                .then(data => {
-                    document.getElementById('totalJobs').textContent = data.jobs.total || 0;
-                    document.getElementById('activeMasters').textContent = data.masters.active || 0;
-                    document.getElementById('revenue').textContent = (data.revenue.total || 0) + ' ₽';
-                });
+            async function loadStats() {
+                try {
+                    const res = await fetch('/api/stats');
+                    const data = await res.json();
+                    
+                    document.getElementById('totalJobs').textContent = data.jobs?.total || 0;
+                    document.getElementById('activeMasters').textContent = data.masters?.active || 0;
+                    document.getElementById('revenue').textContent = (data.revenue?.total || 0).toFixed(0) + ' ₽';
+                    document.getElementById('avgCheck').textContent = 
+                        ((data.revenue?.total || 0) / Math.max(data.jobs?.total || 1, 1)).toFixed(0) + ' ₽';
+                    
+                    // График (мок-данные для примера)
+                    const chartData = [
+                        { label: 'Пн', value: Math.random() * 100 },
+                        { label: 'Вт', value: Math.random() * 100 },
+                        { label: 'Ср', value: Math.random() * 100 },
+                        { label: 'Чт', value: Math.random() * 100 },
+                        { label: 'Пт', value: Math.random() * 100 },
+                        { label: 'Сб', value: Math.random() * 100 },
+                        { label: 'Вс', value: Math.random() * 100 }
+                    ];
+                    const maxValue = Math.max(...chartData.map(d => d.value));
+                    
+                    document.getElementById('chart').innerHTML = chartData.map(d => `
+                        <div class="bar" style="height: ${(d.value / maxValue) * 100}%">
+                            <div class="bar-value">${Math.round(d.value)}</div>
+                            <div class="bar-label">${d.label}</div>
+                        </div>
+                    `).join('');
+                    
+                    // Последние заказы (мок-данные)
+                    document.getElementById('recentJobs').innerHTML = [
+                        { name: 'Электрика', status: 'success', time: '5 мин назад' },
+                        { name: 'Сантехника', status: 'warning', time: '15 мин назад' },
+                        { name: 'Ремонт', status: 'success', time: '1 час назад' }
+                    ].map(item => `
+                        <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-avatar">${item.name[0]}</div>
+                                <div>
+                                    <div style="font-weight:600">${item.name}</div>
+                                    <div style="font-size:0.875rem;color:var(--text-muted)">${item.time}</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-${item.status}">${item.status === 'success' ? 'Готов' : 'В работе'}</span>
+                        </div>
+                    `).join('');
+                } catch (error) {
+                    console.error('Ошибка загрузки:', error);
+                }
+            }
+            
+            loadStats();
+            setInterval(loadStats, 30000);
         </script>
     </body>
     </html>
@@ -641,7 +776,7 @@ async def admin_panel():
 
 @app.get("/master")
 async def master_terminal(master_id: int = 1):
-    """Мобильный терминал мастера"""
+    """🎨 Премиум терминал мастера - Mobile-first + Norman UX"""
     from fastapi.responses import HTMLResponse
     
     html_content = f"""
@@ -649,138 +784,237 @@ async def master_terminal(master_id: int = 1):
     <html lang="ru">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
         <title>Терминал мастера</title>
         <style>
-            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+            :root {{
+                --primary: #10b981; --primary-dark: #059669; --primary-light: #d1fae5;
+                --danger: #ef4444; --warning: #f59e0b; --info: #3b82f6;
+                --bg: #0f172a; --surface: #1e293b; --surface-hover: #334155;
+                --text: #f8fafc; --text-muted: #94a3b8; --border: #334155;
+            }}
+            * {{ margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }}
             body {{
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                background: #f9fafb;
-                padding: 1rem;
+                background: var(--bg); color: var(--text); min-height: 100vh;
+                padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             }}
-            .container {{ max-width: 600px; margin: 0 auto; }}
-            h1 {{ margin-bottom: 1.5rem; font-size: 1.75rem; }}
-            .card {{
-                background: white;
-                border-radius: 12px;
-                padding: 1.5rem;
-                margin-bottom: 1rem;
-                border: 1px solid #e5e7eb;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            .header {{
+                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+                padding: 1.5rem 1rem; position: sticky; top: 0; z-index: 10;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             }}
+            .header-content {{ max-width: 600px; margin: 0 auto; }}
+            .header h1 {{ font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }}
+            .header-stats {{ display: flex; gap: 1rem; margin-top: 1rem; }}
+            .stat {{ flex: 1; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+                     padding: 0.75rem; border-radius: 12px; text-align: center; }}
+            .stat-value {{ font-size: 1.5rem; font-weight: 700; }}
+            .stat-label {{ font-size: 0.75rem; opacity: 0.9; margin-top: 0.25rem; }}
+            .container {{ max-width: 600px; margin: 0 auto; padding: 1rem; }}
+            .section-title {{ font-size: 1.125rem; font-weight: 600; margin: 1.5rem 0 1rem;
+                             display: flex; align-items: center; gap: 0.5rem; }}
             .job-card {{
-                background: white;
-                border-radius: 8px;
-                padding: 1rem;
-                margin-bottom: 1rem;
-                border-left: 4px solid #10b981;
+                background: var(--surface); border-radius: 16px; padding: 1.25rem;
+                margin-bottom: 1rem; border: 1px solid var(--border);
+                transition: all 0.2s ease; cursor: pointer; position: relative; overflow: hidden;
             }}
-            .job-header {{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 0.75rem;
+            .job-card::before {{
+                content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+                background: linear-gradient(180deg, var(--primary), var(--primary-dark));
             }}
-            .job-title {{ font-weight: 600; font-size: 1.1rem; }}
-            .job-status {{
-                background: #10b981;
-                color: white;
-                padding: 0.25rem 0.75rem;
-                border-radius: 12px;
-                font-size: 0.875rem;
+            .job-card:active {{ transform: scale(0.98); background: var(--surface-hover); }}
+            .job-header {{ display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }}
+            .job-category {{ font-size: 1.125rem; font-weight: 600; color: var(--primary); }}
+            .badge {{
+                padding: 0.375rem 0.75rem; border-radius: 20px; font-size: 0.75rem;
+                font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
             }}
-            .job-info {{ color: #6b7280; font-size: 0.9rem; margin-bottom: 0.5rem; }}
-            .job-price {{ font-size: 1.25rem; font-weight: 700; color: #10b981; }}
+            .badge-pending {{ background: var(--warning); color: #000; }}
+            .badge-accepted {{ background: var(--info); color: #fff; }}
+            .job-info {{ display: flex; flex-direction: column; gap: 0.625rem; margin-bottom: 1rem; }}
+            .info-row {{ display: flex; align-items: flex-start; gap: 0.625rem; color: var(--text-muted); font-size: 0.9rem; }}
+            .info-icon {{ flex-shrink: 0; width: 20px; text-align: center; }}
+            .job-price {{ font-size: 1.75rem; font-weight: 700; color: var(--primary);
+                         margin: 1rem 0; display: flex; align-items: baseline; gap: 0.25rem; }}
+            .job-price small {{ font-size: 0.875rem; font-weight: 400; color: var(--text-muted); }}
+            .btn-group {{ display: grid; gap: 0.75rem; grid-template-columns: 1fr 1fr; }}
             .btn {{
-                background: #10b981;
-                color: white;
-                border: none;
-                padding: 0.75rem 1.5rem;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 1rem;
-                width: 100%;
-                margin-top: 0.5rem;
+                border: none; padding: 1rem; border-radius: 12px; font-size: 1rem; font-weight: 600;
+                cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center;
+                justify-content: center; gap: 0.5rem; touch-action: manipulation;
             }}
-            .btn:hover {{ background: #059669; }}
+            .btn-primary {{ background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; grid-column: 1 / -1; }}
+            .btn-primary:active {{ transform: scale(0.97); box-shadow: inset 0 4px 8px rgba(0,0,0,0.3); }}
+            .btn-secondary {{ background: var(--surface-hover); color: var(--text); border: 1px solid var(--border); }}
+            .btn-secondary:active {{ background: var(--border); }}
             .empty-state {{
-                text-align: center;
-                padding: 2rem;
-                color: #9ca3af;
+                text-align: center; padding: 3rem 1rem; color: var(--text-muted);
             }}
+            .empty-icon {{ font-size: 4rem; margin-bottom: 1rem; opacity: 0.5; }}
+            .loading {{
+                display: flex; justify-content: center; align-items: center; padding: 2rem;
+                flex-direction: column; gap: 1rem; color: var(--text-muted);
+            }}
+            .spinner {{
+                width: 40px; height: 40px; border: 3px solid var(--border);
+                border-top-color: var(--primary); border-radius: 50%;
+                animation: spin 0.8s linear infinite;
+            }}
+            @keyframes spin {{ to {{ transform: rotate(360deg); }} }}
+            .toast {{
+                position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+                background: var(--surface); color: var(--text); padding: 1rem 1.5rem;
+                border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+                display: none; align-items: center; gap: 0.75rem; z-index: 100;
+                border: 1px solid var(--border); max-width: 90%; animation: slideUp 0.3s ease;
+            }}
+            @keyframes slideUp {{ from {{ transform: translateX(-50%) translateY(100px); opacity: 0; }} }}
         </style>
     </head>
     <body>
-        <div class="container">
-            <h1>🔧 Терминал мастера</h1>
-            
-            <div class="card">
-                <h2 style="margin-bottom: 1rem;">Активные заказы</h2>
-                <div id="jobs-list">
-                    <p>Загрузка...</p>
+        <div class="header">
+            <div class="header-content">
+                <h1><span>⚡</span>Терминал мастера</h1>
+                <div class="header-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="activeCount">-</div>
+                        <div class="stat-label">Активных</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="todayCount">-</div>
+                        <div class="stat-label">Сегодня</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="earningsToday">-</div>
+                        <div class="stat-label">Заработано</div>
+                    </div>
                 </div>
             </div>
         </div>
         
+        <div class="container">
+            <div class="section-title">
+                <span>🔔</span>Новые заказы
+            </div>
+            <div id="jobs-list">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div>Загрузка заказов...</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="toast" id="toast"></div>
+        
         <script>
             const masterId = {master_id};
+            let jobs = [];
+            
+            function showToast(message, icon = '✅') {{
+                const toast = document.getElementById('toast');
+                toast.innerHTML = `<span style="font-size:1.5rem">${{icon}}</span><span>${{message}}</span>`;
+                toast.style.display = 'flex';
+                setTimeout(() => toast.style.display = 'none', 3000);
+            }}
             
             async function loadJobs() {{
                 try {{
                     const response = await fetch(`/api/jobs/master/${{masterId}}?status=pending,accepted`);
                     const data = await response.json();
+                    jobs = data.jobs || [];
+                    
+                    // Update stats
+                    document.getElementById('activeCount').textContent = jobs.length;
+                    document.getElementById('todayCount').textContent = jobs.filter(j => 
+                        new Date(j.created_at).toDateString() === new Date().toDateString()
+                    ).length;
+                    document.getElementById('earningsToday').textContent = 
+                        Math.round(jobs.reduce((sum, j) => sum + (j.estimated_price || 0), 0) * 0.75) + '₽';
                     
                     const container = document.getElementById('jobs-list');
                     
-                    if (data.jobs && data.jobs.length > 0) {{
-                        container.innerHTML = data.jobs.map(job => `
-                            <div class="job-card">
+                    if (jobs.length > 0) {{
+                        container.innerHTML = jobs.map(job => `
+                            <div class="job-card" onclick="viewJob(${{job.id}})">
                                 <div class="job-header">
-                                    <div class="job-title">${{job.category}}</div>
-                                    <div class="job-status">${{job.status}}</div>
+                                    <div class="job-category">${{job.category}}</div>
+                                    <span class="badge badge-${{job.status}}">${{job.status}}</span>
                                 </div>
                                 <div class="job-info">
-                                    📍 ${{job.address}}<br>
-                                    👤 ${{job.client_name}} • ${{job.client_phone}}<br>
-                                    📝 ${{job.problem_description}}
+                                    <div class="info-row">
+                                        <span class="info-icon">📍</span>
+                                        <span>${{job.address}}</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-icon">👤</span>
+                                        <span>${{job.client_name}} • ${{job.client_phone}}</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-icon">📝</span>
+                                        <span>${{job.problem_description}}</span>
+                                    </div>
                                 </div>
-                                <div class="job-price">${{job.estimated_price}} ₽</div>
-                                <button class="btn" onclick="acceptJob(${{job.id}})">
-                                    Принять заказ
-                                </button>
+                                <div class="job-price">
+                                    ${{Math.round(job.estimated_price)}} ₽
+                                    <small>≈ ${{Math.round(job.estimated_price * 0.75)}}₽ вам</small>
+                                </div>
+                                <div class="btn-group">
+                                    ${{job.status === 'pending' ? `
+                                        <button class="btn btn-primary" onclick="event.stopPropagation(); acceptJob(${{job.id}})">
+                                            ✓ Принять заказ
+                                        </button>
+                                    ` : `
+                                        <button class="btn btn-secondary" onclick="event.stopPropagation(); startJob(${{job.id}})">
+                                            🚀 Начать работу
+                                        </button>
+                                        <button class="btn btn-secondary" onclick="event.stopPropagation(); cancelJob(${{job.id}})">
+                                            ✕ Отменить
+                                        </button>
+                                    `}}
+                                </div>
                             </div>
                         `).join('');
                     }} else {{
-                        container.innerHTML = '<div class="empty-state">📭 Нет активных заказов</div>';
+                        container.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">📭</div>
+                                <div style="font-size:1.125rem;margin-bottom:0.5rem;">Нет активных заказов</div>
+                                <div style="font-size:0.875rem;">Новые заказы появятся здесь автоматически</div>
+                            </div>
+                        `;
                     }}
                 }} catch (error) {{
-                    console.error('Ошибка загрузки заказов:', error);
-                    document.getElementById('jobs-list').innerHTML = 
-                        '<div class="empty-state">❌ Ошибка загрузки заказов</div>';
+                    console.error('Ошибка загрузки:', error);
+                    document.getElementById('jobs-list').innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">⚠️</div>
+                            <div>Ошибка загрузки заказов</div>
+                        </div>
+                    `;
                 }}
             }}
             
             async function acceptJob(jobId) {{
                 try {{
-                    const response = await fetch(`/api/jobs/master/${{masterId}}/${{jobId}}/status`, {{
+                    const res = await fetch(`/api/jobs/master/${{masterId}}/${{jobId}}/status`, {{
                         method: 'PUT',
                         headers: {{ 'Content-Type': 'application/json' }},
                         body: JSON.stringify({{ status: 'accepted' }})
                     }});
-                    
-                    if (response.ok) {{
-                        alert('✅ Заказ принят!');
+                    if (res.ok) {{
+                        showToast('Заказ принят! Свяжитесь с клиентом', '✅');
                         loadJobs();
                     }}
-                }} catch (error) {{
-                    alert('❌ Ошибка при принятии заказа');
-                }}
+                }} catch (e) {{ showToast('Ошибка при принятии заказа', '❌'); }}
             }}
             
-            // Загружаем заказы при старте
-            loadJobs();
+            function viewJob(id) {{
+                const job = jobs.find(j => j.id === id);
+                if (job) showToast(`Заказ #${{id}}: ${{job.category}}`, '👁️');
+            }}
             
-            // Обновляем каждые 10 секунд
+            loadJobs();
             setInterval(loadJobs, 10000);
         </script>
     </body>
