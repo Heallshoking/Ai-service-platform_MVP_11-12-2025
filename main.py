@@ -515,6 +515,247 @@ async def get_statistics():
         }
     }
 
+# ==================== HTML ИНТЕРФЕЙСЫ ====================
+
+@app.get("/admin")
+async def admin_panel():
+    """Админ-панель - управление заказами и мастерами"""
+    from fastapi.responses import HTMLResponse
+    
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Админ-панель | Управление платформой</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            :root {
+                --primary: #1a1a1a;
+                --accent: #10b981;
+                --bg: #f9fafb;
+                --text: #1a1a1a;
+                --border: #e5e7eb;
+            }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: var(--bg);
+                color: var(--text);
+                line-height: 1.6;
+            }
+            header {
+                background: white;
+                border-bottom: 1px solid var(--border);
+                padding: 1.5rem;
+            }
+            .header-content {
+                max-width: 1400px;
+                margin: 0 auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .logo {
+                font-size: 1.5rem;
+                font-weight: 700;
+            }
+            .container {
+                max-width: 1400px;
+                margin: 2rem auto;
+                padding: 0 1.5rem;
+            }
+            h1 { font-size: 2rem; margin-bottom: 2rem; }
+            .card {
+                background: white;
+                border-radius: 12px;
+                padding: 2rem;
+                border: 1px solid var(--border);
+                margin-bottom: 1.5rem;
+            }
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            .stat-card {
+                background: white;
+                border-radius: 12px;
+                padding: 1.5rem;
+                border: 1px solid var(--border);
+            }
+            .stat-value {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: var(--accent);
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="header-content">
+                <div class="logo">⚙️ Админ-панель</div>
+            </div>
+        </header>
+        
+        <div class="container">
+            <h1>Панель управления</h1>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>📊 Всего заказов</h3>
+                    <div class="stat-value" id="totalJobs">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>👨‍🔧 Активных мастеров</h3>
+                    <div class="stat-value" id="activeMasters">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>💰 Доход</h3>
+                    <div class="stat-value" id="revenue">0 ₽</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🔌 API Эндпоинты</h2>
+                <p><a href="/docs">/docs</a> - Swagger документация</p>
+                <p><a href="/health">/health</a> - Статус сервера</p>
+                <p><a href="/api/stats">/api/stats</a> - Статистика платформы</p>
+            </div>
+        </div>
+        
+        <script>
+            fetch('/api/stats')
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('totalJobs').textContent = data.jobs.total || 0;
+                    document.getElementById('activeMasters').textContent = data.masters.active || 0;
+                    document.getElementById('revenue').textContent = (data.revenue.total || 0) + ' ₽';
+                });
+        </script>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
+
+@app.get("/master")
+async def master_terminal():
+    """Мобильный терминал мастера"""
+    from fastapi.responses import HTMLResponse
+    
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Терминал мастера</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: #f9fafb;
+                padding: 1rem;
+            }
+            .container { max-width: 600px; margin: 0 auto; }
+            h1 { margin-bottom: 1rem; }
+            .card {
+                background: white;
+                border-radius: 12px;
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+                border: 1px solid #e5e7eb;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🔧 Терминал мастера</h1>
+            <div class="card">
+                <h2>Активные заказы</h2>
+                <p>Загрузка...</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
+
+@app.get("/ai-chat")
+async def ai_chat():
+    """AI-чат с клиентом"""
+    from fastapi.responses import HTMLResponse
+    
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AI Чат</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: #f9fafb;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            .chat-container {
+                flex: 1;
+                max-width: 800px;
+                margin: 0 auto;
+                width: 100%;
+                padding: 1rem;
+            }
+            h1 { margin-bottom: 1rem; }
+        </style>
+    </head>
+    <body>
+        <div class="chat-container">
+            <h1>💬 AI Помощник</h1>
+            <p>Чат с AI для обработки заказов</p>
+        </div>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
+
+@app.get("/track")
+async def track_order():
+    """Отслеживание заказа"""
+    from fastapi.responses import HTMLResponse
+    
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Отслеживание заказа</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: #f9fafb;
+                padding: 2rem;
+            }
+            .container { max-width: 800px; margin: 0 auto; }
+            h1 { margin-bottom: 1.5rem; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>📍 Отслеживание заказа</h1>
+            <p>Введите номер заказа для отслеживания</p>
+        </div>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
+
 # ==================== ЗАПУСК ====================
 
 if __name__ == "__main__":
