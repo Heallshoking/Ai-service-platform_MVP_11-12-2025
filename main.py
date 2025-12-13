@@ -777,6 +777,9 @@ async def root():
                     <button class="btn btn-primary" onclick="scrollToServices()">
                         🔧 Выбрать услугу
                     </button>
+                    <a href="/calculator" class="btn btn-outline" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none;">
+                        💡 Калькулятор стоимости
+                    </a>
                     <a href="/master" class="btn btn-outline">
                         👨‍🔧 Для мастеров
                     </a>
