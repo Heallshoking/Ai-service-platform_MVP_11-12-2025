@@ -6,7 +6,7 @@
     <title>Услуги электрика в Калининграде - Каталог электромонтажных работ | БАЛТСЕТЬ</title>
     <meta name="description" content="Полный каталог услуг электрика в Калининграде: установка розеток, замена проводки, штробление стен, монтаж электропроводки. Цены, сроки, гарантия.">
     <meta name="keywords" content="электрик калининград, услуги электрика, электромонтажные работы, установка розеток, замена проводки, штробление">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#FF3B30">
     
     <style>
         * {
@@ -16,559 +16,610 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 15s ease infinite;
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.5;
         }
         
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        /* Бургер-меню */
+        /* Хедер */
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 15px 20px;
+            background: #fff;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
+        .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
         }
         
         .logo {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
         }
         
-        .burger-menu {
-            width: 30px;
-            height: 24px;
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #f5f5f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+        
+        .icon-btn:active {
+            transform: scale(0.95);
+            background: #e8e8e8;
+        }
+        
+        /* Табы категорий */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tab {
+            flex-shrink: 0;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: #f5f5f7;
+            color: #666;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: #FF3B30;
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
+        }
+        
+        /* Контейнер */
+        .container {
+            padding: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Карточки товаров */
+        .product-grid {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            gap: 16px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
             position: relative;
+        }
+        
+        .product-card:active {
+            transform: scale(0.98);
+        }
+        
+        .product-image {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            position: relative;
+        }
+        
+        .badge {
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            background: #FF9500;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(255, 149, 0, 0.4);
+        }
+        
+        .badge.new {
+            background: #FF3B30;
+        }
+        
+        .badge.hit {
+            background: #34C759;
+        }
+        
+        .product-info {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
         
-        .burger-line {
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 3px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 4px;
         }
         
-        .burger-menu.active .burger-line:nth-child(1) {
-            transform: rotate(45deg) translateY(10px);
-        }
-        
-        .burger-menu.active .burger-line:nth-child(2) {
-            opacity: 0;
-        }
-        
-        .burger-menu.active .burger-line:nth-child(3) {
-            transform: rotate(-45deg) translateY(-10px);
-        }
-        
-        /* Выдвижное меню */
-        .side-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 320px;
-            height: 100vh;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            box-shadow: -5px 0 25px rgba(0,0,0,0.2);
-            transition: right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 999;
-            overflow-y: auto;
-            padding: 80px 0 30px;
-        }
-        
-        .side-menu.active {
-            right: 0;
-        }
-        
-        .menu-section {
-            margin-bottom: 30px;
-            padding: 0 25px;
-        }
-        
-        .menu-section-title {
+        .product-meta {
             font-size: 13px;
-            font-weight: 700;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+            color: #86868b;
+            margin-bottom: 6px;
         }
         
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 18px;
-            color: #333;
-            text-decoration: none;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            transition: all 0.3s;
-            font-size: 15px;
-        }
-        
-        .menu-item:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            transform: translateX(-5px);
-        }
-        
-        .menu-icon {
-            font-size: 22px;
-        }
-        
-        /* Контент */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        .page-header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            text-align: center;
-        }
-        
-        h1 {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 15px;
-        }
-        
-        .page-description {
+        .product-description {
+            font-size: 13px;
             color: #666;
-            font-size: 18px;
-            max-width: 700px;
-            margin: 0 auto;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
-        /* Категории услуг */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .service-category {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        .service-category:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
-        }
-        
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .category-icon {
-            font-size: 42px;
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .category-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #333;
-        }
-        
-        .service-list {
-            list-style: none;
-        }
-        
-        .service-item {
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
+        .product-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        .service-item:last-child {
-            border-bottom: none;
-        }
-        
-        .service-name {
-            color: #333;
-            font-size: 15px;
-        }
-        
-        .service-price {
-            color: #667eea;
+        .product-price {
+            font-size: 18px;
             font-weight: 700;
-            font-size: 16px;
+            color: #1d1d1f;
         }
         
-        .service-button {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+        .product-price small {
+            font-size: 13px;
+            color: #86868b;
+            font-weight: 400;
+        }
+        
+        .add-btn {
+            padding: 8px 20px;
+            background: #667eea;
             color: white;
-            text-decoration: none;
-            border-radius: 10px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .add-btn:active {
+            transform: scale(0.95);
+            background: #5568d3;
+        }
+        
+        /* Плавающая кнопка наверх */
+        .scroll-top {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #FF3B30;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(255, 59, 48, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s;
-            text-align: center;
+            z-index: 999;
         }
         
-        .service-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        .scroll-top.visible {
+            display: flex;
         }
         
-        @media (max-width: 768px) {
-            .services-grid {
-                grid-template-columns: 1fr;
+        .scroll-top:active {
+            transform: scale(0.9);
+        }
+        
+        /* Адаптив */
+        @media (min-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .product-card {
+                flex-direction: column;
             }
             
-            .side-menu {
+            .product-image {
                 width: 100%;
-                right: -100%;
-            }
-            
-            h1 {
-                font-size: 28px;
+                height: 200px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Шапка с бургер-меню -->
+    <!-- Хедер с логотипом и кнопками -->
     <header class="header">
-        <div class="header-content">
-            <div class="logo">⚡ БАЛТСЕТЬ</div>
-            <div class="burger-menu" onclick="toggleMenu()">
-                <div class="burger-line"></div>
-                <div class="burger-line"></div>
-                <div class="burger-line"></div>
+        <div class="header-top">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span>БАЛТСЕТЬ</span>
             </div>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="window.location.href='/'">🏠</button>
+                <button class="icon-btn" id="filterBtn">⚙️</button>
+            </div>
+        </div>
+        
+        <!-- Табы основных категорий -->
+        <div class="category-tabs">
+            <button class="tab active" data-category="all" onclick="setCategory('all')">Все услуги</button>
+            <button class="tab" data-category="electrical" onclick="setCategory('electrical')">⚡ Электромонтаж</button>
+            <button class="tab" data-category="sockets" onclick="setCategory('sockets')">🔌 Розетки</button>
+            <button class="tab" data-category="drilling" onclick="setCategory('drilling')">🔨 Штробление</button>
+            <button class="tab" data-category="lighting" onclick="setCategory('lighting')">💡 Освещение</button>
+            <button class="tab" data-category="repair" onclick="setCategory('repair')">🔧 Ремонт</button>
+            <button class="tab" data-category="appliances" onclick="setCategory('appliances')">🔥 Техника</button>
         </div>
     </header>
     
-    <!-- Выдвижное меню -->
-    <nav class="side-menu" id="sideMenu">
-        <div class="menu-section">
-            <div class="menu-section-title">Навигация</div>
-            <a href="/" class="menu-item">
-                <span class="menu-icon">🏠</span>
-                <span>Главная</span>
-            </a>
-            <a href="/catalog.html" class="menu-item">
-                <span class="menu-icon">📖</span>
-                <span>Каталог услуг</span>
-            </a>
-            <a href="/calculator.html" class="menu-item">
-                <span class="menu-icon">📊</span>
-                <span>Калькулятор</span>
-            </a>
-        </div>
-        
-        <div class="menu-section">
-            <div class="menu-section-title">Услуги</div>
-            <a href="#electrical" class="menu-item">
-                <span class="menu-icon">⚡</span>
-                <span>Электромонтаж</span>
-            </a>
-            <a href="#outlets" class="menu-item">
-                <span class="menu-icon">🔌</span>
-                <span>Розетки и выключатели</span>
-            </a>
-            <a href="#wiring" class="menu-item">
-                <span class="menu-icon">🔧</span>
-                <span>Проводка</span>
-            </a>
-            <a href="#drilling" class="menu-item">
-                <span class="menu-icon">🛠️</span>
-                <span>Сверление и штробление</span>
-            </a>
-        </div>
-        
-        <div class="menu-section">
-            <div class="menu-section-title">Контакты</div>
-            <a href="tel:+79001234567" class="menu-item">
-                <span class="menu-icon">📞</span>
-                <span>Позвонить</span>
-            </a>
-            <a href="https://t.me/ai_service_client_bot" target="_blank" class="menu-item">
-                <span class="menu-icon">💬</span>
-                <span>Telegram бот</span>
-            </a>
-        </div>
-    </nav>
-    
-    <!-- Основной контент -->
+    <!-- Контент с карточками услуг -->
     <div class="container">
-        <div class="page-header">
-            <h1>⚡ Услуги электрика в Калининграде</h1>
-            <p class="page-description">
-                Профессиональные электромонтажные работы любой сложности. 
-                Гарантия качества, прозрачные цены, выезд мастера в день обращения.
-            </p>
-        </div>
-        
-        <!-- Каталог услуг -->
-        <div class="services-grid">
-            <!-- Электромонтажные работы -->
-            <div class="service-category" id="electrical">
-                <div class="category-header">
-                    <div class="category-icon">⚡</div>
-                    <div>
-                        <div class="category-title">Электромонтаж</div>
-                        <div style="color: #999; font-size: 13px;">Полный цикл работ</div>
+        <div class="product-grid" id="productGrid">
+            <!-- Электромонтаж -->
+            <div class="product-card" data-category="electrical">
+                <div class="product-image">
+                    <span class="badge hit">ХИТ</span>
+                    ⚡
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Замена электропроводки</div>
+                    <div class="product-meta">1 точка • 30 мин</div>
+                    <div class="product-description">Полная замена старой проводки. Прокладка новых линий. Открытый и скрытый монтаж с гарантией</div>
+                    <div class="product-footer">
+                        <div class="product-price">1200 ₽ <small>за точку</small></div>
+                        <button class="add-btn" onclick="addToCart('Замена проводки', 1200)">Заказать</button>
                     </div>
                 </div>
-                <ul class="service-list">
-                    <li class="service-item">
-                        <span class="service-name">Монтаж электропроводки</span>
-                        <span class="service-price">от 300 ₽/м</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Замена проводки в квартире</span>
-                        <span class="service-price">от 15 000 ₽</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Прокладка кабеля</span>
-                        <span class="service-price">от 250 ₽/м</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Монтаж электрощита</span>
-                        <span class="service-price">от 5 000 ₽</span>
-                    </li>
-                </ul>
-                <a href="/" class="service-button">Заказать</a>
             </div>
             
-            <!-- Розетки и выключатели -->
-            <div class="service-category" id="outlets">
-                <div class="category-header">
-                    <div class="category-icon">🔌</div>
-                    <div>
-                        <div class="category-title">Розетки и выключатели</div>
-                        <div style="color: #999; font-size: 13px;">Установка, замена</div>
+            <div class="product-card" data-category="electrical">
+                <div class="product-image">📊</div>
+                <div class="product-info">
+                    <div class="product-title">Установка электрощитков</div>
+                    <div class="product-meta">1 щиток • 2-3 часа</div>
+                    <div class="product-description">Монтаж и замена распределительных щитков. Установка автоматов, УЗО, реле напряжения</div>
+                    <div class="product-footer">
+                        <div class="product-price">3000 ₽</div>
+                        <button class="add-btn" onclick="addToCart('Электрощиток', 3000)">Заказать</button>
                     </div>
                 </div>
-                <ul class="service-list">
-                    <li class="service-item">
-                        <span class="service-name">Установка розетки</span>
-                        <span class="service-price">от 400 ₽</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Установка выключателя</span>
-                        <span class="service-price">от 350 ₽</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Перенос розетки</span>
-                        <span class="service-price">от 800 ₽</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Установка диммера</span>
-                        <span class="service-price">от 600 ₽</span>
-                    </li>
-                </ul>
-                <a href="/" class="service-button">Заказать</a>
             </div>
             
-            <!-- Штробление и сверление -->
-            <div class="service-category" id="drilling">
-                <div class="category-header">
-                    <div class="category-icon">🛠️</div>
-                    <div>
-                        <div class="category-title">Сверление и штробление</div>
-                        <div style="color: #999; font-size: 13px;">Подготовка стен</div>
+            <div class="product-card" data-category="electrical">
+                <div class="product-image">
+                    <span class="badge">НОВИНКА</span>
+                    🏠
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Электрика под ключ</div>
+                    <div class="product-meta">1 м² • полный день</div>
+                    <div class="product-description">Полный электромонтаж квартир, домов, офисов. Проектирование и реализация с материалами</div>
+                    <div class="product-footer">
+                        <div class="product-price">1500 ₽ <small>за м²</small></div>
+                        <button class="add-btn" onclick="addToCart('Электрика под ключ', 1500)">Заказать</button>
                     </div>
                 </div>
-                <ul class="service-list">
-                    <li class="service-item">
-                        <span class="service-name">Штробление под проводку</span>
-                        <span class="service-price">от 200 ₽/м</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Сверление отверстий под розетки</span>
-                        <span class="service-price">от 250 ₽/шт</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Штробление в бетоне</span>
-                        <span class="service-price">от 350 ₽/м</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Алмазное сверление</span>
-                        <span class="service-price">от 500 ₽/шт</span>
-                    </li>
-                </ul>
-                <a href="/" class="service-button">Заказать</a>
+            </div>
+            
+            <!-- Розетки -->
+            <div class="product-card" data-category="sockets">
+                <div class="product-image">
+                    <span class="badge hit">ХИТ</span>
+                    🔌
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Установка розеток</div>
+                    <div class="product-meta">1 шт • 15-20 мин</div>
+                    <div class="product-description">Монтаж одинарных, двойных и тройных розеток. Скрытая и наружная установка любых типов</div>
+                    <div class="product-footer">
+                        <div class="product-price">500 ₽ <small>за точку</small></div>
+                        <button class="add-btn" onclick="addToCart('Розетка', 500)">Заказать</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="sockets">
+                <div class="product-image">💡</div>
+                <div class="product-info">
+                    <div class="product-title">Установка выключателей</div>
+                    <div class="product-meta">1 шт • 15 мин</div>
+                    <div class="product-description">Установка одно-, двух-, трёхклавишных выключателей и диммеров с проверкой работы</div>
+                    <div class="product-footer">
+                        <div class="product-price">450 ₽ <small>за шт</small></div>
+                        <button class="add-btn" onclick="addToCart('Выключатель', 450)">Заказать</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="sockets">
+                <div class="product-image">
+                    <span class="badge new">НОВИНКА</span>
+                    🔌
+                </div>
+                <div class="product-info">
+                    <div class="product-title">USB-розетки</div>
+                    <div class="product-meta">1 шт • 20 мин</div>
+                    <div class="product-description">Современные розетки с USB-портами для зарядки гаджетов. Быстрая зарядка до 3A</div>
+                    <div class="product-footer">
+                        <div class="product-price">800 ₽ <small>за шт</small></div>
+                        <button class="add-btn" onclick="addToCart('USB-розетка', 800)">Заказать</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Штробление -->
+            <div class="product-card" data-category="drilling">
+                <div class="product-image">🔨</div>
+                <div class="product-info">
+                    <div class="product-title">Штробление стен</div>
+                    <div class="product-meta">1 м • 30 мин</div>
+                    <div class="product-description">Штробление бетонных и кирпичных стен под проводку. С пылеудалением и заделкой штроб</div>
+                    <div class="product-footer">
+                        <div class="product-price">350 ₽ <small>за м</small></div>
+                        <button class="add-btn" onclick="addToCart('Штробление', 350)">Заказать</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="drilling">
+                <div class="product-image">🕳️</div>
+                <div class="product-info">
+                    <div class="product-title">Сверление отверстий</div>
+                    <div class="product-meta">1 шт • 10 мин</div>
+                    <div class="product-description">Сверление отверстий под розетки, выключатели, подрозетники в любых материалах</div>
+                    <div class="product-footer">
+                        <div class="product-price">200 ₽ <small>за отв.</small></div>
+                        <button class="add-btn" onclick="addToCart('Сверление', 200)">Заказать</button>
+                    </div>
+                </div>
             </div>
             
             <!-- Освещение -->
-            <div class="service-category">
-                <div class="category-header">
-                    <div class="category-icon">💡</div>
-                    <div>
-                        <div class="category-title">Освещение</div>
-                        <div style="color: #999; font-size: 13px;">Монтаж, подключение</div>
+            <div class="product-card" data-category="lighting">
+                <div class="product-image">
+                    <span class="badge">ТОП</span>
+                    💡
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Монтаж люстр</div>
+                    <div class="product-meta">1 шт • 40 мин</div>
+                    <div class="product-description">Установка люстр и потолочных светильников любой сложности. Подключение с гарантией</div>
+                    <div class="product-footer">
+                        <div class="product-price">800 ₽ <small>за шт</small></div>
+                        <button class="add-btn" onclick="addToCart('Люстра', 800)">Заказать</button>
                     </div>
                 </div>
-                <ul class="service-list">
-                    <li class="service-item">
-                        <span class="service-name">Подключение люстры</span>
-                        <span class="service-price">от 600 ₽</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Установка точечных светильников</span>
-                        <span class="service-price">от 300 ₽/шт</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Монтаж LED-подсветки</span>
-                        <span class="service-price">от 400 ₽/м</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Установка бра</span>
-                        <span class="service-price">от 500 ₽</span>
-                    </li>
-                </ul>
-                <a href="/" class="service-button">Заказать</a>
             </div>
             
-            <!-- Ремонт и диагностика -->
-            <div class="service-category">
-                <div class="category-header">
-                    <div class="category-icon">🔍</div>
-                    <div>
-                        <div class="category-title">Ремонт и диагностика</div>
-                        <div style="color: #999; font-size: 13px;">Устранение неисправностей</div>
+            <div class="product-card" data-category="lighting">
+                <div class="product-image">✨</div>
+                <div class="product-info">
+                    <div class="product-title">LED-лента</div>
+                    <div class="product-meta">1 м • 15 мин</div>
+                    <div class="product-description">Подключение светодиодной ленты с блоком питания. RGB и одноцветные варианты</div>
+                    <div class="product-footer">
+                        <div class="product-price">400 ₽ <small>за м</small></div>
+                        <button class="add-btn" onclick="addToCart('LED-лента', 400)">Заказать</button>
                     </div>
                 </div>
-                <ul class="service-list">
-                    <li class="service-item">
-                        <span class="service-name">Поиск неисправности</span>
-                        <span class="service-price">от 800 ₽</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Ремонт проводки</span>
-                        <span class="service-price">от 1 000 ₽</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Замена автоматов в щитке</span>
-                        <span class="service-price">от 400 ₽/шт</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Устранение короткого замыкания</span>
-                        <span class="service-price">от 1 500 ₽</span>
-                    </li>
-                </ul>
-                <a href="/" class="service-button">Заказать</a>
             </div>
             
-            <!-- Бытовая техника -->
-            <div class="service-category">
-                <div class="category-header">
-                    <div class="category-icon">🔧</div>
-                    <div>
-                        <div class="category-title">Подключение техники</div>
-                        <div style="color: #999; font-size: 13px;">Плиты, духовки, водонагреватели</div>
+            <div class="product-card" data-category="lighting">
+                <div class="product-image">🔦</div>
+                <div class="product-info">
+                    <div class="product-title">Точечные светильники</div>
+                    <div class="product-meta">1 шт • 20 мин</div>
+                    <div class="product-description">Установка встраиваемых точечных светильников в гипсокартон и натяжные потолки</div>
+                    <div class="product-footer">
+                        <div class="product-price">300 ₽ <small>за шт</small></div>
+                        <button class="add-btn" onclick="addToCart('Точечный свет', 300)">Заказать</button>
                     </div>
                 </div>
-                <ul class="service-list">
-                    <li class="service-item">
-                        <span class="service-name">Подключение варочной панели</span>
-                        <span class="service-price">от 1 200 ₽</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Подключение духового шкафа</span>
-                        <span class="service-price">от 1 000 ₽</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Подключение водонагревателя</span>
-                        <span class="service-price">от 1 500 ₽</span>
-                    </li>
-                    <li class="service-item">
-                        <span class="service-name">Подключение кондиционера</span>
-                        <span class="service-price">от 2 000 ₽</span>
-                    </li>
-                </ul>
-                <a href="/" class="service-button">Заказать</a>
+            </div>
+            
+            <!-- Ремонт -->
+            <div class="product-card" data-category="repair">
+                <div class="product-image">
+                    <span class="badge new">СРОЧНО</span>
+                    🔧
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Поиск неисправностей</div>
+                    <div class="product-meta">выезд • 1 час</div>
+                    <div class="product-description">Диагностика и поиск короткого замыкания, обрыва проводки. Срочный выезд 24/7</div>
+                    <div class="product-footer">
+                        <div class="product-price">1000 ₽</div>
+                        <button class="add-btn" onclick="addToCart('Диагностика', 1000)">Заказать</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="repair">
+                <div class="product-image">🔩</div>
+                <div class="product-info">
+                    <div class="product-title">Замена автоматов</div>
+                    <div class="product-meta">1 шт • 30 мин</div>
+                    <div class="product-description">Замена автоматических выключателей в распределительном щитке с проверкой</div>
+                    <div class="product-footer">
+                        <div class="product-price">600 ₽ <small>за шт</small></div>
+                        <button class="add-btn" onclick="addToCart('Автомат', 600)">Заказать</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Техника -->
+            <div class="product-card" data-category="appliances">
+                <div class="product-image">
+                    <span class="badge">ПОПУЛЯРНО</span>
+                    🔥
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Подключение электроплиты</div>
+                    <div class="product-meta">1 шт • 1-2 часа</div>
+                    <div class="product-description">Подключение электрических плит и варочных панелей. Прокладка силового кабеля</div>
+                    <div class="product-footer">
+                        <div class="product-price">1500 ₽</div>
+                        <button class="add-btn" onclick="addToCart('Электроплита', 1500)">Заказать</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="appliances">
+                <div class="product-image">🌡️</div>
+                <div class="product-info">
+                    <div class="product-title">Тёплый пол</div>
+                    <div class="product-meta">1 м² • день</div>
+                    <div class="product-description">Монтаж электрического тёплого пола с терморегулятором. Гарантия на работу 2 года</div>
+                    <div class="product-footer">
+                        <div class="product-price">2000 ₽ <small>за м²</small></div>
+                        <button class="add-btn" onclick="addToCart('Тёплый пол', 2000)">Заказать</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="appliances">
+                <div class="product-image">
+                    <span class="badge new">ПРЕМИУМ</span>
+                    📱
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Умный дом</div>
+                    <div class="product-meta">базовый комплект</div>
+                    <div class="product-description">Установка системы умного дома. Управление освещением и розетками через смартфон</div>
+                    <div class="product-footer">
+                        <div class="product-price">5000 ₽</div>
+                        <button class="add-btn" onclick="addToCart('Умный дом', 5000)">Заказать</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     
+    <!-- Кнопка наверх -->
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
+    
     <script>
-        function toggleMenu() {
-            const burger = document.querySelector('.burger-menu');
-            const menu = document.getElementById('sideMenu');
+        let currentCategory = 'all';
+        
+        // Переключение категорий
+        function setCategory(category) {
+            currentCategory = category;
             
-            burger.classList.toggle('active');
-            menu.classList.toggle('active');
+            // Обновляем активную кнопку
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Фильтруем карточки
+            filterCards();
         }
         
-        // Закрытие меню при клике вне его
-        document.addEventListener('click', function(event) {
-            const burger = document.querySelector('.burger-menu');
-            const menu = document.getElementById('sideMenu');
+        // Фильтрация карточек
+        function filterCards() {
+            const cards = document.querySelectorAll('.product-card');
             
-            if (!burger.contains(event.target) && !menu.contains(event.target)) {
-                burger.classList.remove('active');
-                menu.classList.remove('active');
+            cards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                
+                if (currentCategory === 'all' || category === currentCategory) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Добавить в корзину (переход на калькулятор)
+        function addToCart(name, price) {
+            alert(`📋 ${name} - ${price}₽\n\nПереходим на калькулятор для расчёта полной стоимости!`);
+            window.location.href = '/calculator.html';
+        }
+        
+        // Кнопка наверх
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
             }
         });
         
-        // Закрытие меню при клике на пункт
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelector('.burger-menu').classList.remove('active');
-                document.getElementById('sideMenu').classList.remove('active');
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
-        });
+        }
     </script>
 </body>
 </html>
