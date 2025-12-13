@@ -640,11 +640,11 @@ async def admin_panel():
     return HTMLResponse(content=html_content)
 
 @app.get("/master")
-async def master_terminal():
+async def master_terminal(master_id: int = 1):
     """Мобильный терминал мастера"""
     from fastapi.responses import HTMLResponse
     
-    html_content = """
+    html_content = f"""
     <!DOCTYPE html>
     <html lang="ru">
     <head>
@@ -652,31 +652,137 @@ async def master_terminal():
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Терминал мастера</title>
         <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body {
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+            body {{
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 background: #f9fafb;
                 padding: 1rem;
-            }
-            .container { max-width: 600px; margin: 0 auto; }
-            h1 { margin-bottom: 1rem; }
-            .card {
+            }}
+            .container {{ max-width: 600px; margin: 0 auto; }}
+            h1 {{ margin-bottom: 1.5rem; font-size: 1.75rem; }}
+            .card {{
                 background: white;
                 border-radius: 12px;
                 padding: 1.5rem;
                 margin-bottom: 1rem;
                 border: 1px solid #e5e7eb;
-            }
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }}
+            .job-card {{
+                background: white;
+                border-radius: 8px;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                border-left: 4px solid #10b981;
+            }}
+            .job-header {{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.75rem;
+            }}
+            .job-title {{ font-weight: 600; font-size: 1.1rem; }}
+            .job-status {{
+                background: #10b981;
+                color: white;
+                padding: 0.25rem 0.75rem;
+                border-radius: 12px;
+                font-size: 0.875rem;
+            }}
+            .job-info {{ color: #6b7280; font-size: 0.9rem; margin-bottom: 0.5rem; }}
+            .job-price {{ font-size: 1.25rem; font-weight: 700; color: #10b981; }}
+            .btn {{
+                background: #10b981;
+                color: white;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 1rem;
+                width: 100%;
+                margin-top: 0.5rem;
+            }}
+            .btn:hover {{ background: #059669; }}
+            .empty-state {{
+                text-align: center;
+                padding: 2rem;
+                color: #9ca3af;
+            }}
         </style>
     </head>
     <body>
         <div class="container">
             <h1>🔧 Терминал мастера</h1>
+            
             <div class="card">
-                <h2>Активные заказы</h2>
-                <p>Загрузка...</p>
+                <h2 style="margin-bottom: 1rem;">Активные заказы</h2>
+                <div id="jobs-list">
+                    <p>Загрузка...</p>
+                </div>
             </div>
         </div>
+        
+        <script>
+            const masterId = {master_id};
+            
+            async function loadJobs() {{
+                try {{
+                    const response = await fetch(`/api/jobs/master/${{masterId}}?status=pending,accepted`);
+                    const data = await response.json();
+                    
+                    const container = document.getElementById('jobs-list');
+                    
+                    if (data.jobs && data.jobs.length > 0) {{
+                        container.innerHTML = data.jobs.map(job => `
+                            <div class="job-card">
+                                <div class="job-header">
+                                    <div class="job-title">${{job.category}}</div>
+                                    <div class="job-status">${{job.status}}</div>
+                                </div>
+                                <div class="job-info">
+                                    📍 ${{job.address}}<br>
+                                    👤 ${{job.client_name}} • ${{job.client_phone}}<br>
+                                    📝 ${{job.problem_description}}
+                                </div>
+                                <div class="job-price">${{job.estimated_price}} ₽</div>
+                                <button class="btn" onclick="acceptJob(${{job.id}})">
+                                    Принять заказ
+                                </button>
+                            </div>
+                        `).join('');
+                    }} else {{
+                        container.innerHTML = '<div class="empty-state">📭 Нет активных заказов</div>';
+                    }}
+                }} catch (error) {{
+                    console.error('Ошибка загрузки заказов:', error);
+                    document.getElementById('jobs-list').innerHTML = 
+                        '<div class="empty-state">❌ Ошибка загрузки заказов</div>';
+                }}
+            }}
+            
+            async function acceptJob(jobId) {{
+                try {{
+                    const response = await fetch(`/api/jobs/master/${{masterId}}/${{jobId}}/status`, {{
+                        method: 'PUT',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{ status: 'accepted' }})
+                    }});
+                    
+                    if (response.ok) {{
+                        alert('✅ Заказ принят!');
+                        loadJobs();
+                    }}
+                }} catch (error) {{
+                    alert('❌ Ошибка при принятии заказа');
+                }}
+            }}
+            
+            // Загружаем заказы при старте
+            loadJobs();
+            
+            // Обновляем каждые 10 секунд
+            setInterval(loadJobs, 10000);
+        </script>
     </body>
     </html>
     """
