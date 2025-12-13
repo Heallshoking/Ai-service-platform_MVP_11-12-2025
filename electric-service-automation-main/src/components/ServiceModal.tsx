@@ -30,25 +30,25 @@ export default function ServiceModal({ open, onClose }: ServiceModalProps) {
     const showOptions = expandedProduct === product.id;
 
     return (
-      <Card key={product.id} className="p-4 hover:shadow-lg transition-all">
-        <div className="flex items-start gap-3">
+      <Card key={product.id} className="p-3 hover:shadow-lg transition-all">
+        <div className="flex items-start gap-2.5">
           {!showOptions && (
-            <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl flex-shrink-0 flex items-center justify-center border border-blue-200">
+            <div className="w-11 h-11 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg flex-shrink-0 flex items-center justify-center border border-blue-200">
               {product.category === 'switch' ? (
-                <Icon name="Power" size={28} className="text-primary" />
+                <Icon name="Power" size={22} className="text-primary" />
               ) : product.category === 'cable' ? (
-                <Icon name="Cable" size={28} className="text-primary" />
+                <Icon name="Cable" size={22} className="text-primary" />
               ) : product.category === 'chandelier' ? (
-                <Icon name="Lightbulb" size={28} className="text-primary" />
+                <Icon name="Lightbulb" size={22} className="text-primary" />
               ) : (
-                <Icon name="Plug" size={28} className="text-primary" />
+                <Icon name="Plug" size={22} className="text-primary" />
               )}
             </div>
           )}
           
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-base mb-1">{product.name}</h3>
-            <p className="text-xs text-muted-foreground mb-2">{product.description}</p>
+            <h3 className="font-semibold text-sm mb-0.5">{product.name}</h3>
+            <p className="text-xs text-muted-foreground mb-1.5">{product.description}</p>
             
             {!showOptions ? (
               <Button
@@ -65,8 +65,8 @@ export default function ServiceModal({ open, onClose }: ServiceModalProps) {
                 Добавить
               </Button>
             ) : (
-              <div className="space-y-3">
-                <div className="flex items-center justify-between gap-3 mb-4">
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between gap-2.5 mb-3">
                   <div className="flex items-center gap-2">
                     <Button
                       size="sm"
@@ -106,8 +106,8 @@ export default function ServiceModal({ open, onClose }: ServiceModalProps) {
                   </Button>
                 </div>
 
-                <div className="space-y-1 bg-gray-50 p-3 rounded-xl border border-gray-200">
-                  <p className="text-xs font-semibold text-gray-700 mb-2">Дополнительно:</p>
+                <div className="space-y-1 bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+                  <p className="text-xs font-semibold text-gray-700 mb-1.5">Дополнительно:</p>
                   
                   {product.options?.map(option => {
                     const isRepairOption = option.id === 'repair';
@@ -116,7 +116,7 @@ export default function ServiceModal({ open, onClose }: ServiceModalProps) {
                     return (
                       <div 
                         key={option.id} 
-                        className={`flex items-center gap-3 p-2 rounded-lg transition-all ${
+                        className={`flex items-center gap-2 p-1.5 rounded-md transition-all ${
                           (isRepairOption && inCart?.selectedOption === 'repair') || 
                           (!isRepairOption && inCart?.additionalOptions?.includes(option.id))
                             ? 'bg-green-100 shadow-sm' 
@@ -158,7 +158,7 @@ export default function ServiceModal({ open, onClose }: ServiceModalProps) {
                   {product.category !== 'cable' && (
                     <>
                       <div 
-                        className={`flex items-center gap-3 p-2 rounded-lg transition-all ${
+                        className={`flex items-center gap-2 p-1.5 rounded-md transition-all ${
                           inCart?.selectedOption === 'install-only'
                             ? 'bg-green-100 shadow-sm' 
                             : 'bg-white hover:bg-gray-50'
@@ -187,7 +187,7 @@ export default function ServiceModal({ open, onClose }: ServiceModalProps) {
                       </div>
                       
                       <div 
-                        className={`flex items-center gap-3 p-2 rounded-lg transition-all ${
+                        className={`flex items-center gap-2 p-1.5 rounded-md transition-all ${
                           inCart?.selectedOption === 'full-wiring'
                             ? 'bg-green-100 shadow-sm' 
                             : 'bg-white hover:bg-gray-50'
@@ -211,9 +211,9 @@ export default function ServiceModal({ open, onClose }: ServiceModalProps) {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between pt-3 mt-3 border-t-2 border-orange-200">
-                  <span className="text-base font-semibold">Итого за услугу:</span>
-                  <span className="font-bold text-2xl bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                <div className="flex items-center justify-between pt-2 mt-2 border-t-2 border-orange-200">
+                  <span className="text-sm font-semibold">Итого за услугу:</span>
+                  <span className="font-bold text-xl bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                     {inCart ? calculateItemPrice(inCart).toLocaleString('ru-RU') : '0'} ₽
                   </span>
                 </div>
@@ -229,46 +229,46 @@ export default function ServiceModal({ open, onClose }: ServiceModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[60vh] overflow-y-auto p-3 sm:p-4">
         <DialogHeader className="relative sr-only">
           <DialogTitle>Выберите услуги</DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-6">
+        <div className="space-y-4">
           <div>
-            <h3 className="font-semibold text-lg mb-3 text-gray-800">Популярные услуги</h3>
-            <div className="space-y-3">
+            <h3 className="font-semibold text-base mb-2 text-gray-800">Популярные услуги</h3>
+            <div className="space-y-2">
               {popularServices.map(renderServiceCard)}
             </div>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-3 text-gray-800">
+            <h3 className="font-semibold text-base mb-2 text-gray-800">
               Строительные услуги
             </h3>
-            <p className="text-xs text-muted-foreground mb-3">
+            <p className="text-xs text-muted-foreground mb-2">
               Этими услугами пользуются дизайнеры интерьеров
             </p>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {constructionServices.map(renderServiceCard)}
             </div>
           </div>
         </div>
 
-        <div className="flex gap-2 pt-4 border-t sticky bottom-0 bg-white">
+        <div className="flex gap-2 pt-3 border-t sticky bottom-0 bg-white">
           {totalItems > 0 ? (
             <Button 
               onClick={() => {
                 onClose();
                 navigate('/cart');
               }} 
-              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 h-12 text-base font-bold"
+              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 h-11 text-sm font-bold"
             >
-              <Icon name="Check" size={18} className="mr-2" />
+              <Icon name="Check" size={16} className="mr-1.5" />
               Добавить ({totalItems})
             </Button>
           ) : (
-            <Button onClick={onClose} variant="outline" className="flex-1">
+            <Button onClick={onClose} variant="outline" className="flex-1 h-11">
               Закрыть
             </Button>
           )}
