@@ -84,17 +84,20 @@
         
         input, select, textarea {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
             font-size: 16px;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-family: inherit;
+            background: white;
         }
         
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
         }
         
         textarea {
@@ -386,26 +389,80 @@
         }
         
         .telegram-indicator {
-            font-size: 22px;
-            animation: pulse 2s infinite;
+            font-size: 24px;
+            animation: pulse 2s infinite, rotate 3s linear infinite;
         }
         
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Быстрые действия */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .quick-action-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border: 2px solid rgba(102, 126, 234, 0.15);
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+        
+        .quick-action-card:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+        
+        .quick-action-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .quick-action-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
         }
         
         @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
             .container {
-                padding: 25px;
+                padding: 25px 20px;
+                border-radius: 20px;
             }
             
             h1 {
-                font-size: 24px;
+                font-size: 26px;
             }
             
             .message-bubble {
                 max-width: 85%;
+            }
+            
+            .telegram-search {
+                padding: 16px 18px;
             }
         }
     </style>
@@ -442,9 +499,8 @@
     
     <!-- Главная карточка -->
     <div class="container" id="mainCard">
-        <div style="text-align: center; margin-bottom: 20px;">
-            <a href="/calculator.html" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; margin-bottom: 20px;">💡 Калькулятор стоимости</a>
-        </div>
+        <h1>⚡ БАЛТСЕТЬ</h1>
+        <p class="subtitle">Услуги электрика, сантехника и мастера на дом</p>
         
         <!-- Telegram-стиль поисковая строка -->
         <div class="telegram-search" onclick="openChat()">
@@ -453,8 +509,30 @@
             <div class="telegram-indicator">⚡</div>
         </div>
         
-        <h1>🔧 Вызов мастера</h1>
-        <p class="subtitle">AI автоматически подберёт специалиста</p>
+        <!-- Быстрые действия -->
+        <div class="quick-actions">
+            <a href="/calculator.html" class="quick-action-card">
+                <span class="quick-action-icon">📊</span>
+                <span class="quick-action-text">Калькулятор</span>
+            </a>
+            <a href="https://t.me/ai_service_client_bot" target="_blank" class="quick-action-card">
+                <span class="quick-action-icon">💬</span>
+                <span class="quick-action-text">Telegram бот</span>
+            </a>
+            <a href="/services.html" class="quick-action-card">
+                <span class="quick-action-icon">🔧</span>
+                <span class="quick-action-text">Услуги</span>
+            </a>
+            <a href="tel:+79001234567" class="quick-action-card">
+                <span class="quick-action-icon">📞</span>
+                <span class="quick-action-text">Позвонить</span>
+            </a>
+        </div>
+        
+        <div style="margin: 30px 0 20px; padding: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05)); border-radius: 16px; border-left: 4px solid #10b981;">
+            <h3 style="margin: 0 0 8px; color: #10b981; font-size: 16px;">🚀 Быстрая заявка</h3>
+            <p style="margin: 0; color: #666; font-size: 14px;">Заполните форму и AI подберёт мастера за 2 минуты</p>
+        </div>
         
         <form id="requestForm">
             <div class="form-group">
