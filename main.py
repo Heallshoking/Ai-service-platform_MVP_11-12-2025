@@ -803,7 +803,7 @@ async def admin_kanban():
 
 @app.get("/admin")
 async def admin_panel():
-    """📈 Премиум админ-панель с графиками"""
+    """📅 Админ-панель с календарем и карточками мастеров (как на скриншоте)"""
     from fastapi.responses import HTMLResponse
     
     html_content = """
@@ -812,246 +812,250 @@ async def admin_panel():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Админ-панель | AI Service Platform</title>
+        <title>Панель управления | AI Service Platform</title>
         <style>
             :root {
-                --primary: #6366f1; --primary-dark: #4f46e5; --primary-light: #e0e7ff;
-                --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
-                --bg: #f8fafc; --surface: #fff; --text: #0f172a; --text-muted: #64748b;
-                --border: #e2e8f0; --shadow: rgba(15, 23, 42, 0.08);
+                --primary: #10b981; --gray-50: #f9fafb; --gray-100: #f3f4f6;
+                --gray-200: #e5e7eb; --gray-300: #d1d5db; --gray-500: #6b7280;
+                --gray-700: #374151; --gray-800: #1f2937;
             }
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                background: var(--bg); color: var(--text); line-height: 1.6;
+                background: var(--gray-50); color: var(--gray-800); font-size: 14px;
             }
-            .header {
-                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-                color: white; padding: 2rem 1.5rem; box-shadow: 0 4px 6px var(--shadow);
+            .layout { display: grid; grid-template-columns: 1fr 600px; gap: 1rem; padding: 1rem; height: 100vh; }
+            .left-panel { display: flex; gap: 0.75rem; overflow-x: auto; }
+            .column {
+                min-width: 280px; background: white; border-radius: 12px;
+                padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;
             }
-            .header-content { max-width: 1400px; margin: 0 auto; }
-            .header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
-            .header-subtitle { opacity: 0.9; font-size: 0.9rem; }
-            .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
-            .stats-grid {
-                display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 1.5rem; margin-bottom: 2rem;
+            .column-header {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 0.75rem; border-radius: 8px; font-weight: 600; font-size: 13px;
             }
-            .stat-card {
-                background: var(--surface); border-radius: 16px; padding: 1.5rem;
-                border: 1px solid var(--border); position: relative; overflow: hidden;
-                box-shadow: 0 1px 3px var(--shadow); transition: all 0.2s ease;
+            .col-gray { background: var(--gray-200); color: var(--gray-700); }
+            .col-blue { background: #e0f2fe; color: #0369a1; }
+            .col-green { background: #d1fae5; color: #065f46; }
+            .col-orange { background: #fed7aa; color: #9a3412; }
+            .col-success { background: #bbf7d0; color: #14532d; }
+            .create-btn {
+                background: var(--gray-100); color: var(--gray-500); padding: 0.625rem;
+                border: 1px dashed var(--gray-300); border-radius: 6px; text-align: center;
+                cursor: pointer; font-size: 12px; transition: all 0.2s;
             }
-            .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px var(--shadow); }
-            .stat-card::before {
-                content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            .create-btn:hover { background: var(--gray-200); }
+            .master-card {
+                background: white; border: 1px solid var(--gray-200); border-radius: 8px;
+                padding: 0.75rem; cursor: pointer; transition: all 0.2s;
             }
-            .stat-card.success::before { background: linear-gradient(90deg, var(--success), #34d399); }
-            .stat-card.warning::before { background: linear-gradient(90deg, var(--warning), #fbbf24); }
-            .stat-card.primary::before { background: linear-gradient(90deg, var(--primary), #818cf8); }
-            .stat-card.danger::before { background: linear-gradient(90deg, var(--danger), #f87171); }
-            .stat-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-            .stat-icon { font-size: 2rem; opacity: 0.5; }
-            .stat-label { font-size: 0.875rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-            .stat-value { font-size: 2.5rem; font-weight: 700; margin: 0.5rem 0; }
-            .stat-change { font-size: 0.875rem; }
-            .stat-change.up { color: var(--success); }
-            .stat-change.down { color: var(--danger); }
-            .card {
-                background: var(--surface); border-radius: 16px; padding: 2rem;
-                border: 1px solid var(--border); box-shadow: 0 1px 3px var(--shadow);
+            .master-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
+            .master-name { font-weight: 600; font-size: 13px; color: #0891b2; margin-bottom: 0.25rem; }
+            .master-spec { font-size: 12px; color: var(--gray-500); }
+            .calendar-panel {
+                background: var(--primary); border-radius: 12px; padding: 1.5rem;
+                color: white; overflow-y: auto;
+            }
+            .calendar-header {
+                display: flex; justify-content: space-between; align-items: center;
                 margin-bottom: 1.5rem;
             }
-            .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-            .card-title { font-size: 1.25rem; font-weight: 600; }
-            .chart-container { position: relative; height: 300px; }
-            .chart-bar { display: flex; align-items: flex-end; height: 100%; gap: 1rem; }
-            .bar { flex: 1; background: linear-gradient(180deg, var(--primary-light), var(--primary)); border-radius: 8px 8px 0 0; position: relative; transition: all 0.3s ease; }
-            .bar:hover { filter: brightness(1.1); }
-            .bar-label { position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--text-muted); }
-            .bar-value { position: absolute; top: -1.75rem; left: 50%; transform: translateX(-50%); font-size: 0.875rem; font-weight: 600; }
-            .quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
-            .action-btn {
-                display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem;
-                background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-                cursor: pointer; transition: all 0.2s ease; text-decoration: none; color: var(--text);
+            .calendar-title { font-size: 16px; font-weight: 600; }
+            .nav-btn {
+                background: rgba(255,255,255,0.2); border: none; color: white;
+                width: 32px; height: 32px; border-radius: 6px; cursor: pointer;
+                display: flex; align-items: center; justify-content: center;
             }
-            .action-btn:hover { background: var(--primary-light); border-color: var(--primary); }
-            .action-icon { font-size: 1.5rem; }
-            .recent-list { display: flex; flex-direction: column; gap: 0.75rem; }
-            .list-item {
-                display: flex; justify-content: space-between; align-items: center;
-                padding: 1rem; background: var(--bg); border-radius: 8px;
+            .nav-btn:hover { background: rgba(255,255,255,0.3); }
+            .calendar-grid {
+                display: grid; grid-template-columns: repeat(7, 1fr);
+                gap: 4px; margin-top: 1rem;
             }
-            .item-info { display: flex; align-items: center; gap: 0.75rem; }
-            .item-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--primary); }
-            .badge { padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
-            .badge-success { background: #d1fae5; color: var(--success); }
-            .badge-warning { background: #fef3c7; color: var(--warning); }
-            .badge-danger { background: #fee2e2; color: var(--danger); }
+            .day-header {
+                text-align: center; font-size: 12px; font-weight: 600;
+                padding: 0.5rem; opacity: 0.8;
+            }
+            .day-cell {
+                aspect-ratio: 1; background: rgba(255,255,255,0.1);
+                border-radius: 6px; display: flex; align-items: center;
+                justify-content: center; font-size: 13px; cursor: pointer;
+                transition: all 0.2s;
+            }
+            .day-cell:hover { background: rgba(255,255,255,0.2); }
+            .day-cell.today { background: #f59e0b; font-weight: 700; }
+            .day-cell.empty { opacity: 0.3; }
         </style>
     </head>
     <body>
-        <div class="header">
-            <div class="header-content">
-                <h1>⚡ Админ-панель</h1>
-                <div class="header-subtitle">Управление платформой AI Service Platform</div>
-            </div>
-        </div>
-        
-        <div class="container">
-            <!-- Статистика -->
-            <div class="stats-grid">
-                <div class="stat-card success">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-label">Всего заказов</div>
-                            <div class="stat-value" id="totalJobs">0</div>
-                            <div class="stat-change up">▲ 12% за неделю</div>
-                        </div>
-                        <div class="stat-icon">📊</div>
+        <div class="layout">
+            <div class="left-panel">
+                <!-- Не запланировано -->
+                <div class="column">
+                    <div class="column-header col-gray">
+                        <span>Не запланировано</span>
+                        <span id="count-unplanned">0</span>
                     </div>
-                </div>
-                <div class="stat-card warning">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-label">Активных мастеров</div>
-                            <div class="stat-value" id="activeMasters">0</div>
-                            <div class="stat-change up">▲ 5 новых</div>
-                        </div>
-                        <div class="stat-icon">👨‍🔧</div>
-                    </div>
-                </div>
-                <div class="stat-card primary">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-label">Доход платформы</div>
-                            <div class="stat-value" id="revenue">0 ₽</div>
-                            <div class="stat-change up">▲ 18% за месяц</div>
-                        </div>
-                        <div class="stat-icon">💰</div>
-                    </div>
-                </div>
-                <div class="stat-card danger">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-label">Средний чек</div>
-                            <div class="stat-value" id="avgCheck">0 ₽</div>
-                            <div class="stat-change down">▼ 3% за неделю</div>
-                        </div>
-                        <div class="stat-icon">📈</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- График заказов -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">📈 Заказы по дням</div>
-                </div>
-                <div class="chart-container">
-                    <div class="chart-bar" id="chart"></div>
-                </div>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                <!-- Быстрые действия -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">⚡ Быстрые действия</div>
-                    </div>
-                    <div class="quick-actions">
-                        <a href="/docs" class="action-btn">
-                            <span class="action-icon">📖</span>
-                            <span>API Docs</span>
-                        </a>
-                        <a href="/health" class="action-btn">
-                            <span class="action-icon">❤️</span>
-                            <span>Health Check</span>
-                        </a>
-                        <a href="/api/stats" class="action-btn">
-                            <span class="action-icon">📊</span>
-                            <span>Статистика</span>
-                        </a>
-                        <a href="/master" class="action-btn">
-                            <span class="action-icon">🔧</span>
-                            <span>Терминал</span>
-                        </a>
-                    </div>
+                    <div class="create-btn">Создать</div>
+                    <div id="col-unplanned"></div>
                 </div>
                 
-                <!-- Последние заказы -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">🕒 Последние заказы</div>
+                <!-- Ожидает выезда -->
+                <div class="column">
+                    <div class="column-header col-blue">
+                        <span>Ожидает выезда</span>
+                        <span id="count-pending">0</span>
                     </div>
-                    <div class="recent-list" id="recentJobs">
-                        <div class="list-item">
-                            <div class="item-info">
-                                <div class="item-avatar">-</div>
-                                <div>Загрузка...</div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="create-btn">Создать</div>
+                    <div id="col-pending"></div>
                 </div>
+                
+                <!-- В работе -->
+                <div class="column">
+                    <div class="column-header col-green">
+                        <span>В работе</span>
+                        <span id="count-progress">0</span>
+                    </div>
+                    <div class="create-btn">Создать</div>
+                    <div id="col-progress"></div>
+                </div>
+                
+                <!-- На проверке у руководителя -->
+                <div class="column">
+                    <div class="column-header col-orange">
+                        <span>На проверке</span>
+                        <span id="count-review">0</span>
+                    </div>
+                    <div class="create-btn">Создать</div>
+                    <div id="col-review"></div>
+                </div>
+                
+                <!-- Выполненная -->
+                <div class="column">
+                    <div class="column-header col-success">
+                        <span>Выполненная</span>
+                        <span id="count-completed">0</span>
+                    </div>
+                    <div class="create-btn">Создать</div>
+                    <div id="col-completed"></div>
+                </div>
+            </div>
+            
+            <!-- Календарь -->
+            <div class="calendar-panel">
+                <div class="calendar-header">
+                    <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
+                    <div class="calendar-title" id="monthTitle">Декабрь 2025</div>
+                    <button class="nav-btn" onclick="changeMonth(1)">›</button>
+                </div>
+                
+                <div style="font-size:12px;opacity:0.9;margin-bottom:1rem;">Календарь полный</div>
+                
+                <div class="calendar-grid">
+                    <div class="day-header">Пн</div>
+                    <div class="day-header">Вт</div>
+                    <div class="day-header">Ср</div>
+                    <div class="day-header">Чт</div>
+                    <div class="day-header">Пт</div>
+                    <div class="day-header">Сб</div>
+                    <div class="day-header">Вс</div>
+                </div>
+                
+                <div id="calendar"></div>
             </div>
         </div>
         
         <script>
-            async function loadStats() {
+            const statusMap = {
+                'pending': 'unplanned',
+                'accepted': 'pending',
+                'in_progress': 'progress',
+                'awaiting_payment': 'review',
+                'completed': 'completed'
+            };
+            
+            let currentMonth = new Date();
+            
+            function renderCalendar() {
+                const year = currentMonth.getFullYear();
+                const month = currentMonth.getMonth();
+                
+                document.getElementById('monthTitle').textContent = 
+                    new Date(year, month).toLocaleDateString('ru', { month: 'long', year: 'numeric' });
+                
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const today = new Date();
+                
+                let html = '<div class="calendar-grid">';
+                
+                // Пустые ячейки в начале
+                const startDay = firstDay === 0 ? 6 : firstDay - 1;
+                for (let i = 0; i < startDay; i++) {
+                    html += '<div class="day-cell empty"></div>';
+                }
+                
+                // Дни месяца
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const isToday = today.getDate() === day && 
+                                    today.getMonth() === month && 
+                                    today.getFullYear() === year;
+                    html += `<div class="day-cell ${isToday ? 'today' : ''}">${day}</div>`;
+                }
+                
+                html += '</div>';
+                document.getElementById('calendar').innerHTML = html;
+            }
+            
+            function changeMonth(delta) {
+                currentMonth.setMonth(currentMonth.getMonth() + delta);
+                renderCalendar();
+            }
+            
+            function createMasterCard(job) {
+                const masterName = job.master_name || 'Не назначен';
+                const spec = job.category || 'Общие работы';
+                return `
+                    <div class="master-card" onclick="viewJob(${job.id})">
+                        <div class="master-name">${job.client_name}</div>
+                        <div class="master-spec">${spec}, ${masterName}</div>
+                    </div>
+                `;
+            }
+            
+            async function loadJobs() {
                 try {
-                    const res = await fetch('/api/stats');
+                    const res = await fetch('/api/jobs/all');
                     const data = await res.json();
+                    const jobs = data.jobs || [];
                     
-                    document.getElementById('totalJobs').textContent = data.jobs?.total || 0;
-                    document.getElementById('activeMasters').textContent = data.masters?.active || 0;
-                    document.getElementById('revenue').textContent = (data.revenue?.total || 0).toFixed(0) + ' ₽';
-                    document.getElementById('avgCheck').textContent = 
-                        ((data.revenue?.total || 0) / Math.max(data.jobs?.total || 1, 1)).toFixed(0) + ' ₽';
+                    // Очистка колонок
+                    ['unplanned', 'pending', 'progress', 'review', 'completed'].forEach(col => {
+                        document.getElementById(`col-${col}`).innerHTML = '';
+                    });
                     
-                    // График (мок-данные для примера)
-                    const chartData = [
-                        { label: 'Пн', value: Math.random() * 100 },
-                        { label: 'Вт', value: Math.random() * 100 },
-                        { label: 'Ср', value: Math.random() * 100 },
-                        { label: 'Чт', value: Math.random() * 100 },
-                        { label: 'Пт', value: Math.random() * 100 },
-                        { label: 'Сб', value: Math.random() * 100 },
-                        { label: 'Вс', value: Math.random() * 100 }
-                    ];
-                    const maxValue = Math.max(...chartData.map(d => d.value));
+                    const counts = { unplanned: 0, pending: 0, progress: 0, review: 0, completed: 0 };
                     
-                    document.getElementById('chart').innerHTML = chartData.map(d => `
-                        <div class="bar" style="height: ${(d.value / maxValue) * 100}%">
-                            <div class="bar-value">${Math.round(d.value)}</div>
-                            <div class="bar-label">${d.label}</div>
-                        </div>
-                    `).join('');
+                    jobs.forEach(job => {
+                        const col = statusMap[job.status] || 'unplanned';
+                        counts[col]++;
+                        document.getElementById(`col-${col}`).innerHTML += createMasterCard(job);
+                    });
                     
-                    // Последние заказы (мок-данные)
-                    document.getElementById('recentJobs').innerHTML = [
-                        { name: 'Электрика', status: 'success', time: '5 мин назад' },
-                        { name: 'Сантехника', status: 'warning', time: '15 мин назад' },
-                        { name: 'Ремонт', status: 'success', time: '1 час назад' }
-                    ].map(item => `
-                        <div class="list-item">
-                            <div class="item-info">
-                                <div class="item-avatar">${item.name[0]}</div>
-                                <div>
-                                    <div style="font-weight:600">${item.name}</div>
-                                    <div style="font-size:0.875rem;color:var(--text-muted)">${item.time}</div>
-                                </div>
-                            </div>
-                            <span class="badge badge-${item.status}">${item.status === 'success' ? 'Готов' : 'В работе'}</span>
-                        </div>
-                    `).join('');
+                    Object.keys(counts).forEach(key => {
+                        document.getElementById(`count-${key}`).textContent = counts[key];
+                    });
                 } catch (error) {
                     console.error('Ошибка загрузки:', error);
                 }
             }
             
-            loadStats();
-            setInterval(loadStats, 30000);
+            function viewJob(id) {
+                window.location.href = `/admin/kanban`;
+            }
+            
+            renderCalendar();
+            loadJobs();
+            setInterval(loadJobs, 30000);
         </script>
     </body>
     </html>
