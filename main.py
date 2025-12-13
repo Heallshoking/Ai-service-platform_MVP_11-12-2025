@@ -752,9 +752,9 @@ async def root():
                     <span>Услуги Мастера</span>
                 </a>
                 <nav>
-                    <a href="#services">Услуги</a>
+                    <a href="/services">Услуги</a>
+                    <a href="/calculator">Калькулятор</a>
                     <a href="#how-it-works">Как работает</a>
-                    <a href="/docs">API</a>
                 </nav>
                 <a href="/admin" class="header-btn">Админ</a>
             </div>
@@ -1455,6 +1455,25 @@ async def calculator():
     """Калькулятор стоимости электромонтажных работ"""
     from fastapi.responses import FileResponse
     return FileResponse("static/calculator.html")
+
+@app.get("/services")
+@app.get("/services.html")
+async def services():
+    """Каталог услуг электрика - SEO-оптимизированная страница"""
+    from fastapi.responses import FileResponse
+    return FileResponse("static/services.html")
+
+@app.get("/robots.txt")
+async def robots():
+    """Файл robots.txt для поисковых роботов"""
+    from fastapi.responses import FileResponse
+    return FileResponse("static/robots.txt", media_type="text/plain")
+
+@app.get("/sitemap.xml")
+async def sitemap():
+    """XML-карта сайта для SEO"""
+    from fastapi.responses import FileResponse
+    return FileResponse("static/sitemap.xml", media_type="application/xml")
 
 @app.get("/master")
 async def master_dashboard():

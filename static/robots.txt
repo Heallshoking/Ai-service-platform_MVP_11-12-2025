@@ -1,0 +1,29 @@
+User-agent: *
+Allow: /
+Allow: /services
+Allow: /calculator
+Disallow: /admin
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://app.balt-set.ru/sitemap.xml
+
+# Crawl-delay для вежливого поведения
+Crawl-delay: 1
+
+# Яндекс
+User-agent: Yandex
+Allow: /
+Allow: /services
+Allow: /calculator
+Disallow: /admin
+Disallow: /api/
+Crawl-delay: 0.5
+
+# Google
+User-agent: Googlebot
+Allow: /
+Allow: /services
+Allow: /calculator
+Disallow: /admin
+Disallow: /api/
