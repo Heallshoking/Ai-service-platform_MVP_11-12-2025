@@ -77,71 +77,196 @@
         .header {
             background: white;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            padding: 1rem 0;
+            padding: 1.2rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
         .header-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.8rem;
+            font-weight: 800;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 3rem;
+            align-items: center;
         }
         
         .nav-links a {
-            color: #666;
+            color: #4b5563;
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.2s;
+            position: relative;
         }
         
         .nav-links a:hover {
             color: #667eea;
         }
         
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Search Bar */
+        .search-section {
+            background: #f8f9fa;
+            padding: 2rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .search-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input-wrapper {
+            flex: 1;
+            max-width: 600px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 1.3rem;
+        }
+        
+        /* Category Pills */
+        .category-pills {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .category-pill {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            color: #4b5563;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .category-pill:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.05));
+            transform: translateY(-2px);
+        }
+        
+        .category-pill.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            padding: 3rem 1.5rem;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+            padding: 2.5rem 0;
+            margin-bottom: 3rem;
+        }
+        
+        .stats-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
             text-align: center;
         }
         
-        .hero h1 {
-            font-size: 2.5rem;
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #10b981;
             margin-bottom: 0.5rem;
-            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
         }
         
-        .hero p {
-            font-size: 1.2rem;
-            opacity: 0.95;
+        .stat-label {
+            font-size: 1.1rem;
+            color: #6b7280;
+            font-weight: 500;
         }
         
         /* Container */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 3rem 1.5rem;
+            padding: 2rem 2rem 3rem;
         }
         
         .services-grid {
@@ -528,16 +653,40 @@
                 grid-template-columns: 1fr;
             }
             
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-            
             .nav-links {
                 display: none;
             }
             
             .service-card {
                 margin-bottom: 1rem;
+            }
+            
+            .search-content,
+            .header-content,
+            .stats-content {
+                padding: 0 1rem;
+            }
+            
+            .category-pills {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 0.5rem;
+            }
+            
+            .category-pill {
+                white-space: nowrap;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            .stat-label {
+                font-size: 0.9rem;
+            }
+            
+            .logo {
+                font-size: 1.3rem;
             }
         }
         
@@ -598,21 +747,65 @@
 <body>
     <header class="header">
         <div class="header-content">
-            <div class="logo" onclick="window.location.href='/'">⚡ БАЛТСЕТЬ</div>
+            <div class="logo" onclick="window.location.href='/'">
+                ⚡ AI Platform
+            </div>
             <nav class="nav-links">
-                <a href="/">Главная</a>
-                <a href="/catalog.html">Каталог</a>
                 <a href="/services.html">Услуги</a>
                 <a href="/calculator.html">Калькулятор</a>
+                <a href="/catalog.html">Вызвать мастера</a>
             </nav>
         </div>
     </header>
 
-    <div class="hero">
-        <h1>💡 Услуги электрика в Калининграде</h1>
-        <p>Рассчитайте стоимость прямо на странице и закажите за 2 минуты!</p>
-        <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(255,255,255,0.15); border-radius: 12px; backdrop-filter: blur(10px);">
-            <p style="font-size: 0.95rem; margin: 0;">⚡ Скидки до 25% при заказе от 10 единиц • 🎯 Выезд в день обращения • ⭐ Гарантия 2 года</p>
+    <!-- Search Section -->
+    <div class="search-section">
+        <div class="search-content">
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Найти услугу..." id="searchInput" oninput="filterServices()">
+                </div>
+            </div>
+            <div class="category-pills">
+                <button class="category-pill active" onclick="filterByCategory('all')">
+                    Все услуги
+                </button>
+                <button class="category-pill" onclick="filterByCategory('electric')">
+                    ⚡ Электрика
+                </button>
+                <button class="category-pill" onclick="filterByCategory('lighting')">
+                    💡 Освещение
+                </button>
+                <button class="category-pill" onclick="filterByCategory('appliance')">
+                    🔥 Техника
+                </button>
+                <button class="category-pill" onclick="filterByCategory('smart')">
+                    🏠 Умный дом
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div class="stats-content">
+            <div class="stat-card">
+                <div class="stat-value">500+</div>
+                <div class="stat-label">Выполненных заказов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">4.9<span style="font-size: 2rem;">★</span></div>
+                <div class="stat-label">Средний рейтинг</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Техподдержка</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">2 часа</div>
+                <div class="stat-label">Среднее время приезда</div>
+            </div>
         </div>
     </div>
 
@@ -620,7 +813,7 @@
         <div class="services-grid">
             
             <!-- Установка розеток -->
-            <div class="service-card">
+            <div class="service-card" data-category="electric">
                 <div class="card-header">
                     <div class="service-icon">🔌</div>
                     <h3>Установка розеток</h3>
@@ -679,7 +872,7 @@
             </div>
 
             <!-- Замена проводки -->
-            <div class="service-card">
+            <div class="service-card" data-category="electric">
                 <div class="card-header">
                     <div class="service-icon">⚡</div>
                     <h3>Замена проводки</h3>
@@ -738,7 +931,7 @@
             </div>
 
             <!-- Штробление стен -->
-            <div class="service-card">
+            <div class="service-card" data-category="electric">
                 <div class="card-header">
                     <div class="service-icon">🔨</div>
                     <h3>Штробление стен</h3>
@@ -1148,6 +1341,54 @@
             
             // Переход на главную с параметрами
             window.location.href = `/?service=${service}&qty=${qty}&total=${encodeURIComponent(total)}`;
+        }
+        
+        // Фильтрация услуг по категориям
+        function filterByCategory(category) {
+            const pills = document.querySelectorAll('.category-pill');
+            pills.forEach(pill => pill.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.5s ease-out';
+                } else {
+                    const cardCategory = card.dataset.category;
+                    if (cardCategory === category) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeInUp 0.5s ease-out';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+        
+        // Поиск услуг
+        function filterServices() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.service-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('.card-description').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.5s ease-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Если поиск пустой, показываем все
+            if (searchTerm === '') {
+                cards.forEach(card => {
+                    card.style.display = 'block';
+                });
+            }
         }
     </script>
 </body>
