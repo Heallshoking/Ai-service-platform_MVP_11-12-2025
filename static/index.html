@@ -124,6 +124,222 @@
             display: block;
         }
         
+        /* Telegram Chat Стили */
+        .telegram-chat {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ffffff;
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .telegram-chat.active {
+            display: flex;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+        
+        .chat-header {
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .back-button {
+            font-size: 32px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+        }
+        
+        .back-button:hover {
+            opacity: 0.7;
+        }
+        
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .chat-title {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .chat-status {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            animation: messageAppear 0.3s ease-out;
+        }
+        
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        
+        .ai-message .message-bubble {
+            background: white;
+            color: #333;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .user-message {
+            text-align: right;
+        }
+        
+        .user-message .message-bubble {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+        }
+        
+        .message-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px;
+        }
+        
+        .chat-input-container {
+            padding: 15px 20px;
+            background: white;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 15px;
+            outline: none;
+        }
+        
+        .chat-input:focus {
+            border-color: #667eea;
+        }
+        
+        .chat-send {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        
+        .chat-send:hover {
+            background: #5568d3;
+        }
+        
+        /* Telegram Search Box */
+        .telegram-search {
+            background: #f0f2f5;
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .telegram-search:hover {
+            background: #e8eaed;
+            border-color: #667eea;
+        }
+        
+        .search-icon {
+            font-size: 20px;
+        }
+        
+        .search-placeholder {
+            flex: 1;
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .telegram-indicator {
+            font-size: 22px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 25px;
@@ -132,14 +348,56 @@
             h1 {
                 font-size: 24px;
             }
+            
+            .message-bubble {
+                max-width: 85%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- AI Чат в стиле Telegram -->
+    <div class="telegram-chat" id="aiChat">
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <div class="back-button" onclick="closeChat()">‹</div>
+                <div class="chat-avatar">🤖</div>
+                <div class="chat-title">
+                    <div class="chat-name">AI Помощник</div>
+                    <div class="chat-status">онлайн</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                <div class="message-bubble">
+                    Привет! 👋 Я AI-помощник платформы.<br><br>
+                    Задайте вопрос или опишите проблему, и я помогу найти мастера!
+                </div>
+                <div class="message-time">сейчас</div>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Сообщение AI помощнику..." onkeypress="handleChatEnter(event)">
+            <button class="chat-send" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+    
+    <!-- Главная карточка -->
+    <div class="container" id="mainCard">
         <div style="text-align: center; margin-bottom: 20px;">
             <a href="/calculator.html" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; margin-bottom: 20px;">💡 Калькулятор стоимости</a>
         </div>
+        
+        <!-- Telegram-стиль поисковая строка -->
+        <div class="telegram-search" onclick="openChat()">
+            <div class="search-icon">🔍</div>
+            <div class="search-placeholder">Спросите AI: "Нужен электрик"...</div>
+            <div class="telegram-indicator">💬</div>
+        </div>
+        
         <h1>🔧 Вызов мастера</h1>
         <p class="subtitle">AI автоматически подберёт специалиста</p>
         
@@ -189,6 +447,94 @@
         const form = document.getElementById('requestForm');
         const loader = document.getElementById('loader');
         const result = document.getElementById('result');
+        const aiChat = document.getElementById('aiChat');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const mainCard = document.getElementById('mainCard');
+        
+        // AI Chat Функции
+        function openChat() {
+            aiChat.classList.add('active');
+            mainCard.style.display = 'none';
+            chatInput.focus();
+        }
+        
+        function closeChat() {
+            aiChat.classList.remove('active');
+            mainCard.style.display = 'block';
+        }
+        
+        function handleChatEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            
+            // Добавить сообщение пользователя
+            addMessage(message, 'user');
+            chatInput.value = '';
+            
+            // Показать индикатор "печатает..."
+            const typingMsg = addMessage('Печатает...', 'ai');
+            
+            try {
+                // Отправить запрос к AI
+                const response = await fetch('/api/v1/ai/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        context: 'client_inquiry'
+                    })
+                });
+                
+                // Удалить "печатает..."
+                typingMsg.remove();
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addMessage(data.reply || 'Понял вас! Чтобы оформить заявку, заполните форму ниже или напишите в Telegram: @ai_service_client_bot', 'ai');
+                    
+                    // Если есть рекомендация перейти к форме
+                    if (data.suggest_form) {
+                        setTimeout(() => {
+                            closeChat();
+                        }, 2000);
+                    }
+                } else {
+                    addMessage('Извините, произошла ошибка. Попробуйте заполнить форму ниже.', 'ai');
+                }
+            } catch (error) {
+                typingMsg.remove();
+                addMessage('Ответил бы с удовольствием, но сейчас лучше заполнить форму или написать в Telegram: @ai_service_client_bot 😊', 'ai');
+            }
+        }
+        
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return messageDiv;
+        }
+        
+        // Основная форма
         
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
