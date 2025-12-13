@@ -140,6 +140,9 @@
             text-decoration: none;
             transition: transform 0.2s;
             display: inline-block;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
         }
         
         .btn-white {
@@ -171,11 +174,81 @@
             color: var(--text);
         }
         
+        /* Панель фильтров и поиска */
+        .controls-panel {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1.25rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
         /* Services Grid */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 4rem;
         }
         
@@ -187,17 +260,41 @@
             transition: all 0.3s;
             cursor: pointer;
             border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(75, 143, 232, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .service-card:hover::before {
+            left: 100%;
         }
         
         .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
             border-color: var(--primary);
         }
         
         .service-icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
         
         .service-card h3 {
@@ -210,10 +307,11 @@
             color: var(--text-muted);
             font-size: 0.95rem;
             margin-bottom: 1rem;
+            min-height: 60px;
         }
         
         .service-price {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
             color: var(--accent);
             margin-top: 1rem;
@@ -223,6 +321,115 @@
             font-size: 0.875rem;
             color: var(--text-muted);
             font-weight: 400;
+        }
+        
+        .service-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalAppear 0.3s ease;
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .modal-close:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .modal-body h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+        
+        .modal-body ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-body li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 2px solid var(--border);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
         }
         
         /* FAQ Section */
@@ -238,12 +445,21 @@
             background: var(--bg);
             padding: 1.5rem;
             border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .faq-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         
         .faq-item h3 {
             font-size: 1.125rem;
             margin-bottom: 0.75rem;
             color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .faq-item p {
@@ -258,6 +474,28 @@
             text-align: center;
         }
         
+        /* Статистика */
+        .stats-banner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 3rem 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-item p {
+            color: var(--text-muted);
+        }
+        
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2rem;
@@ -269,6 +507,14 @@
             
             .nav-links {
                 display: none;
+            }
+            
+            .controls-panel {
+                flex-direction: column;
+            }
+            
+            .filter-buttons {
+                width: 100%;
             }
         }
     </style>
@@ -297,64 +543,101 @@
     <div class="container">
         <h2 class="section-title">Популярные услуги</h2>
         
-        <div class="services-grid">
-            <article class="service-card" onclick="window.location.href='/calculator'">
+        <!-- Панель управления: поиск и фильтры -->
+        <div class="controls-panel">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Найти услугу..." oninput="filterServices()">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all" onclick="setCategory('all')">Все услуги</button>
+                <button class="filter-btn" data-category="electrical" onclick="setCategory('electrical')">⚡ Электрика</button>
+                <button class="filter-btn" data-category="lighting" onclick="setCategory('lighting')">💡 Освещение</button>
+                <button class="filter-btn" data-category="appliances" onclick="setCategory('appliances')">🔥 Техника</button>
+                <button class="filter-btn" data-category="smart" onclick="setCategory('smart')">📱 Умный дом</button>
+            </div>
+        </div>
+        
+        <!-- Статистика -->
+        <div class="stats-banner">
+            <div class="stat-item">
+                <h3>500+</h3>
+                <p>Выполненных заказов</p>
+            </div>
+            <div class="stat-item">
+                <h3>4.9★</h3>
+                <p>Средний рейтинг</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Техподдержка</p>
+            </div>
+            <div class="stat-item">
+                <h3>2 часа</h3>
+                <p>Среднее время приезда</p>
+            </div>
+        </div>
+        
+        <div class="services-grid" id="servicesGrid">
+            <article class="service-card" data-category="electrical" data-name="Установка розеток и выключателей" onclick="showServiceDetails('socket')">
+                <span class="service-tag">ХИТ</span>
                 <div class="service-icon">🔌</div>
                 <h3>Установка розеток и выключателей</h3>
                 <p>Монтаж одинарных, двойных и тройных розеток. Установка выключателей любых типов.</p>
                 <div class="service-price">от 500₽ <small>за точку</small></div>
             </article>
 
-            <article class="service-card" onclick="window.location.href='/calculator'">
+            <article class="service-card" data-category="lighting" data-name="Монтаж освещения" onclick="showServiceDetails('lighting')">
                 <div class="service-icon">💡</div>
                 <h3>Монтаж освещения</h3>
                 <p>Установка люстр, светильников, точечного освещения. Подключение светодиодных лент.</p>
                 <div class="service-price">от 800₽ <small>за ед.</small></div>
             </article>
 
-            <article class="service-card" onclick="window.location.href='/calculator'">
+            <article class="service-card" data-category="electrical" data-name="Замена электропроводки" onclick="showServiceDetails('wiring')">
                 <div class="service-icon">⚡</div>
                 <h3>Замена электропроводки</h3>
                 <p>Полная замена старой проводки. Прокладка новых линий. Открытый и скрытый монтаж.</p>
                 <div class="service-price">от 1200₽ <small>за точку</small></div>
             </article>
 
-            <article class="service-card" onclick="window.location.href='/calculator'">
+            <article class="service-card" data-category="electrical" data-name="Ремонт электрики" onclick="showServiceDetails('repair')">
                 <div class="service-icon">🔧</div>
                 <h3>Ремонт электрики</h3>
                 <p>Поиск неисправностей, замена автоматов, ремонт щитков, восстановление проводки.</p>
                 <div class="service-price">от 1000₽ <small></small></div>
             </article>
 
-            <article class="service-card" onclick="window.location.href='/calculator'">
+            <article class="service-card" data-category="electrical" data-name="Установка электрощитов" onclick="showServiceDetails('panel')">
+                <span class="service-tag">НОВОЕ</span>
                 <div class="service-icon">📊</div>
                 <h3>Установка электрощитов</h3>
                 <p>Монтаж и замена распределительных щитов. Установка автоматов, УЗО, реле.</p>
                 <div class="service-price">от 3000₽ <small></small></div>
             </article>
 
-            <article class="service-card" onclick="window.location.href='/calculator'">
+            <article class="service-card" data-category="electrical" data-name="Электрика под ключ" onclick="showServiceDetails('fullservice')">
                 <div class="service-icon">🏠</div>
                 <h3>Электрика под ключ</h3>
                 <p>Полный электромонтаж квартир, домов, офисов. Проектирование и реализация.</p>
                 <div class="service-price">от 1500₽ <small>за м²</small></div>
             </article>
 
-            <article class="service-card" onclick="window.location.href='/calculator'">
+            <article class="service-card" data-category="appliances" data-name="Подключение мощной техники" onclick="showServiceDetails('appliances')">
                 <div class="service-icon">🔥</div>
                 <h3>Подключение мощной техники</h3>
                 <p>Подключение электроплит, стиральных машин, посудомоек. Прокладка силовых линий.</p>
                 <div class="service-price">от 1500₽ <small>за ед.</small></div>
             </article>
 
-            <article class="service-card" onclick="window.location.href='/calculator'">
+            <article class="service-card" data-category="appliances" data-name="Установка тёплого пола" onclick="showServiceDetails('heating')">
                 <div class="service-icon">🌡️</div>
                 <h3>Установка тёплого пола</h3>
                 <p>Монтаж электрических тёплых полов. Подключение терморегуляторов.</p>
                 <div class="service-price">от 2000₽ <small>за м²</small></div>
             </article>
 
-            <article class="service-card" onclick="window.location.href='/calculator'">
+            <article class="service-card" data-category="smart" data-name="Умный дом" onclick="showServiceDetails('smart')">
+                <span class="service-tag">ПРЕМИУМ</span>
                 <div class="service-icon">📱</div>
                 <h3>Умный дом</h3>
                 <p>Установка систем умного дома. Настройка автоматизации освещения и розеток.</p>
@@ -408,5 +691,237 @@
             <p style="margin-top: 0.5rem; opacity: 0.8;">Быстро • Качественно • Недорого</p>
         </div>
     </footer>
+    
+    <!-- Модальное окно с деталями услуги -->
+    <div class="modal" id="serviceModal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeModal()">×</button>
+                <div id="modalIcon" style="font-size: 3rem; margin-bottom: 1rem;"></div>
+                <h2 id="modalTitle"></h2>
+                <div id="modalPrice" style="font-size: 2rem; color: var(--accent); font-weight: 700; margin-top: 1rem;"></div>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">Закрыть</button>
+                <button class="btn btn-white" onclick="window.location.href='/calculator'" style="background: var(--primary); color: white;">Рассчитать стоимость</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentCategory = 'all';
+        
+        // Данные о услугах
+        const servicesData = {
+            socket: {
+                icon: '🔌',
+                title: 'Установка розеток и выключателей',
+                price: 'от 500₽ за точку',
+                description: 'Профессиональный монтаж розеток и выключателей в Калининграде. Работаем с любыми типами розеток: внутренние, накладные, с заземлением, USB-розетки.',
+                includes: [
+                    'Установка одинарных, двойных, тройных розеток',
+                    'Монтаж выключателей (одно-, двух-, трёхклавишных)',
+                    'Установка диммеров (регуляторов яркости)',
+                    'Замена старых розеток и выключателей',
+                    'Прокладка кабеля к точкам подключения',
+                    'Проверка работоспособности'
+                ],
+                features: ['Гарантия 1 год', 'Работа за 1 день', 'Качественные материалы']
+            },
+            lighting: {
+                icon: '💡',
+                title: 'Монтаж освещения',
+                price: 'от 800₽ за ед.',
+                description: 'Профессиональная установка всех типов освещения: от классических люстр до современных LED-систем.',
+                includes: [
+                    'Установка люстр и потолочных светильников',
+                    'Монтаж точечных светильников',
+                    'Подключение LED-лент и неоновой подсветки',
+                    'Установка бра и настенных светильников',
+                    'Монтаж трековых систем',
+                    'Подключение уличного освещения'
+                ],
+                features: ['Бесплатная консультация', 'Работа с высокими потолками', 'Выезд в день обращения']
+            },
+            wiring: {
+                icon: '⚡',
+                title: 'Замена электропроводки',
+                price: 'от 1200₽ за точку',
+                description: 'Полная или частичная замена электропроводки в квартире, доме, офисе. Используем кабель ВВГнг с медными жилами.',
+                includes: [
+                    'Демонтаж старой проводки',
+                    'Штробление стен под кабель',
+                    'Прокладка нового кабеля',
+                    'Установка распределительных коробок',
+                    'Подключение всех точек',
+                    'Заштукатуривание штроб'
+                ],
+                features: ['Гарантия 3 года', 'Качественный кабель', 'Составление схемы']
+            },
+            repair: {
+                icon: '🔧',
+                title: 'Ремонт электрики',
+                price: 'от 1000₽',
+                description: 'Диагностика и устранение неисправностей электропроводки. Быстро находим и устраняем любые проблемы.',
+                includes: [
+                    'Поиск короткого замыкания',
+                    'Устранение обрывов проводки',
+                    'Замена автоматических выключателей',
+                    'Ремонт распределительных щитков',
+                    'Восстановление заземления',
+                    'Проверка напряжения в сети'
+                ],
+                features: ['Срочный выезд', 'Диагностика бесплатно', 'Оплата после ремонта']
+            },
+            panel: {
+                icon: '📊',
+                title: 'Установка электрощитов',
+                price: 'от 3000₽',
+                description: 'Профессиональный монтаж распределительных щитов с установкой автоматики, УЗО, реле напряжения.',
+                includes: [
+                    'Установка квартирного щитка',
+                    'Монтаж автоматических выключателей',
+                    'Установка УЗО (устройств защитного отключения)',
+                    'Подключение реле напряжения',
+                    'Разводка проводов по группам',
+                    'Маркировка и подпись автоматов'
+                ],
+                features: ['Проектирование схемы', 'Качественная автоматика', 'Гарантия 2 года']
+            },
+            fullservice: {
+                icon: '🏠',
+                title: 'Электрика под ключ',
+                price: 'от 1500₽ за м²',
+                description: 'Полный комплекс электромонтажных работ в квартире, доме, офисе или коммерческом объекте.',
+                includes: [
+                    'Проектирование электросети',
+                    'Полная замена проводки',
+                    'Установка щитков и автоматики',
+                    'Монтаж всех розеток и выключателей',
+                    'Установка освещения',
+                    'Подключение всей бытовой техники'
+                ],
+                features: ['Фиксированная цена', 'Скидки при объёме', 'Гарантия 3 года']
+            },
+            appliances: {
+                icon: '🔥',
+                title: 'Подключение мощной техники',
+                price: 'от 1500₽ за ед.',
+                description: 'Профессиональное подключение электроплит, духовых шкафов, стиральных и посудомоечных машин.',
+                includes: [
+                    'Подключение электроплит и варочных панелей',
+                    'Установка духовых шкафов',
+                    'Подключение стиральных машин',
+                    'Монтаж посудомоечных машин',
+                    'Прокладка силового кабеля',
+                    'Установка отдельных автоматов'
+                ],
+                features: ['Безопасное подключение', 'Защита от перегрузки', 'Гарантия 1 год']
+            },
+            heating: {
+                icon: '🌡️',
+                title: 'Установка тёплого пола',
+                price: 'от 2000₽ за м²',
+                description: 'Профессиональный монтаж электрических систем тёплых полов с подключением терморегуляторов.',
+                includes: [
+                    'Расчёт мощности и площади',
+                    'Укладка нагревательного кабеля/матов',
+                    'Подключение терморегулятора',
+                    'Установка датчиков температуры',
+                    'Проведение пуско-наладочных работ',
+                    'Инструктаж по эксплуатации'
+                ],
+                features: ['Энергоэффективность', 'Ровный обогрев', 'Гарантия 2 года']
+            },
+            smart: {
+                icon: '📱',
+                title: 'Умный дом',
+                price: 'от 5000₽',
+                description: 'Современные системы умного дома: автоматизация освещения, управление розетками, интеграция с голосовыми помощниками.',
+                includes: [
+                    'Установка умных выключателей',
+                    'Монтаж умных розеток',
+                    'Настройка сценариев освещения',
+                    'Интеграция с Yandex Alice, Google Home',
+                    'Установка мобильного приложения',
+                    'Обучение использованию системы'
+                ],
+                features: ['Удалённое управление', 'Экономия энергии', 'Гарантия 1 год']
+            }
+        };
+        
+        // Показать модальное окно
+        function showServiceDetails(serviceId) {
+            const service = servicesData[serviceId];
+            if (!service) return;
+            
+            document.getElementById('modalIcon').textContent = service.icon;
+            document.getElementById('modalTitle').textContent = service.title;
+            document.getElementById('modalPrice').textContent = service.price;
+            
+            let bodyHTML = `<p style="font-size: 1.1rem; margin-bottom: 1.5rem;">${service.description}</p>`;
+            
+            if (service.includes && service.includes.length > 0) {
+                bodyHTML += '<h3>Что входит в услугу:</h3><ul>';
+                service.includes.forEach(item => {
+                    bodyHTML += `<li>${item}</li>`;
+                });
+                bodyHTML += '</ul>';
+            }
+            
+            if (service.features && service.features.length > 0) {
+                bodyHTML += '<h3>Преимущества:</h3><ul>';
+                service.features.forEach(item => {
+                    bodyHTML += `<li>${item}</li>`;
+                });
+                bodyHTML += '</ul>';
+            }
+            
+            document.getElementById('modalBody').innerHTML = bodyHTML;
+            document.getElementById('serviceModal').classList.add('active');
+        }
+        
+        // Закрыть модальное окно
+        function closeModal(event) {
+            if (!event || event.target.id === 'serviceModal') {
+                document.getElementById('serviceModal').classList.remove('active');
+            }
+        }
+        
+        // Фильтрация по категории
+        function setCategory(category) {
+            currentCategory = category;
+            
+            // Обновляем кнопки
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            filterServices();
+        }
+        
+        // Поиск и фильтрация
+        function filterServices() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.service-card');
+            
+            cards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                const name = card.getAttribute('data-name').toLowerCase();
+                const text = card.textContent.toLowerCase();
+                
+                const matchesCategory = currentCategory === 'all' || category === currentCategory;
+                const matchesSearch = searchTerm === '' || name.includes(searchTerm) || text.includes(searchTerm);
+                
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
