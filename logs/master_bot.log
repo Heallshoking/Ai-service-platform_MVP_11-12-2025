@@ -1,0 +1,133 @@
+2025-12-13 13:28:51,531 - __main__ - INFO - 🤖 Telegram бот для мастеров запущен!
+2025-12-13 13:28:51,791 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getMe "HTTP/1.1 200 OK"
+2025-12-13 13:28:51,872 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/deleteWebhook "HTTP/1.1 200 OK"
+2025-12-13 13:28:51,874 - apscheduler.scheduler - INFO - Scheduler started
+2025-12-13 13:28:51,874 - telegram.ext.Application - INFO - Application started
+2025-12-13 13:29:02,123 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:29:12,239 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:29:22,324 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:29:32,406 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:29:42,509 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:29:52,594 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:30:02,680 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:30:12,762 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:30:22,860 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:30:32,946 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:30:43,031 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:30:53,130 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:31:03,217 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:31:03,381 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:31:03,709 - httpx - INFO - HTTP Request: GET https://app.balt-set.ru/api/v1/masters/1668456209 "HTTP/1.1 404 Not Found"
+2025-12-13 13:31:03,712 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_client.py", line 1517, in request
+    request = self.build_request(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_client.py", line 358, in build_request
+    return Request(
+           ^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_models.py", line 338, in __init__
+    headers, stream = encode_request(
+                      ^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_content.py", line 212, in encode_request
+    return encode_urlencoded_data(data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_content.py", line 145, in encode_urlencoded_data
+    body = urlencode(plain_data, doseq=True).encode("utf-8")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/parse.py", line 1011, in urlencode
+    v = quote_via(v, safe, encoding, errors)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/parse.py", line 917, in quote_plus
+    string = quote(string, safe + space, encoding, errors)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/parse.py", line 895, in quote
+    string = string.encode(encoding, errors)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'utf-8' codec can't encode characters in position 0-1: surrogates not allowed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/ext/_application.py", line 1234, in process_update
+    await coroutine
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/ext/_basehandler.py", line 157, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/user/Documents/Projects/Github/balt-set.ru/telegram_master_bot.py", line 141, in start
+    await update.message.reply_text(
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/_message.py", line 1094, in reply_text
+    return await self.get_bot().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 2624, in send_message
+    return await super().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/_bot.py", line 846, in send_message
+    return await self._send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 522, in _send_message
+    result = await super()._send_message(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/_bot.py", line 703, in _send_message
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 342, in _request_wrapper
+    raise NetworkError(f"Unknown error in HTTP implementation: {exc!r}") from exc
+telegram.error.NetworkError: Unknown error in HTTP implementation: UnicodeEncodeError('utf-8', '\ud83d\udc4b Добро пожаловать в <b>Терминал мастера</b>!\n\n\ud83d\udd27 Здесь вы сможете:\n• Принимать заказы от клиентов\n• Управлять своими заказами\n• Получать статистику и оплату\n\n⚠️ Вы ещё не зарегистрированы.\nРегистрация займёт всего 2 минуты!', 0, 2, 'surrogates not allowed')
+2025-12-13 13:31:13,563 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:31:23,645 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:31:33,728 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:31:43,809 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:31:53,892 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:32:03,978 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:32:14,065 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:32:24,147 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:32:34,230 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:32:44,310 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:32:54,398 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:33:04,480 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:33:14,572 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:33:24,653 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:33:34,989 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:33:45,080 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:33:55,186 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:34:05,278 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:34:15,365 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:34:25,449 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:34:35,572 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:34:45,662 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:34:55,747 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:35:05,873 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:35:15,980 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:35:26,070 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:35:36,153 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:35:46,234 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:35:56,315 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:36:06,403 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:36:16,491 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:36:26,604 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:36:30,137 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8558486884:AAFEAnfaAKlQtoQ0Qs9vAuJ9p0Pa-XLMsBg/getUpdates "HTTP/1.1 200 OK"
+2025-12-13 13:36:30,138 - telegram.ext.Application - INFO - Application is stopping. This might take a moment.
+2025-12-13 13:36:30,140 - apscheduler.scheduler - INFO - Scheduler has been shut down
+2025-12-13 13:36:30,150 - telegram.ext.Application - INFO - Application.stop() complete

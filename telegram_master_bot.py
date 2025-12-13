@@ -69,16 +69,20 @@ def format_price(amount: float) -> str:
     return f"{amount:,.0f} ₽".replace(',', ' ')
 
 async def get_master_info(telegram_id: int) -> Optional[Dict[str, Any]]:
-    """Получить информацию о мастере из API"""
+    """Получить информацию о мастере из API по Telegram ID"""
     try:
         async with httpx.AsyncClient() as client:
+            # Сначала пробуем получить по telegram_id через query параметр
             response = await client.get(
-                f"{API_URL}/api/v1/masters/{telegram_id}",
+                f"{API_URL}/api/v1/masters",
+                params={"telegram_id": telegram_id},
                 timeout=10.0
             )
             
             if response.status_code == 200:
-                return response.json()
+                masters = response.json()
+                if masters and len(masters) > 0:
+                    return masters[0]
             return None
     except Exception as e:
         logger.error(f"Ошибка получения информации о мастере: {e}")
@@ -747,10 +751,10 @@ async def reg_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 result = response.json()
                 master_id = result.get('master_id')
                 
-                # Обновить Telegram ID
+                # Обновить Telegram ID мастера
                 await client.patch(
                     f"{API_URL}/api/v1/masters/{master_id}",
-                    json={"phone": f"+{user.id}"},  # Сохраняем Telegram ID как телефон
+                    json={"telegram_id": user.id},  # Сохраняем Telegram ID
                     timeout=10.0
                 )
                 

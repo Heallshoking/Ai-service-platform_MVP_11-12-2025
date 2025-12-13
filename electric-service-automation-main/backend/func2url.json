@@ -1,0 +1,7 @@
+{
+  "send-feedback": "https://functions.poehali.dev/5c5ceed0-7356-491d-8f3c-01e20dede751",
+  "send-email": "https://functions.poehali.dev/844c657d-c59c-4e46-a6dc-f58689204e01",
+  "telegram-auth": "https://functions.poehali.dev/bf3448cf-216e-4b95-882c-e2d877a5c34d",
+  "orders-api": "https://functions.poehali.dev/011a42c8-fcaa-413f-b611-d66cb669ba4e",
+  "planfix": "https://functions.poehali.dev/fa59900f-ff39-40ef-99de-7d268159765e"
+}

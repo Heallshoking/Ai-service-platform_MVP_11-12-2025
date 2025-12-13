@@ -65,6 +65,7 @@ def init_database():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             full_name TEXT NOT NULL,
             phone TEXT UNIQUE NOT NULL,
+            telegram_id INTEGER UNIQUE,
             specializations TEXT NOT NULL,
             city TEXT NOT NULL,
             preferred_channel TEXT DEFAULT 'telegram',
@@ -195,6 +196,16 @@ def init_database():
     """)
     
     conn.commit()
+    
+    # Миграция: добавить telegram_id если его нет
+    cursor.execute("PRAGMA table_info(masters)")
+    columns = [col[1] for col in cursor.fetchall()]
+    if 'telegram_id' not in columns:
+        print("🔄 Добавляю колонку telegram_id в таблицу masters...")
+        cursor.execute("ALTER TABLE masters ADD COLUMN telegram_id INTEGER UNIQUE")
+        conn.commit()
+        print("✅ Миграция завершена!")
+    
     conn.close()
 
 # ==================== FASTAPI APP ====================
@@ -1988,10 +1999,10 @@ async def get_master_by_telegram(telegram_id: int):
     cursor = conn.cursor()
     
     cursor.execute("""
-        SELECT id, full_name, phone, specializations, city, rating, is_active, terminal_active
+        SELECT id, full_name, phone, telegram_id, specializations, city, rating, is_active, terminal_active
         FROM masters
-        WHERE phone = ?
-    """, (f"+{telegram_id}",))  # Временно используем phone как ID
+        WHERE telegram_id = ?
+    """, (telegram_id,))
     
     master = cursor.fetchone()
     conn.close()
@@ -2019,6 +2030,41 @@ async def update_terminal_status(master_id: int, data: dict):
     conn.close()
     
     return {"success": True, "terminal_active": terminal_active}
+
+@app.patch("/api/v1/masters/{master_id}")
+async def update_master(master_id: int, data: dict):
+    """Обновить данные мастера (включая telegram_id)"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # Поддерживаемые поля для обновления
+    allowed_fields = ['telegram_id', 'phone', 'full_name', 'city', 'specializations', 'terminal_active', 'is_active']
+    updates = []
+    params = []
+    
+    for field in allowed_fields:
+        if field in data:
+            updates.append(f"{field} = ?")
+            if field == 'specializations' and isinstance(data[field], list):
+                params.append(json.dumps(data[field]))
+            else:
+                params.append(data[field])
+    
+    if not updates:
+        raise HTTPException(status_code=400, detail="Нет полей для обновления")
+    
+    params.append(master_id)
+    query = f"UPDATE masters SET {', '.join(updates)} WHERE id = ?"
+    
+    cursor.execute(query, params)
+    conn.commit()
+    
+    if cursor.rowcount == 0:
+        conn.close()
+        raise HTTPException(status_code=404, detail="Мастер не найден")
+    
+    conn.close()
+    return {"success": True, "message": "Данные обновлены"}
 
 @app.get("/api/v1/masters/{master_id}/statistics")
 async def get_master_statistics(master_id: int):

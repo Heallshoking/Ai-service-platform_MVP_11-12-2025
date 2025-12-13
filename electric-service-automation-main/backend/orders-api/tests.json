@@ -1,0 +1,50 @@
+{
+  "tests": [
+    {
+      "name": "Test OPTIONS CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": "",
+      "bodyMatcher": "exact"
+    },
+    {
+      "name": "Test GET all orders",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": "array",
+      "bodyMatcher": "type"
+    },
+    {
+      "name": "Test POST create order",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "order_uid": "TEST-ORDER-123",
+        "customer_name": "Тестовый клиент",
+        "customer_phone": "+79991234567",
+        "address": "г. Калининград, ул. Тестовая, д. 1",
+        "scheduled_date": "2025-11-10",
+        "scheduled_time": "10:00",
+        "items": [
+          {"name": "Установка розетки", "price": 500, "quantity": 2},
+          {"name": "Установка выключателя", "price": 400, "quantity": 1}
+        ],
+        "total_price": 1400,
+        "total_switches": 1,
+        "total_outlets": 2,
+        "total_points": 3,
+        "estimated_cable": 15,
+        "estimated_frames": 3,
+        "status": "new"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "success": "boolean",
+        "order_uid": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

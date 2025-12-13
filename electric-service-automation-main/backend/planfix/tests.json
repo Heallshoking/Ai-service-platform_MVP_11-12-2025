@@ -1,0 +1,36 @@
+{
+  "tests": [
+    {
+      "name": "Test OPTIONS CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": "",
+      "bodyMatcher": "exact"
+    },
+    {
+      "name": "Test create task in Planfix",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "order_id": "ORD-12345",
+        "customer_name": "Иван Иванов",
+        "customer_phone": "89001234567",
+        "address": "ул. Пушкина, д. 10, кв. 5",
+        "date": "2025-11-15",
+        "time": "14:00",
+        "total_amount": 5000,
+        "items": [
+          {"name": "Установка розетки", "quantity": 2, "price": 500},
+          {"name": "Установка выключателя", "quantity": 1, "price": 250}
+        ],
+        "status": "pending"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": "boolean"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
