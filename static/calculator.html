@@ -80,6 +80,37 @@
             color: var(--primary);
         }
         
+        /* Burger Menu */
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .burger-menu span {
+            width: 24px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        
+        .burger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .burger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .burger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        
         /* Main Container */
         .container {
             max-width: 900px;
@@ -349,8 +380,25 @@
                 grid-template-columns: 1fr;
             }
             
+            .burger-menu {
+                display: flex;
+            }
+            
             .nav-links {
-                display: none;
+                position: fixed;
+                top: 65px;
+                right: -100%;
+                width: 250px;
+                background: white;
+                flex-direction: column;
+                padding: 2rem 1.5rem;
+                box-shadow: var(--shadow-lg);
+                transition: right 0.3s;
+                z-index: 99;
+            }
+            
+            .nav-links.active {
+                right: 0;
             }
         }
     </style>
@@ -359,7 +407,14 @@
     <header class="header">
         <div class="header-content">
             <a href="/" class="logo">⚡ AI Platform</a>
-            <nav class="nav-links">
+            
+            <button class="burger-menu" id="burger-btn" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="nav-links" id="nav-menu">
                 <a href="/calculator.html">Калькулятор</a>
                 <a href="/">Услуги</a>
                 <a href="/admin">Админ</a>
@@ -800,6 +855,13 @@
             // Redirect to order page with calculated price
             const price = document.getElementById('total-price').textContent;
             window.location.href = `/?estimated_price=${encodeURIComponent(price)}`;
+        }
+        
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            const burger = document.getElementById('burger-btn');
+            menu.classList.toggle('active');
+            burger.classList.toggle('active');
         }
     </script>
 </body>
