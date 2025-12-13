@@ -515,6 +515,290 @@ async def get_statistics():
         }
     }
 
+@app.get("/api/jobs/all")
+async def get_all_jobs():
+    """Получить все заказы для Kanban-доски"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        SELECT j.*, m.full_name as master_name
+        FROM jobs j
+        LEFT JOIN masters m ON j.master_id = m.id
+        ORDER BY j.created_at DESC
+    """)
+    
+    jobs = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    
+    return {"jobs": jobs, "count": len(jobs)}
+
+# ==================== HTML ИНТЕРФЕЙСЫ ====================
+
+@app.get("/admin/kanban")
+async def admin_kanban():
+    """📋 Kanban-доска управления заказами (как на фото)"""
+    from fastapi.responses import HTMLResponse
+    
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Управление заказами | AI Platform</title>
+        <style>
+            :root {
+                --primary: #6366f1; --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+                --bg: #f8fafc; --surface: #fff; --text: #0f172a; --text-muted: #64748b;
+                --border: #e2e8f0;
+            }
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: var(--bg); color: var(--text); min-height: 100vh;
+            }
+            .sidebar {
+                position: fixed; left: 0; top: 0; bottom: 0; width: 220px;
+                background: #2d3748; color: white; padding: 1.5rem 0;
+            }
+            .logo { padding: 0 1.5rem; margin-bottom: 2rem; font-size: 1.25rem; font-weight: 700; }
+            .nav-item {
+                padding: 0.875rem 1.5rem; display: flex; align-items: center; gap: 0.75rem;
+                cursor: pointer; transition: all 0.2s; color: rgba(255,255,255,0.7);
+            }
+            .nav-item:hover, .nav-item.active {
+                background: rgba(99,102,241,0.2); color: white;
+            }
+            .main { margin-left: 220px; padding: 1.5rem; }
+            .header {
+                display: flex; justify-content: space-between; align-items: center;
+                margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+            }
+            .header h1 { font-size: 1.5rem; font-weight: 600; }
+            .stats-row {
+                display: flex; gap: 1rem; margin-bottom: 1.5rem;
+            }
+            .stat-pill {
+                padding: 0.5rem 1.25rem; border-radius: 20px; font-size: 0.875rem;
+                font-weight: 600; display: flex; align-items: center; gap: 0.5rem;
+            }
+            .stat-pill.all { background: #e0e7ff; color: var(--primary); }
+            .stat-pill.pending { background: #fef3c7; color: var(--warning); }
+            .stat-pill.progress { background: #dbeafe; color: #3b82f6; }
+            .stat-pill.payment { background: #fee2e2; color: var(--danger); }
+            .stat-pill.done { background: #d1fae5; color: var(--success); }
+            .kanban {
+                display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1rem; min-height: 70vh;
+            }
+            .column {
+                background: var(--surface); border-radius: 12px; padding: 1rem;
+                border: 1px solid var(--border);
+            }
+            .column-header {
+                display: flex; justify-content: space-between; align-items: center;
+                margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
+            }
+            .column-title { font-weight: 600; font-size: 0.875rem; text-transform: uppercase; }
+            .column-count {
+                background: var(--bg); padding: 0.25rem 0.625rem; border-radius: 12px;
+                font-size: 0.75rem; font-weight: 600;
+            }
+            .card {
+                background: white; border: 1px solid var(--border); border-radius: 8px;
+                padding: 1rem; margin-bottom: 0.75rem; cursor: pointer;
+                transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+            .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
+            .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+            .card-client { font-weight: 600; font-size: 0.9rem; }
+            .card-tag { font-size: 0.75rem; color: var(--text-muted); }
+            .card-info { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem; }
+            .info-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--text-muted); }
+            .card-price { font-size: 1.25rem; font-weight: 700; color: var(--success); margin-bottom: 0.75rem; }
+            .card-footer { display: flex; gap: 0.5rem; }
+            .btn-sm {
+                padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+                border: none; cursor: pointer; transition: all 0.2s;
+            }
+            .btn-primary { background: var(--primary); color: white; }
+            .btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+            .btn-sm:hover { opacity: 0.9; }
+            .badge { padding: 0.25rem 0.625rem; border-radius: 12px; font-size: 0.7rem; font-weight: 600; }
+            .badge-new { background: #fef3c7; color: var(--warning); }
+            .badge-assigned { background: #dbeafe; color: #3b82f6; }
+            .badge-work { background: #ddd6fe; color: #7c3aed; }
+            .empty-state {
+                text-align: center; padding: 2rem; color: var(--text-muted);
+                font-size: 0.875rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="sidebar">
+            <div class="logo">⚡ AI Platform</div>
+            <div class="nav-item"><span>📊</span>Дашборд</div>
+            <div class="nav-item active"><span>📋</span>Заказы</div>
+            <div class="nav-item"><span>👥</span>Мастера</span>
+            <div class="nav-item"><span>💳</span>Платежи</div>
+            <div class="nav-item"><span>📈</span>Аналитика</div>
+        </div>
+        
+        <div class="main">
+            <div class="header">
+                <h1>Управление заказами</h1>
+                <button class="btn-sm btn-primary">+ Новый заказ</button>
+            </div>
+            
+            <div class="stats-row">
+                <div class="stat-pill all"><span>📊</span><span id="totalOrders">0</span> Всего</div>
+                <div class="stat-pill pending"><span>🆕</span><span id="newOrders">0</span> Новые</div>
+                <div class="stat-pill progress"><span>🔄</span><span id="inProgress">0</span> В работе</div>
+                <div class="stat-pill payment"><span>💳</span><span id="awaitingPayment">0</span> Оплата</div>
+                <div class="stat-pill done"><span>✅</span><span id="completed">0</span> Завершено</div>
+            </div>
+            
+            <div class="kanban">
+                <!-- Новые -->
+                <div class="column">
+                    <div class="column-header">
+                        <div class="column-title">🆕 Новые</div>
+                        <div class="column-count" id="count-new">0</div>
+                    </div>
+                    <div id="column-new"></div>
+                </div>
+                
+                <!-- Назначен мастер -->
+                <div class="column">
+                    <div class="column-header">
+                        <div class="column-title">👨‍🔧 Назначен мастер</div>
+                        <div class="column-count" id="count-assigned">0</div>
+                    </div>
+                    <div id="column-assigned"></div>
+                </div>
+                
+                <!-- В работе -->
+                <div class="column">
+                    <div class="column-header">
+                        <div class="column-title">🔧 В работе</div>
+                        <div class="column-count" id="count-progress">0</div>
+                    </div>
+                    <div id="column-progress"></div>
+                </div>
+                
+                <!-- Ожидает оплату -->
+                <div class="column">
+                    <div class="column-header">
+                        <div class="column-title">💳 Ожидает оплату</div>
+                        <div class="column-count" id="count-payment">0</div>
+                    </div>
+                    <div id="column-payment"></div>
+                </div>
+                
+                <!-- Завершено -->
+                <div class="column">
+                    <div class="column-header">
+                        <div class="column-title">✅ Завершено</div>
+                        <div class="column-count" id="count-done">0</div>
+                    </div>
+                    <div id="column-done"></div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            const statusMap = {
+                'pending': 'new',
+                'accepted': 'assigned',
+                'in_progress': 'progress',
+                'awaiting_payment': 'payment',
+                'completed': 'done'
+            };
+            
+            function createCard(job) {
+                const masterPart = job.master_id 
+                    ? `<div class="info-row">👨‍🔧 Мастер #${job.master_id}</div>` 
+                    : '<div class="info-row">⏳ Ищем мастера...</div>';
+                    
+                return `
+                    <div class="card" data-job-id="${job.id}">
+                        <div class="card-header">
+                            <div class="card-client">${job.client_name}</div>
+                            <div class="card-tag">#${job.id}</div>
+                        </div>
+                        <div class="card-info">
+                            <div class="info-row">📍 ${job.address}</div>
+                            <div class="info-row">⚡ ${job.category}</div>
+                            ${masterPart}
+                        </div>
+                        <div class="card-price">${Math.round(job.estimated_price || 0)} ₽</div>
+                        <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.75rem;">
+                            ${job.problem_description.substring(0, 60)}...
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn-sm btn-primary" onclick="viewJob(${job.id})">Просмотр</button>
+                            <button class="btn-sm btn-secondary">Изменить</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            async function loadOrders() {
+                try {
+                    const res = await fetch('/api/jobs/all');
+                    const data = await res.json();
+                    const jobs = data.jobs || [];
+                    
+                    // Очистка колонок
+                    ['new', 'assigned', 'progress', 'payment', 'done'].forEach(col => {
+                        document.getElementById(`column-${col}`).innerHTML = '';
+                    });
+                    
+                    // Счётчики
+                    const counts = { new: 0, assigned: 0, progress: 0, payment: 0, done: 0 };
+                    
+                    jobs.forEach(job => {
+                        const column = statusMap[job.status] || 'new';
+                        counts[column]++;
+                        document.getElementById(`column-${column}`).innerHTML += createCard(job);
+                    });
+                    
+                    // Обновление счётчиков
+                    Object.keys(counts).forEach(key => {
+                        document.getElementById(`count-${key}`).textContent = counts[key];
+                    });
+                    
+                    document.getElementById('totalOrders').textContent = jobs.length;
+                    document.getElementById('newOrders').textContent = counts.new;
+                    document.getElementById('inProgress').textContent = counts.progress;
+                    document.getElementById('awaitingPayment').textContent = counts.payment;
+                    document.getElementById('completed').textContent = counts.done;
+                    
+                    // Empty states
+                    ['new', 'assigned', 'progress', 'payment', 'done'].forEach(col => {
+                        const container = document.getElementById(`column-${col}`);
+                        if (!container.innerHTML) {
+                            container.innerHTML = '<div class="empty-state">Пусто</div>';
+                        }
+                    });
+                } catch (error) {
+                    console.error('Ошибка загрузки:', error);
+                }
+            }
+            
+            function viewJob(id) {
+                alert(`Просмотр заказа #${id}`);
+            }
+            
+            loadOrders();
+            setInterval(loadOrders, 15000);
+        </script>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
+
 # ==================== HTML ИНТЕРФЕЙСЫ ====================
 
 @app.get("/admin")
