@@ -1446,6 +1446,12 @@ async def admin_panel():
     
     return HTMLResponse(content=html_content)
 
+@app.get("/calculator.html")
+async def calculator():
+    """Калькулятор стоимости электромонтажных работ"""
+    from fastapi.responses import FileResponse
+    return FileResponse("static/calculator.html")
+
 @app.get("/master")
 async def master_dashboard():
     """Личный кабинет мастера"""
