@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата заказа | БАЛТСЕТЬ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        h1 {
+            font-size: 28px;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .order-summary {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .item-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .total-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #667eea;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .total-row.main {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-top: 15px;
+        }
+        
+        .commission-info {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .commission-breakdown {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .breakdown-item {
+            text-align: center;
+        }
+        
+        .breakdown-label {
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+        
+        .breakdown-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .payment-methods {
+            margin-bottom: 25px;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-method:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+        
+        .payment-method.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .payment-icon {
+            font-size: 32px;
+        }
+        
+        .payment-info h3 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .payment-info p {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .pay-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .pay-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .pay-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .success-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .success-message h2 {
+            color: #10b981;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="paymentForm">
+        <div class="header">
+            <h1>💳 Оплата заказа</h1>
+            <p style="color: #999; font-size: 14px;">Безопасная оплата</p>
+        </div>
+        
+        <div class="order-summary">
+            <h3 style="margin-bottom: 15px; color: #333;">📋 Ваш заказ</h3>
+            <div id="orderItems">
+                <!-- Заполняется JavaScript -->
+            </div>
+            
+            <div class="total-section">
+                <div class="total-row">
+                    <span>Стоимость услуг:</span>
+                    <span id="subtotal">0 ₽</span>
+                </div>
+                <div class="total-row">
+                    <span>Комиссия платформы (25%):</span>
+                    <span id="commission">0 ₽</span>
+                </div>
+                <div class="total-row main">
+                    <span>Итого к оплате:</span>
+                    <span id="totalAmount">0 ₽</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="commission-info">
+            <div style="font-weight: 600; margin-bottom: 8px; color: #667eea;">ℹ️ Распределение средств</div>
+            <div>Из оплаченной суммы 75% получит мастер, 25% — платформа за подбор специалиста</div>
+            <div class="commission-breakdown">
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Мастер получит</div>
+                    <div class="breakdown-value" id="masterPayout">0 ₽</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Комиссия платформы</div>
+                    <div class="breakdown-value" id="platformFee">0 ₽</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="payment-methods">
+            <h3 style="margin-bottom: 15px; color: #333;">Способ оплаты</h3>
+            
+            <div class="payment-method selected" data-method="card">
+                <div class="payment-icon">💳</div>
+                <div class="payment-info">
+                    <h3>Банковская карта</h3>
+                    <p>Visa, MasterCard, МИР</p>
+                </div>
+            </div>
+            
+            <div class="payment-method" data-method="sbp">
+                <div class="payment-icon">📱</div>
+                <div class="payment-info">
+                    <h3>СБП (Система Быстрых Платежей)</h3>
+                    <p>Оплата по QR-коду</p>
+                </div>
+            </div>
+            
+            <div class="payment-method" data-method="cash">
+                <div class="payment-icon">💵</div>
+                <div class="payment-info">
+                    <h3>Наличными мастеру</h3>
+                    <p>Оплата после выполнения работ</p>
+                </div>
+            </div>
+        </div>
+        
+        <button class="pay-button" onclick="processPayment()">
+            Оплатить <span id="payButtonAmount">0 ₽</span>
+        </button>
+        
+        <a href="/calculator.html" class="back-link">← Вернуться к расчёту</a>
+    </div>
+    
+    <div class="container success-message" id="successMessage">
+        <div class="success-icon">✅</div>
+        <h2>Оплата успешна!</h2>
+        <p style="color: #666; margin-bottom: 20px;">Заказ отправлен мастеру. Ожидайте звонка в течение 15 минут.</p>
+        <button class="pay-button" onclick="window.location.href='/'">
+            Вернуться на главную
+        </button>
+    </div>
+    
+    <script>
+        // Константы
+        const PLATFORM_COMMISSION = 0.25; // 25%
+        const MASTER_PAYOUT = 0.75; // 75%
+        
+        let selectedPaymentMethod = 'card';
+        let cart = [];
+        
+        // Загрузка корзины
+        function loadCart() {
+            const cartData = localStorage.getItem('cart');
+            if (cartData) {
+                cart = JSON.parse(cartData);
+            } else {
+                // Тестовые данные для демонстрации
+                cart = [
+                    { name: 'Установка розеток', price: 2000, quantity: 2 },
+                    { name: 'Замена проводки', price: 15000, quantity: 1 }
+                ];
+            }
+            
+            renderOrder();
+            calculateTotals();
+        }
+        
+        // Отобразить заказ
+        function renderOrder() {
+            const orderItems = document.getElementById('orderItems');
+            orderItems.innerHTML = cart.map(item => `
+                <div class="order-item">
+                    <div class="item-name">${item.name} ${item.quantity > 1 ? `(×${item.quantity})` : ''}</div>
+                    <div class="item-price">${(item.price * item.quantity).toLocaleString('ru-RU')} ₽</div>
+                </div>
+            `).join('');
+        }
+        
+        // Расчёт сумм
+        function calculateTotals() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const commission = Math.round(subtotal * PLATFORM_COMMISSION);
+            const masterPayout = Math.round(subtotal * MASTER_PAYOUT);
+            const total = subtotal;
+            
+            document.getElementById('subtotal').textContent = subtotal.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('commission').textContent = commission.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('totalAmount').textContent = total.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('payButtonAmount').textContent = total.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('masterPayout').textContent = masterPayout.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('platformFee').textContent = commission.toLocaleString('ru-RU') + ' ₽';
+        }
+        
+        // Выбор способа оплаты
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedPaymentMethod = this.dataset.method;
+            });
+        });
+        
+        // Обработка оплаты
+        async function processPayment() {
+            const payButton = document.querySelector('.pay-button');
+            payButton.disabled = true;
+            payButton.textContent = '⏳ Обработка...';
+            
+            // Имитация отправки в Telegram бота
+            try {
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const commission = Math.round(subtotal * PLATFORM_COMMISSION);
+                const masterPayout = Math.round(subtotal * MASTER_PAYOUT);
+                
+                const orderData = {
+                    items: cart,
+                    payment_method: selectedPaymentMethod,
+                    total: subtotal,
+                    commission: commission,
+                    master_payout: masterPayout,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Сохранить заказ в localStorage (для демонстрации)
+                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                orders.push(orderData);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                
+                // Имитация задержки оплаты
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Показать успех
+                document.getElementById('paymentForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Очистить корзину
+                localStorage.removeItem('cart');
+                
+                // Отправить в Telegram (реальная интеграция)
+                // sendToTelegram(orderData);
+                
+            } catch (error) {
+                alert('Ошибка оплаты: ' + error.message);
+                payButton.disabled = false;
+                payButton.innerHTML = 'Оплатить <span id="payButtonAmount"></span>';
+                calculateTotals();
+            }
+        }
+        
+        // Отправка в Telegram бот
+        async function sendToTelegram(orderData) {
+            // Здесь будет реальная интеграция с Telegram ботом
+            const message = `
+🆕 НОВЫЙ ЗАКАЗ #${Date.now()}
+
+📋 Услуги:
+${orderData.items.map(item => `• ${item.name} (×${item.quantity}) — ${(item.price * item.quantity).toLocaleString('ru-RU')} ₽`).join('\n')}
+
+💰 Финансы:
+Сумма заказа: ${orderData.total.toLocaleString('ru-RU')} ₽
+Комиссия (25%): ${orderData.commission.toLocaleString('ru-RU')} ₽
+Мастер получит (75%): ${orderData.master_payout.toLocaleString('ru-RU')} ₽
+
+💳 Способ оплаты: ${orderData.payment_method === 'card' ? 'Карта' : orderData.payment_method === 'sbp' ? 'СБП' : 'Наличные'}
+            `.trim();
+            
+            console.log('Отправка в Telegram:', message);
+            
+            // Реальный API вызов (раскомментировать при деплое)
+            /*
+            await fetch('https://api.telegram.org/bot<TOKEN>/sendMessage', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: '<CHAT_ID>',
+                    text: message
+                })
+            });
+            */
+        }
+        
+        // Инициализация
+        window.addEventListener('DOMContentLoaded', loadCart);
+    </script>
+</body>
+</html>

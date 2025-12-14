@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Навигация - БАЛТСЕТЬ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .nav-section {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1d1d1f;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .nav-links {
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+        
+        .nav-links a .icon {
+            font-size: 1.25rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .footer {
+            background: #1d1d1f;
+            color: #f5f5f7;
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-column ul li a {
+            color: #a0a0a0;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 1rem;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <span>⚡</span>
+                <span>БАЛТСЕТЬ</span>
+            </a>
+        </div>
+    </header>
+    
+    <div class="nav-container">
+        <div class="nav-grid">
+            <!-- Основные страницы -->
+            <div class="nav-section">
+                <h2 class="section-title">🏠 Основные страницы</h2>
+                <ul class="nav-links">
+                    <li><a href="/"><span class="icon">🏠</span> Главная</a></li>
+                    <li><a href="/catalog.html"><span class="icon">📖</span> Каталог услуг</a></li>
+                    <li><a href="/services.html"><span class="icon">⚡</span> Услуги электрика</a></li>
+                    <li><a href="/calculator.html"><span class="icon">📊</span> Калькулятор</a></li>
+                    <li><a href="/ai-chat.html"><span class="icon">🤖</span> AI-чат</a></li>
+                </ul>
+            </div>
+            
+            <!-- Популярные услуги -->
+            <div class="nav-section">
+                <h2 class="section-title">⭐ Популярные услуги</h2>
+                <ul class="nav-links">
+                    <li><a href="/catalog.html#services"><span class="icon">🔌</span> Установка розеток</a></li>
+                    <li><a href="/catalog.html#services"><span class="icon">💡</span> Установка люстр</a></li>
+                    <li><a href="/catalog.html#services"><span class="icon">⚡</span> Замена проводки</a></li>
+                    <li><a href="/catalog.html#services"><span class="icon">🛠️</span> Штробление стен</a></li>
+                    <li><a href="/catalog.html#services"><span class="icon">🎛️</span> Монтаж электрощитка</a></li>
+                </ul>
+            </div>
+            
+            <!-- Категории услуг -->
+            <div class="nav-section">
+                <h2 class="section-title">📂 Категории услуг</h2>
+                <ul class="nav-links">
+                    <li><a href="/catalog.html#services"><span class="icon">🔌</span> Розетки и выключатели</a></li>
+                    <li><a href="/catalog.html#services"><span class="icon">💡</span> Освещение</a></li>
+                    <li><a href="/catalog.html#services"><span class="icon">⚡</span> Электромонтаж</a></li>
+                    <li><a href="/catalog.html#services"><span class="icon">🔧</span> Ремонт</a></li>
+                    <li><a href="/catalog.html#services"><span class="icon">🚰</span> Сантехника</a></li>
+                </ul>
+            </div>
+            
+            <!-- Информация -->
+            <div class="nav-section">
+                <h2 class="section-title">ℹ️ Информация</h2>
+                <ul class="nav-links">
+                    <li><a href="/#about"><span class="icon">🏢</span> О компании</a></li>
+                    <li><a href="/#reviews"><span class="icon">⭐</span> Отзывы</a></li>
+                    <li><a href="/#portfolio"><span class="icon">🖼️</span> Портфолио</a></li>
+                    <li><a href="/#contacts"><span class="icon">📞</span> Контакты</a></li>
+                    <li><a href="/#faq"><span class="icon">❓</span> Вопросы и ответы</a></li>
+                </ul>
+            </div>
+            
+            <!-- Контакты и соцсети -->
+            <div class="nav-section">
+                <h2 class="section-title">📱 Контакты</h2>
+                <ul class="nav-links">
+                    <li><a href="tel:+79001234567"><span class="icon">📞</span> +7 (900) 123-45-67</a></li>
+                    <li><a href="https://t.me/ai_service_client_bot" target="_blank"><span class="icon">💬</span> Telegram бот</a></li>
+                    <li><a href="https://vk.com/baltset" target="_blank"><span class="icon">👥</span> ВКонтакте</a></li>
+                    <li><a href="mailto:info@balt-set.ru"><span class="icon">✉️</span> Email</a></li>
+                    <li><a href="/#address"><span class="icon">📍</span> Адрес: Калининград</a></li>
+                </ul>
+            </div>
+            
+            <!-- Дополнительно -->
+            <div class="nav-section">
+                <h2 class="section-title">➕ Дополнительно</h2>
+                <ul class="nav-links">
+                    <li><a href="/admin.html"><span class="icon">⚙️</span> Админка</a></li>
+                    <li><a href="/admin-catalog.html"><span class="icon">🛠️</span> Управление каталогом</a></li>
+                    <li><a href="/track.html"><span class="icon">📍</span> Отслеживание мастера</a></li>
+                    <li><a href="/payment.html"><span class="icon">💳</span> Оплата</a></li>
+                    <li><a href="/order-complete.html"><span class="icon">✅</span> Заказ завершен</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Услуги</h3>
+                <ul>
+                    <li><a href="/catalog.html">Каталог услуг</a></li>
+                    <li><a href="/services.html">Услуги электрика</a></li>
+                    <li><a href="/calculator.html">Калькулятор стоимости</a></li>
+                    <li><a href="/ai-chat.html">AI-консультант</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Информация</h3>
+                <ul>
+                    <li><a href="/#about">О компании</a></li>
+                    <li><a href="/#contacts">Контакты</a></li>
+                    <li><a href="/#reviews">Отзывы</a></li>
+                    <li><a href="/#portfolio">Портфолио</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Контакты</h3>
+                <ul>
+                    <li>📍 Калининград</li>
+                    <li>📞 +7 (900) 123-45-67</li>
+                    <li>✉️ info@balt-set.ru</li>
+                    <li>🕒 Ежедневно 8:00-22:00</li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Telegram</h3>
+                <ul>
+                    <li><a href="https://t.me/ai_service_client_bot" target="_blank">@ai_service_client_bot</a></li>
+                    <li><a href="https://t.me/ai_service_master_bot" target="_blank">@ai_service_master_bot</a></li>
+                    <li><a href="https://t.me/baltset_news" target="_blank">Новости</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2024 БАЛТСЕТЬ. Все права защищены. Услуги электрика и сантехника в Калининграде.
+        </div>
+    </footer>
+</body>
+</html>

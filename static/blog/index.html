@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Блог | БАЛТСЕТЬ - Услуги электрика в Калининграде</title>
+    <meta name="description" content="Полезные статьи об электрике, проводке, освещении. Советы по безопасности, выбору оборудования, ремонту. Экспертные материалы.">
+    <meta name="keywords" content="блог электрика калининград, советы по электрике, ремонт проводки, установка розеток, освещение">
+    <meta name="theme-color" content="#667eea">
+    <link rel="canonical" href="https://app.balt-set.ru/blog">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://app.balt-set.ru/blog">
+    <meta property="og:title" content="Блог | БАЛТСЕТЬ - Услуги электрика в Калининграде">
+    <meta property="og:description" content="Полезные статьи об электрике, проводке, освещении. Советы по безопасности, выбору оборудования, ремонту.">
+    <meta property="og:image" content="https://app.balt-set.ru/images/blog.jpg">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:site_name" content="БАЛТСЕТЬ">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://app.balt-set.ru/blog">
+    <meta property="twitter:title" content="Блог БАЛТСЕТЬ">
+    <meta property="twitter:description" content="Полезные статьи об электрике, проводке, освещении. Советы по безопасности.">
+    <meta property="twitter:image" content="https://app.balt-set.ru/images/blog.jpg">
+    
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(98765432, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/98765432" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="RU-KGD">
+    <meta name="geo.placename" content="Калининград">
+    <meta name="geo.position" content="54.710162;20.510137">
+    <meta name="ICBM" content="54.710162, 20.510137">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav a:hover {
+            opacity: 0.8;
+        }
+        
+        .breadcrumb {
+            padding: 15px 0;
+            font-size: 14px;
+        }
+        
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .breadcrumb span {
+            color: #666;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin: 30px 0 20px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+            color: #555;
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .blog-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .blog-img {
+            width: 100%;
+            height: 200px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .blog-info {
+            padding: 25px;
+        }
+        
+        .blog-category {
+            color: #667eea;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        
+        .blog-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .blog-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .blog-title a:hover {
+            color: #667eea;
+        }
+        
+        .blog-excerpt {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #999;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 40px 0;
+        }
+        
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: white;
+            color: #667eea;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .categories {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .categories h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .category-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .category-item {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .category-item:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">⚡ БАЛТСЕТЬ</a>
+            <nav>
+                <ul>
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/catalog.html">Каталог</a></li>
+                    <li><a href="/services.html">Услуги</a></li>
+                    <li><a href="/calculator.html">Калькулятор</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="/">Главная</a> / 
+            <span>Блог</span>
+        </div>
+        
+        <h1>Блог БАЛТСЕТЬ</h1>
+        
+        <p class="intro">
+            Полезные статьи об электрике, проводке, освещении. Советы по безопасности, выбору оборудования, ремонту. 
+            Экспертные материалы от профессионалов своего дела.
+        </p>
+        
+        <div class="categories">
+            <h2>Категории</h2>
+            <div class="category-list">
+                <a href="#" class="category-item">Замена проводки</a>
+                <a href="#" class="category-item">Установка розеток</a>
+                <a href="#" class="category-item">Монтаж освещения</a>
+                <a href="#" class="category-item">Электрощиты</a>
+                <a href="#" class="category-item">Безопасность</a>
+                <a href="#" class="category-item">Ремонт</a>
+                <a href="#" class="category-item">Советы</a>
+            </div>
+        </div>
+        
+        <div class="blog-grid">
+            <div class="blog-card">
+                <div class="blog-img">Изображение статьи</div>
+                <div class="blog-info">
+                    <div class="blog-category">Замена проводки</div>
+                    <h3 class="blog-title">
+                        <a href="/blog/skolko-stoit-zamena-provodki.html">Сколько стоит замена проводки в квартире в 2024 году</a>
+                    </h3>
+                    <div class="blog-excerpt">
+                        Подробный гид по стоимости замены электропроводки в квартире. Цены на материалы и работу. 
+                        Сравнение вариантов. Экономия без потери качества.
+                    </div>
+                    <div class="blog-meta">
+                        <span>14 декабря 2024</span>
+                        <span>15 мин чтения</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="blog-card">
+                <div class="blog-img">Изображение статьи</div>
+                <div class="blog-info">
+                    <div class="blog-category">Установка розеток</div>
+                    <h3 class="blog-title">
+                        <a href="#">Как выбрать розетки и выключатели: гид покупателя</a>
+                    </h3>
+                    <div class="blog-excerpt">
+                        Какие розетки и выключатели выбрать для квартиры? Обзор популярных брендов, 
+                        сравнение материалов, советы по выбору и установке.
+                    </div>
+                    <div class="blog-meta">
+                        <span>10 декабря 2024</span>
+                        <span>12 мин чтения</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="blog-card">
+                <div class="blog-img">Изображение статьи</div>
+                <div class="blog-info">
+                    <div class="blog-category">Безопасность</div>
+                    <h3 class="blog-title">
+                        <a href="#">ТОП-5 ошибок при самостоятельном электромонтаже</a>
+                    </h3>
+                    <div class="blog-excerpt">
+                        Распространенные ошибки при самостоятельной установке розеток, выключателей и замене проводки. 
+                        Чем это грозит и как избежать проблем.
+                    </div>
+                    <div class="blog-meta">
+                        <span>5 декабря 2024</span>
+                        <span>10 мин чтения</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="blog-card">
+                <div class="blog-img">Изображение статьи</div>
+                <div class="blog-info">
+                    <div class="blog-category">Электрощиты</div>
+                    <h3 class="blog-title">
+                        <a href="#">Какой электрощит выбрать для квартиры</a>
+                    </h3>
+                    <div class="blog-excerpt">
+                        Виды электрощитов, количество модулей, выбор автоматов и УЗО. 
+                        Что нужно знать при выборе и установке электрощита.
+                    </div>
+                    <div class="blog-meta">
+                        <span>1 декабря 2024</span>
+                        <span>14 мин чтения</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="blog-card">
+                <div class="blog-img">Изображение статьи</div>
+                <div class="blog-info">
+                    <div class="blog-category">Установка розеток</div>
+                    <h3 class="blog-title">
+                        <a href="#">Установка розеток: пошаговая инструкция</a>
+                    </h3>
+                    <div class="blog-excerpt">
+                        Как правильно установить розетку своими руками. Инструменты, подготовка, 
+                        пошаговый процесс монтажа и тестирования.
+                    </div>
+                    <div class="blog-meta">
+                        <span>25 ноября 2024</span>
+                        <span>11 мин чтения</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="blog-card">
+                <div class="blog-img">Изображение статьи</div>
+                <div class="blog-info">
+                    <div class="blog-category">Безопасность</div>
+                    <h3 class="blog-title">
+                        <a href="#">УЗО или дифавтомат: что выбрать?</a>
+                    </h3>
+                    <div class="blog-excerpt">
+                        В чем разница между УЗО и дифавтоматом? Когда что использовать? 
+                        Преимущества и недостатки каждого варианта.
+                    </div>
+                    <div class="blog-meta">
+                        <span>20 ноября 2024</span>
+                        <span>9 мин чтения</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">3</a>
+            <a href="#" class="page-btn">›</a>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 БАЛТСЕТЬ. Услуги электрика в Калининграде. Все права защищены.</p>
+            <p>Телефон: +7 (900) 123-45-67 | Email: info@balt-set.ru</p>
+        </div>
+    </footer>
+</body>
+</html>

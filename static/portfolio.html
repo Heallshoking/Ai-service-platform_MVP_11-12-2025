@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфолио работ | БАЛТСЕТЬ - Услуги электрика в Калининграде</title>
+    <meta name="description" content="Фото выполненных работ по установке розеток, замене проводки, монтажу освещения. Примеры работ электрика в Калининграде.">
+    <meta name="keywords" content="портфолио электрика калининград, примеры работ, фото электромонтажа, установка розеток фото">
+    <meta name="theme-color" content="#667eea">
+    <link rel="canonical" href="https://app.balt-set.ru/portfolio">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://app.balt-set.ru/portfolio">
+    <meta property="og:title" content="Портфолио работ | БАЛТСЕТЬ - Услуги электрика в Калининграде">
+    <meta property="og:description" content="Фото выполненных работ по установке розеток, замене проводки, монтажу освещения. Примеры работ электрика в Калининграде.">
+    <meta property="og:image" content="https://app.balt-set.ru/images/portfolio.jpg">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:site_name" content="БАЛТСЕТЬ">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://app.balt-set.ru/portfolio">
+    <meta property="twitter:title" content="Портфолио работ БАЛТСЕТЬ">
+    <meta property="twitter:description" content="Фото выполненных работ по установке розеток, замене проводки, монтажу освещения.">
+    <meta property="twitter:image" content="https://app.balt-set.ru/images/portfolio.jpg">
+    
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(98765432, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/98765432" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="RU-KGD">
+    <meta name="geo.placename" content="Калининград">
+    <meta name="geo.position" content="54.710162;20.510137">
+    <meta name="ICBM" content="54.710162, 20.510137">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav a:hover {
+            opacity: 0.8;
+        }
+        
+        .breadcrumb {
+            padding: 15px 0;
+            font-size: 14px;
+        }
+        
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .breadcrumb span {
+            color: #666;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin: 30px 0 20px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+            color: #555;
+        }
+        
+        .portfolio-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            color: #667eea;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active, .tab-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .portfolio-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .portfolio-img {
+            width: 100%;
+            height: 200px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .portfolio-info {
+            padding: 20px;
+        }
+        
+        .portfolio-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .portfolio-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .portfolio-price {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .before-after {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .ba-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .ba-header {
+            padding: 15px 20px;
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .ba-images {
+            display: flex;
+        }
+        
+        .ba-image {
+            flex: 1;
+            height: 150px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .ba-divider {
+            width: 2px;
+            background: #667eea;
+            position: relative;
+        }
+        
+        .ba-divider:after {
+            content: "→";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: #667eea;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+        
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .portfolio-grid, .before-after {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">⚡ БАЛТСЕТЬ</a>
+            <nav>
+                <ul>
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/catalog.html">Каталог</a></li>
+                    <li><a href="/services.html">Услуги</a></li>
+                    <li><a href="/calculator.html">Калькулятор</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="/">Главная</a> / 
+            <span>Портфолио работ</span>
+        </div>
+        
+        <h1>Портфолио наших работ</h1>
+        
+        <p class="intro">
+            Фото выполненных работ по установке розеток, замене проводки, монтажу освещения. 
+            Примеры работ электрика в Калининграде. Реальные фотографии до и после.
+        </p>
+        
+        <div class="portfolio-tabs">
+            <button class="tab-btn active">Установка розеток</button>
+            <button class="tab-btn">Замена проводки</button>
+            <button class="tab-btn">Монтаж освещения</button>
+            <button class="tab-btn">Электрощиты</button>
+            <button class="tab-btn">До/После</button>
+        </div>
+        
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <div class="portfolio-img">Фото: Установка розеток в гостиной</div>
+                <div class="portfolio-info">
+                    <div class="portfolio-title">Установка розеток в гостиной</div>
+                    <div class="portfolio-desc">Установка 6 двойных розеток с заземлением. Штробление под проводку.</div>
+                    <div class="portfolio-price">Стоимость: 3 600 руб.</div>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="portfolio-img">Фото: Установка розеток на кухне</div>
+                <div class="portfolio-info">
+                    <div class="portfolio-title">Установка розеток на кухне</div>
+                    <div class="portfolio-desc">Установка 8 розеток для техники. Скрытый монтаж.</div>
+                    <div class="portfolio-price">Стоимость: 4 800 руб.</div>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="portfolio-img">Фото: Установка выключателей</div>
+                <div class="portfolio-info">
+                    <div class="portfolio-title">Установка выключателей</div>
+                    <div class="portfolio-desc">Установка 4 двойных выключателя. Подключение люстр.</div>
+                    <div class="portfolio-price">Стоимость: 2 200 руб.</div>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="portfolio-img">Фото: Замена проводки в однокомнатной квартире</div>
+                <div class="portfolio-info">
+                    <div class="portfolio-title">Замена проводки в однокомнатной квартире</div>
+                    <div class="portfolio-desc">Полная замена проводки. Установка электрощита.</div>
+                    <div class="portfolio-price">Стоимость: 15 000 руб.</div>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="portfolio-img">Фото: Замена проводки в двухкомнатной квартире</div>
+                <div class="portfolio-info">
+                    <div class="portfolio-title">Замена проводки в двухкомнатной квартире</div>
+                    <div class="portfolio-desc">Полная замена проводки. Автоматизация освещения.</div>
+                    <div class="portfolio-price">Стоимость: 22 000 руб.</div>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="portfolio-img">Фото: Монтаж точечного освещения</div>
+                <div class="portfolio-info">
+                    <div class="portfolio-title">Монтаж точечного освещения</div>
+                    <div class="portfolio-desc">Установка 12 точечных светильников в гостиной.</div>
+                    <div class="portfolio-price">Стоимость: 9 600 руб.</div>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="portfolio-img">Фото: Установка люстры</div>
+                <div class="portfolio-info">
+                    <div class="portfolio-title">Установка люстры</div>
+                    <div class="portfolio-desc">Установка 8-ламповой люстры в спальне.</div>
+                    <div class="portfolio-price">Стоимость: 1 500 руб.</div>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="portfolio-img">Фото: Монтаж LED-ленты</div>
+                <div class="portfolio-info">
+                    <div class="portfolio-title">Монтаж LED-ленты</div>
+                    <div class="portfolio-desc">Установка RGB LED-ленты в гостиной с управлением.</div>
+                    <div class="portfolio-price">Стоимость: 4 500 руб.</div>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="portfolio-img">Фото: Установка электрощита</div>
+                <div class="portfolio-info">
+                    <div class="portfolio-title">Установка электрощита</div>
+                    <div class="portfolio-desc">Монтаж электрощита на 24 модуля. УЗО, автоматы.</div>
+                    <div class="portfolio-price">Стоимость: 4 500 руб.</div>
+                </div>
+            </div>
+            
+            <div class="portfolio-item">
+                <div class="portfolio-img">Фото: Установка электрощита премиум класса</div>
+                <div class="portfolio-info">
+                    <div class="portfolio-title">Установка электрощита премиум класса</div>
+                    <div class="portfolio-desc">Монтаж электрощита с диф. автоматами, реле напряжения.</div>
+                    <div class="portfolio-price">Стоимость: 7 200 руб.</div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 style="text-align: center; margin: 50px 0 30px;">До и После</h2>
+        
+        <div class="before-after">
+            <div class="ba-item">
+                <div class="ba-header">Старая проводка в квартире</div>
+                <div class="ba-images">
+                    <div class="ba-image">Фото: Старая алюминиевая проводка</div>
+                    <div class="ba-divider"></div>
+                    <div class="ba-image">Фото: Новая медная проводка</div>
+                </div>
+            </div>
+            
+            <div class="ba-item">
+                <div class="ba-header">Старый электрощит</div>
+                <div class="ba-images">
+                    <div class="ba-image">Фото: Старый электрощит без УЗО</div>
+                    <div class="ba-divider"></div>
+                    <div class="ba-image">Фото: Современный электрощит</div>
+                </div>
+            </div>
+            
+            <div class="ba-item">
+                <div class="ba-header">Освещение в гостиной</div>
+                <div class="ba-images">
+                    <div class="ba-image">Фото: Одна люстра в центре</div>
+                    <div class="ba-divider"></div>
+                    <div class="ba-image">Фото: Точечное освещение + люстра</div>
+                </div>
+            </div>
+            
+            <div class="ba-item">
+                <div class="ba-header">Розетки на кухне</div>
+                <div class="ba-images">
+                    <div class="ba-image">Фото: 2 старые розетки</div>
+                    <div class="ba-divider"></div>
+                    <div class="ba-image">Фото: 8 современных розеток</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <h2>Закажите электромонтажные работы!</h2>
+            <p>Бесплатная консультация и выезд замерщика. Гарантия 3 года на все выполненные работы.</p>
+            <a href="/" class="btn">Вызвать электрика</a>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 БАЛТСЕТЬ. Услуги электрика в Калининграде. Все права защищены.</p>
+            <p>Телефон: +7 (900) 123-45-67 | Email: info@balt-set.ru</p>
+        </div>
+    </footer>
+</body>
+</html>
