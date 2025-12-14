@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отслеживание мастера</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .status {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status.on-the-way {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status.arrived {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .info-block {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .route-link {
+            display: block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .route-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .route-link:active {
+            transform: translateY(0);
+        }
+
+        .timeline {
+            margin-top: 2rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-right: 1rem;
+        }
+
+        .timeline-dot.active {
+            background: #10b981;
+        }
+
+        .timeline-dot.inactive {
+            background: #e2e8f0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .timeline-time {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .loader {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🚗 Отслеживание мастера</h1>
+
+            <div id="loading" class="loader">
+                <div class="spinner"></div>
+                <p style="margin-top: 1rem; color: #64748b;">Загрузка...</p>
+            </div>
+
+            <div id="content" style="display: none;">
+                <div id="status" class="status"></div>
+
+                <div class="info-block">
+                    <div class="info-label">💰 Стоимость работы:</div>
+                    <div class="info-value" id="price"></div>
+                </div>
+
+                <div id="routeBlock" style="display: none;">
+                    <a id="routeLink" href="#" class="route-link" target="_blank">
+                        📍 Посмотреть маршрут на карте
+                    </a>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot" id="dot1">✅</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Заказ создан</div>
+                            <div class="timeline-time" id="time1">-</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot" id="dot2">🚗</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Мастер выехал</div>
+                            <div class="timeline-time" id="time2">-</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot" id="dot3">📍</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Мастер прибыл</div>
+                            <div class="timeline-time" id="time3">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin;
+        const urlParams = new URLSearchParams(window.location.search);
+        const jobId = urlParams.get('id');
+
+        if (!jobId) {
+            document.getElementById('loading').innerHTML = '<p style="color: red;">❌ Ошибка: ID заказа не указан</p>';
+        } else {
+            loadTrackingInfo();
+            // Автообновление каждые 10 секунд
+            setInterval(loadTrackingInfo, 10000);
+        }
+
+        async function loadTrackingInfo() {
+            try {
+                const response = await fetch(`${API_URL}/api/v1/client/track/${jobId}`);
+                
+                if (!response.ok) {
+                    throw new Error('Заказ не найден');
+                }
+
+                const data = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+
+                // Статус
+                const statusEl = document.getElementById('status');
+                const statusTexts = {
+                    'pending': '⏳ Ожидает назначения мастера',
+                    'accepted': '✅ Мастер назначен',
+                    'on-the-way': '🚗 Мастер в пути',
+                    'arrived': '📍 Мастер на месте',
+                    'in-progress': '🔧 Работа выполняется',
+                    'completed': '✅ Заказ завершён'
+                };
+
+                statusEl.textContent = statusTexts[data.status] || data.status;
+                statusEl.className = `status ${data.status}`;
+
+                // Цена
+                document.getElementById('price').textContent = `${data.estimated_price} ₽`;
+
+                // Маршрут
+                if (data.route_url && data.departed) {
+                    document.getElementById('routeBlock').style.display = 'block';
+                    document.getElementById('routeLink').href = data.route_url;
+                }
+
+                // Таймлайн
+                document.getElementById('dot1').className = 'timeline-dot active';
+                document.getElementById('time1').textContent = 'Создан';
+
+                if (data.departed) {
+                    document.getElementById('dot2').className = 'timeline-dot active';
+                    document.getElementById('time2').textContent = 'В пути';
+                } else {
+                    document.getElementById('dot2').className = 'timeline-dot inactive';
+                    document.getElementById('time2').textContent = 'Ожидание';
+                }
+
+                if (data.arrived) {
+                    document.getElementById('dot3').className = 'timeline-dot active';
+                    document.getElementById('time3').textContent = 'Прибыл';
+                } else {
+                    document.getElementById('dot3').className = 'timeline-dot inactive';
+                    document.getElementById('time3').textContent = 'Ожидание';
+                }
+
+            } catch (error) {
+                console.error('Ошибка:', error);
+                document.getElementById('loading').innerHTML = '<p style="color: red;">❌ Ошибка загрузки данных</p>';
+            }
+        }
+    </script>
+</body>
+</html>

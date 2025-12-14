@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор стоимости электромонтажа | БАЛТСЕТЬ</title>
+    <meta name="description" content="Рассчитайте стоимость электромонтажных работ в Калининграде онлайн. Система скидок до 25%. Точный расчёт за 2 минуты. Установка розеток, замена проводки, штробление.">
+    <meta name="keywords" content="калькулятор электрика, расчет стоимости электромонтажа, калькулятор электромонтажных работ калининград">
+    <link rel="canonical" href="https://app.balt-set.ru/calculator.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://app.balt-set.ru/calculator.html">
+    <meta property="og:title" content="Калькулятор стоимости электромонтажа в Калининграде">
+    <meta property="og:description" content="Онлайн-калькулятор для расчёта стоимости электромонтажных работ. Скидки до 25% при большом объёме.">
+    <meta property="og:image" content="https://app.balt-set.ru/og-calculator.jpg">
+    <meta property="og:locale" content="ru_RU">
+    
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(98765432, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/98765432" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1d1d1f;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* Фоновое изображение как на эталонном сайте */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+        }
+        
+        /* Паттерн поверх градиента */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #1d1d1f;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        /* Burger Menu */
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .burger-menu span {
+            width: 24px;
+            height: 3px;
+            background: #1d1d1f;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        
+        .burger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .burger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .burger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-weight: 800;
+        }
+        
+        .hero p {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* Card - глассморфизм как на эталонном сайте */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.3) inset;
+            margin-bottom: 2rem;
+            animation: cardAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1d1d1f;
+        }
+        
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1d1d1f;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: white;
+        }
+        
+        .radio-option:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .radio-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+        }
+        
+        .radio-option input[type="radio"] {
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+        
+        .radio-label {
+            flex: 1;
+        }
+        
+        .radio-label strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: #1d1d1f;
+        }
+        
+        .radio-label small {
+            color: #666;
+            font-size: 0.875rem;
+        }
+        
+        /* Select */
+        select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* Counter */
+        .counter-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .counter {
+            text-align: center;
+        }
+        
+        .counter label {
+            margin-bottom: 0.75rem;
+        }
+        
+        .counter-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .counter-btn {
+            width: 44px;
+            height: 44px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            color: #1d1d1f;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 300;
+        }
+        
+        .counter-btn:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            transform: scale(1.1);
+        }
+        
+        .counter-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .counter-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            min-width: 60px;
+            color: #667eea;
+        }
+        
+        /* Checkbox Group */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: white;
+        }
+        
+        .checkbox-option:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateX(4px);
+        }
+        
+        .checkbox-option.checked {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.08);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+        }
+        
+        .checkbox-option input[type="checkbox"] {
+            margin-right: 0.75rem;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            accent-color: #10b981;
+        }
+        
+        /* Result */
+        .result-section {
+            border-top: 2px solid #f0f0f0;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-label {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .result-note {
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.125rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .cta-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .counter-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .burger-menu {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 65px;
+                right: -100%;
+                width: 250px;
+                background: white;
+                flex-direction: column;
+                padding: 2rem 1.5rem;
+                box-shadow: var(--shadow-lg);
+                transition: right 0.3s;
+                z-index: 99;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">⚡ БАЛТСЕТЬ</a>
+            
+            <button class="burger-menu" id="burger-btn" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="nav-links" id="nav-menu">
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог</a>
+                <a href="/services.html">Услуги</a>
+                <a href="/calculator.html">Калькулятор</a>
+                <a href="/ai-chat.html">AI-чат</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1>💡 Калькулятор стоимости</h1>
+            <p>Рассчитайте примерную стоимость электромонтажных работ</p>
+            
+            <!-- Шкала скидок -->
+            <div style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 20px; margin-top: 1.5rem; border: 2px solid rgba(255, 255, 255, 0.3);">
+                <h3 style="font-size: 1.125rem; margin-bottom: 1rem; color: white; font-weight: 700;">🎁 Система скидок за объём:</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; font-size: 0.875rem;">
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div style="font-weight: 700; color: white; font-size: 1rem;">🟢 10+ точек</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-top: 4px;">-5%</div>
+                    </div>
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div style="font-weight: 700; color: white; font-size: 1rem;">🟡 20+ точек</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-top: 4px;">-10%</div>
+                    </div>
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div style="font-weight: 700; color: white; font-size: 1rem;">🟠 30+ точек</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-top: 4px;">-15%</div>
+                    </div>
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div style="font-weight: 700; color: white; font-size: 1rem;">🔴 50+ точек</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-top: 4px;">-20%</div>
+                    </div>
+                    <div style="text-align: center; padding: 0.75rem; background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 193, 7, 0.4)); backdrop-filter: blur(5px); border-radius: 12px; border: 2px solid rgba(255, 215, 0, 0.6); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);">
+                        <div style="font-weight: 800; color: white; font-size: 1.1rem;">🔥 80+ точек</div>
+                        <div style="color: white; font-weight: 700; margin-top: 4px; font-size: 1.1rem;">-25% 🔥</div>
+                    </div>
+                </div>
+                <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.9); margin-top: 0.75rem; text-align: center; font-weight: 500;">
+                    ✨ Чем больше объём — тем выгоднее! На 50+ точек экономия до 10 000₽
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="form-group">
+                <label class="card-title">Что вам нужно?</label>
+                <div class="radio-group">
+                    <div class="radio-option" onclick="selectScenario('A')">
+                        <input type="radio" name="scenario" value="A" id="scenario-a">
+                        <div class="radio-label">
+                            <strong>Провести электрику в квартире с нуля</strong>
+                            <small>Для новостроек и капитального ремонта</small>
+                        </div>
+                    </div>
+                    <div class="radio-option" onclick="selectScenario('B')">
+                        <input type="radio" name="scenario" value="B" id="scenario-b">
+                        <div class="radio-label">
+                            <strong>Установить розетки/выключатели</strong>
+                            <small>Когда проводка уже есть</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario A -->
+            <div id="scenario-a-content" class="hidden">
+                <div class="form-group">
+                    <label>Тип ремонта</label>
+                    <select id="repair-type" onchange="calculate()">
+                        <option value="">Выберите тип ремонта</option>
+                        <option value="cosmetic">Косметический (только установка)</option>
+                        <option value="major">Капитальный (проводка + установка)</option>
+                    </select>
+                </div>
+
+                <div id="major-repair-options" class="hidden">
+                    <div class="form-group">
+                        <label>Тип расчёта</label>
+                        <div class="radio-group">
+                            <div class="radio-option" onclick="selectCalcType('simple')">
+                                <input type="radio" name="calc-type" value="simple" id="calc-simple">
+                                <div class="radio-label">
+                                    <strong>Упрощённый</strong>
+                                    <small>Дешевле, но менее детальный</small>
+                                </div>
+                            </div>
+                            <div class="radio-option" onclick="selectCalcType('detailed')">
+                                <input type="radio" name="calc-type" value="detailed" id="calc-detailed">
+                                <div class="radio-label">
+                                    <strong>Детальный</strong>
+                                    <small>Точнее, но дороже</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Тип монтажа</label>
+                        <select id="install-type" onchange="calculate()">
+                            <option value="">Выберите тип монтажа</option>
+                            <option value="surface">Открытая проводка</option>
+                            <option value="concealed">Скрытая проводка</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Количество точек</label>
+                    <div class="counter-group">
+                        <div class="counter">
+                            <label>Выключатели</label>
+                            <div class="counter-controls">
+                                <button class="counter-btn" onclick="changeCount('switch', -1)">−</button>
+                                <span class="counter-value" id="switch-count">0</span>
+                                <button class="counter-btn" onclick="changeCount('switch', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="counter">
+                            <label>Розетки</label>
+                            <div class="counter-controls">
+                                <button class="counter-btn" onclick="changeCount('socket', -1)">−</button>
+                                <span class="counter-value" id="socket-count">0</span>
+                                <button class="counter-btn" onclick="changeCount('socket', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Освещение</label>
+                    <select id="lighting-type" onchange="calculate()">
+                        <option value="none">Не требуется</option>
+                        <option value="chandelier">Люстра</option>
+                        <option value="spots">Точечные светильники</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Мощная техника</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option" onclick="toggleEquipment('washer')">
+                            <input type="checkbox" id="equipment-washer">
+                            <label for="equipment-washer">Стиральная машина</label>
+                        </div>
+                        <div class="checkbox-option" onclick="toggleEquipment('dishwasher')">
+                            <input type="checkbox" id="equipment-dishwasher">
+                            <label for="equipment-dishwasher">Посудомоечная машина</label>
+                        </div>
+                        <div class="checkbox-option" onclick="toggleEquipment('oven')">
+                            <input type="checkbox" id="equipment-oven">
+                            <label for="equipment-oven">Электроплита/духовка</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario B -->
+            <div id="scenario-b-content" class="hidden">
+                <div class="form-group">
+                    <label>Количество точек</label>
+                    <div class="counter-group">
+                        <div class="counter">
+                            <label>Выключатели</label>
+                            <div class="counter-controls">
+                                <button class="counter-btn" onclick="changeCount('switch', -1)">−</button>
+                                <span class="counter-value" id="switch-count-b">0</span>
+                                <button class="counter-btn" onclick="changeCount('switch', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="counter">
+                            <label>Розетки</label>
+                            <div class="counter-controls">
+                                <button class="counter-btn" onclick="changeCount('socket', -1)">−</button>
+                                <span class="counter-value" id="socket-count-b">0</span>
+                                <button class="counter-btn" onclick="changeCount('socket', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Есть ли провода в стенах?</label>
+                    <div class="radio-group">
+                        <div class="radio-option" onclick="selectWires('yes')">
+                            <input type="radio" name="has-wires" value="yes" id="wires-yes">
+                            <div class="radio-label">
+                                <strong>Да, провода уже есть</strong>
+                            </div>
+                        </div>
+                        <div class="radio-option" onclick="selectWires('partial')">
+                            <input type="radio" name="has-wires" value="partial" id="wires-partial">
+                            <div class="radio-label">
+                                <strong>Частично есть</strong>
+                            </div>
+                        </div>
+                        <div class="radio-option" onclick="selectWires('no')">
+                            <input type="radio" name="has-wires" value="no" id="wires-no">
+                            <div class="radio-label">
+                                <strong>Нет, нужна прокладка</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result -->
+            <div id="result-section" class="result-section hidden">
+                <div class="result-row">
+                    <span class="result-label">Базовая стоимость:</span>
+                    <span class="result-value" style="font-size: 1.25rem; color: var(--text-muted); text-decoration: line-through;" id="base-price">0 ₽</span>
+                </div>
+                
+                <div id="discount-block" class="hidden" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05)); padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid var(--accent);">
+                    <div class="result-row" style="margin-bottom: 0;">
+                        <span style="color: var(--accent); font-weight: 600;">🎉 Ваша скидка <span id="discount-percent">0%</span>:</span>
+                        <span style="color: var(--accent); font-weight: 700; font-size: 1.125rem;">-<span id="discount-amount">0</span></span>
+                    </div>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.5rem;">
+                        ✨ Чем больше объём — тем выгоднее цена!
+                    </p>
+                </div>
+                
+                <div class="result-row">
+                    <span class="result-label">ИТОГОВАЯ СТОИМОСТЬ:</span>
+                    <span class="result-value" id="total-price">0 ₽</span>
+                </div>
+                <p class="result-note">* Точная стоимость рассчитывается после осмотра объекта</p>
+                
+                <button class="cta-button" onclick="orderService()">
+                    📞 Вызвать мастера
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let state = {
+            scenario: null,
+            repairType: '',
+            calcType: '',
+            installType: '',
+            switchCount: 0,
+            socketCount: 0,
+            lightingType: 'none',
+            powerEquipment: [],
+            hasWires: ''
+        };
+
+        function selectScenario(scenario) {
+            state.scenario = scenario;
+            document.getElementById('scenario-a').checked = (scenario === 'A');
+            document.getElementById('scenario-b').checked = (scenario === 'B');
+            
+            // Update radio option styling
+            document.querySelectorAll('.radio-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // Show/hide content
+            document.getElementById('scenario-a-content').classList.toggle('hidden', scenario !== 'A');
+            document.getElementById('scenario-b-content').classList.toggle('hidden', scenario !== 'B');
+            
+            // Reset state
+            state.switchCount = 0;
+            state.socketCount = 0;
+            updateCounters();
+            calculate();
+        }
+
+        function selectCalcType(type) {
+            state.calcType = type;
+            document.getElementById('calc-simple').checked = (type === 'simple');
+            document.getElementById('calc-detailed').checked = (type === 'detailed');
+            
+            document.querySelectorAll('[name="calc-type"]').forEach(input => {
+                input.parentElement.parentElement.classList.remove('selected');
+                if (input.checked) {
+                    input.parentElement.parentElement.classList.add('selected');
+                }
+            });
+            calculate();
+        }
+
+        function selectWires(value) {
+            state.hasWires = value;
+            document.getElementById('wires-yes').checked = (value === 'yes');
+            document.getElementById('wires-partial').checked = (value === 'partial');
+            document.getElementById('wires-no').checked = (value === 'no');
+            
+            document.querySelectorAll('[name="has-wires"]').forEach(input => {
+                input.parentElement.parentElement.classList.remove('selected');
+                if (input.checked) {
+                    input.parentElement.parentElement.classList.add('selected');
+                }
+            });
+            calculate();
+        }
+
+        function changeCount(type, delta) {
+            if (type === 'switch') {
+                state.switchCount = Math.max(0, state.switchCount + delta);
+            } else {
+                state.socketCount = Math.max(0, state.socketCount + delta);
+            }
+            updateCounters();
+            calculate();
+        }
+
+        function updateCounters() {
+            document.getElementById('switch-count').textContent = state.switchCount;
+            document.getElementById('socket-count').textContent = state.socketCount;
+            document.getElementById('switch-count-b').textContent = state.switchCount;
+            document.getElementById('socket-count-b').textContent = state.socketCount;
+        }
+
+        function toggleEquipment(item) {
+            const checkbox = document.getElementById(`equipment-${item}`);
+            checkbox.checked = !checkbox.checked;
+            
+            const option = checkbox.parentElement;
+            option.classList.toggle('checked', checkbox.checked);
+            
+            if (checkbox.checked) {
+                state.powerEquipment.push(item);
+            } else {
+                state.powerEquipment = state.powerEquipment.filter(i => i !== item);
+            }
+            calculate();
+        }
+
+        // Repair type change handler
+        document.getElementById('repair-type')?.addEventListener('change', (e) => {
+            state.repairType = e.target.value;
+            const majorOptions = document.getElementById('major-repair-options');
+            majorOptions.classList.toggle('hidden', e.target.value !== 'major');
+            calculate();
+        });
+
+        // Install type change handler
+        document.getElementById('install-type')?.addEventListener('change', (e) => {
+            state.installType = e.target.value;
+            calculate();
+        });
+
+        // Lighting type change handler
+        document.getElementById('lighting-type')?.addEventListener('change', (e) => {
+            state.lightingType = e.target.value;
+            calculate();
+        });
+
+        function calculate() {
+            if (!state.scenario) {
+                document.getElementById('result-section').classList.add('hidden');
+                return;
+            }
+
+            let total = 0;
+            let baseTotal = 0;
+            let discount = 0;
+            let discountPercent = 0;
+
+            if (state.scenario === 'A') {
+                if (state.repairType === 'cosmetic') {
+                    // Базовые цены
+                    const switchPrice = 500;
+                    const socketPrice = 500;
+                    
+                    baseTotal = state.switchCount * switchPrice + state.socketCount * socketPrice;
+                    
+                    if (state.lightingType === 'chandelier') baseTotal += 800;
+                    if (state.lightingType === 'spots') baseTotal += 1000;
+                    
+                    if (state.powerEquipment.includes('washer')) baseTotal += 1500;
+                    if (state.powerEquipment.includes('dishwasher')) baseTotal += 1500;
+                    if (state.powerEquipment.includes('oven')) baseTotal += 2000;
+                    
+                } else if (state.repairType === 'major') {
+                    const basePrice = state.calcType === 'simple' ? 1200 : 1800;
+                    const totalPoints = state.switchCount + state.socketCount;
+                    baseTotal = totalPoints * basePrice;
+                    
+                    if (state.lightingType === 'spots') baseTotal += totalPoints * 200;
+                    if (state.powerEquipment.length > 0) baseTotal += state.powerEquipment.length * 1500;
+                    if (state.installType === 'concealed') baseTotal += totalPoints * 300;
+                }
+            } else if (state.scenario === 'B') {
+                // Базовые цены для установки
+                const pricePerPoint = 500;
+                const totalPoints = state.switchCount + state.socketCount;
+                baseTotal = totalPoints * pricePerPoint;
+                
+                if (state.hasWires === 'yes') {
+                    baseTotal *= 0.7;
+                } else if (state.hasWires === 'partial') {
+                    baseTotal *= 0.85;
+                }
+            }
+
+            // СИСТЕМА СКИДОК
+            const totalPoints = state.switchCount + state.socketCount;
+            
+            if (totalPoints >= 80) {
+                discountPercent = 25; // 25% скидка при 80+ точках
+            } else if (totalPoints >= 50) {
+                discountPercent = 20; // 20% скидка при 50+ точках
+            } else if (totalPoints >= 30) {
+                discountPercent = 15; // 15% скидка при 30+ точках
+            } else if (totalPoints >= 20) {
+                discountPercent = 10; // 10% скидка при 20+ точках
+            } else if (totalPoints >= 10) {
+                discountPercent = 5; // 5% скидка при 10+ точках
+            }
+
+            discount = Math.round(baseTotal * (discountPercent / 100));
+            total = baseTotal - discount;
+            
+            if (total > 0) {
+                document.getElementById('base-price').textContent = baseTotal.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('discount-percent').textContent = discountPercent + '%';
+                document.getElementById('discount-amount').textContent = discount.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('total-price').textContent = total.toLocaleString('ru-RU') + ' ₽';
+                
+                // Показываем/скрываем блок скидки
+                if (discountPercent > 0) {
+                    document.getElementById('discount-block').classList.remove('hidden');
+                } else {
+                    document.getElementById('discount-block').classList.add('hidden');
+                }
+                
+                document.getElementById('result-section').classList.remove('hidden');
+            } else {
+                document.getElementById('result-section').classList.add('hidden');
+            }
+        }
+
+        function orderService() {
+            // Redirect to order page with calculated price
+            const price = document.getElementById('total-price').textContent;
+            window.location.href = `/?estimated_price=${encodeURIComponent(price)}`;
+        }
+        
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            const burger = document.getElementById('burger-btn');
+            menu.classList.toggle('active');
+            burger.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

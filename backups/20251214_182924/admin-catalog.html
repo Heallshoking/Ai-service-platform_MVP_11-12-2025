@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление каталогом услуг - Админ панель</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+        
+        .admin-header {
+            background: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .admin-header h1 {
+            color: #333;
+            font-size: 24px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .category-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .category-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            background: #f5f5f5;
+        }
+        
+        .icon-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .services-table {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .service-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+        }
+        
+        .service-row:last-child {
+            border-bottom: none;
+        }
+        
+        .service-name {
+            color: #333;
+            font-size: 15px;
+        }
+        
+        .service-price {
+            color: #667eea;
+            font-weight: 700;
+            min-width: 100px;
+        }
+        
+        .service-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            flex: 1;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e5e5;
+        }
+        
+        @media (max-width: 768px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="container">
+            <h1>📖 Управление каталогом услуг</h1>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="controls">
+            <button class="btn btn-primary" onclick="openAddCategoryModal()">+ Добавить категорию</button>
+            <button class="btn btn-primary" onclick="openAddServiceModal()">+ Добавить услугу</button>
+        </div>
+        
+        <div class="categories-grid" id="categoriesGrid">
+            <!-- Категории будут загружены динамически -->
+        </div>
+    </div>
+    
+    <!-- Модалка добавления категории -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">Добавить категорию</div>
+            <div class="form-group">
+                <label>Название категории</label>
+                <input type="text" id="categoryName" placeholder="Электромонтажные работы">
+            </div>
+            <div class="form-group">
+                <label>Иконка (эмодзи)</label>
+                <input type="text" id="categoryIcon" placeholder="⚡">
+            </div>
+            <div class="form-group">
+                <label>Описание</label>
+                <input type="text" id="categoryDesc" placeholder="Полный цикл работ">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeModal('categoryModal')">Отмена</button>
+                <button class="btn btn-primary" onclick="saveCategory()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модалка добавления услуги -->
+    <div class="modal" id="serviceModal">
+        <div class="modal-content">
+            <div class="modal-header">Добавить услугу</div>
+            <div class="form-group">
+                <label>Категория</label>
+                <select id="serviceCategory">
+                    <option value="">Выберите категорию</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Название услуги</label>
+                <input type="text" id="serviceName" placeholder="Установка розетки">
+            </div>
+            <div class="form-group">
+                <label>Цена (₽)</label>
+                <input type="text" id="servicePrice" placeholder="от 400 ₽">
+            </div>
+            <div class="form-group">
+                <label>SEO ключевые слова</label>
+                <textarea id="serviceSEO" rows="3" placeholder="установка розеток калининград, монтаж розеток"></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeModal('serviceModal')">Отмена</button>
+                <button class="btn btn-primary" onclick="saveService()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Данные (в реальности будут из API)
+        let catalogData = {
+            categories: [
+                {
+                    id: 1,
+                    name: 'Электромонтаж',
+                    icon: '⚡',
+                    desc: 'Полный цикл работ',
+                    services: [
+                        { id: 1, name: 'Монтаж электропроводки', price: 'от 300 ₽/м' },
+                        { id: 2, name: 'Замена проводки в квартире', price: 'от 15 000 ₽' },
+                        { id: 3, name: 'Прокладка кабеля', price: 'от 250 ₽/м' }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: 'Розетки и выключатели',
+                    icon: '🔌',
+                    desc: 'Установка, замена',
+                    services: [
+                        { id: 4, name: 'Установка розетки', price: 'от 400 ₽' },
+                        { id: 5, name: 'Установка выключателя', price: 'от 350 ₽' },
+                        { id: 6, name: 'Перенос розетки', price: 'от 800 ₽' }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: 'Сверление и штробление',
+                    icon: '🛠️',
+                    desc: 'Подготовка стен',
+                    services: [
+                        { id: 7, name: 'Штробление под проводку', price: 'от 200 ₽/м' },
+                        { id: 8, name: 'Сверление отверстий под розетки', price: 'от 250 ₽/шт' }
+                    ]
+                }
+            ]
+        };
+        
+        function renderCatalog() {
+            const grid = document.getElementById('categoriesGrid');
+            grid.innerHTML = '';
+            
+            catalogData.categories.forEach(category => {
+                const card = document.createElement('div');
+                card.className = 'category-card';
+                card.innerHTML = `
+                    <div class="category-header">
+                        <div>
+                            <div class="category-title">${category.icon} ${category.name}</div>
+                            <div style="color: #999; font-size: 13px; margin-top: 4px;">${category.desc}</div>
+                        </div>
+                        <div class="category-actions">
+                            <button class="icon-btn" onclick="editCategory(${category.id})">✏️</button>
+                            <button class="icon-btn" onclick="deleteCategory(${category.id})">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="services-table">
+                        ${category.services.map(service => `
+                            <div class="service-row">
+                                <div class="service-name">${service.name}</div>
+                                <div class="service-price">${service.price}</div>
+                                <div class="service-actions">
+                                    <button class="icon-btn" onclick="editService(${category.id}, ${service.id})">✏️</button>
+                                    <button class="icon-btn" onclick="deleteService(${category.id}, ${service.id})">🗑️</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="openAddServiceModal(${category.id})">+ Добавить услугу</button>
+                `;
+                grid.appendChild(card);
+            });
+            
+            updateCategorySelect();
+        }
+        
+        function updateCategorySelect() {
+            const select = document.getElementById('serviceCategory');
+            select.innerHTML = '<option value="">Выберите категорию</option>';
+            catalogData.categories.forEach(cat => {
+                select.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
+            });
+        }
+        
+        function openAddCategoryModal() {
+            document.getElementById('categoryModal').classList.add('active');
+        }
+        
+        function openAddServiceModal(categoryId = null) {
+            document.getElementById('serviceModal').classList.add('active');
+            if (categoryId) {
+                document.getElementById('serviceCategory').value = categoryId;
+            }
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        function saveCategory() {
+            const name = document.getElementById('categoryName').value;
+            const icon = document.getElementById('categoryIcon').value;
+            const desc = document.getElementById('categoryDesc').value;
+            
+            if (!name || !icon) {
+                alert('Заполните все поля!');
+                return;
+            }
+            
+            const newCategory = {
+                id: Date.now(),
+                name: name,
+                icon: icon,
+                desc: desc,
+                services: []
+            };
+            
+            catalogData.categories.push(newCategory);
+            renderCatalog();
+            closeModal('categoryModal');
+            
+            // Очистить форму
+            document.getElementById('categoryName').value = '';
+            document.getElementById('categoryIcon').value = '';
+            document.getElementById('categoryDesc').value = '';
+            
+            alert('✅ Категория добавлена!');
+        }
+        
+        function saveService() {
+            const categoryId = parseInt(document.getElementById('serviceCategory').value);
+            const name = document.getElementById('serviceName').value;
+            const price = document.getElementById('servicePrice').value;
+            
+            if (!categoryId || !name || !price) {
+                alert('Заполните все поля!');
+                return;
+            }
+            
+            const category = catalogData.categories.find(c => c.id === categoryId);
+            if (!category) return;
+            
+            const newService = {
+                id: Date.now(),
+                name: name,
+                price: price
+            };
+            
+            category.services.push(newService);
+            renderCatalog();
+            closeModal('serviceModal');
+            
+            // Очистить форму
+            document.getElementById('serviceName').value = '';
+            document.getElementById('servicePrice').value = '';
+            document.getElementById('serviceSEO').value = '';
+            
+            alert('✅ Услуга добавлена!');
+        }
+        
+        function deleteCategory(categoryId) {
+            if (!confirm('Удалить категорию и все услуги в ней?')) return;
+            
+            catalogData.categories = catalogData.categories.filter(c => c.id !== categoryId);
+            renderCatalog();
+            alert('✅ Категория удалена!');
+        }
+        
+        function deleteService(categoryId, serviceId) {
+            if (!confirm('Удалить услугу?')) return;
+            
+            const category = catalogData.categories.find(c => c.id === categoryId);
+            if (!category) return;
+            
+            category.services = category.services.filter(s => s.id !== serviceId);
+            renderCatalog();
+            alert('✅ Услуга удалена!');
+        }
+        
+        function editCategory(categoryId) {
+            alert('Редактирование категории (функция в разработке)');
+        }
+        
+        function editService(categoryId, serviceId) {
+            alert('Редактирование услуги (функция в разработке)');
+        }
+        
+        // Закрытие модалки по клику вне её
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+        
+        // Инициализация
+        renderCatalog();
+    </script>
+</body>
+</html>
