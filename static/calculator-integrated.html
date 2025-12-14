@@ -22,17 +22,39 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%2366b3ff" width="1200" height="400"/><path fill="%23ffffff" opacity="0.1" d="M0,160 Q300,100 600,160 T1200,160 L1200,400 L0,400 Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             min-height: 100vh;
             padding: 20px;
         }
         
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Фирменное фото Калининграда как фон */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(180deg, rgba(66, 133, 244, 0.85) 0%, rgba(66, 133, 244, 0.75) 50%, rgba(66, 133, 244, 0.85) 100%);
+            z-index: -2;
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
         
         .container {
@@ -522,6 +544,18 @@
             }
         }
         
+        .btn-trust {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-trust:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+            transform: translateY(-2px);
+        }
+        
         .modal-close {
             position: absolute;
             top: 15px;
@@ -954,8 +988,8 @@
                 <span>Смета за 60 секунд</span>
             </div>
             
-            <h2 class="modal-title">Подтвердите, что вы не робот</h2>
-            <p class="modal-subtitle">Для получения точной сметы укажите номер телефона</p>
+            <h2 class="modal-title">Подтвердите, что вы живой человек</h2>
+            <p class="modal-subtitle">Для расчёта реальной стоимости работ, с учётом материалов - подтвердите что вы живой человек</p>
             
             <div class="verification-note">
                 🔒 <strong>Почему нужен номер?</strong><br>
@@ -978,8 +1012,8 @@
                     <input type="tel" class="form-control" id="verifyPhone" placeholder="+7 (___) ___-__-__" required>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">
-                    ✅ Получить результаты
+                <button type="submit" class="btn btn-primary btn-trust">
+                    🔓 Открыть доступ
                 </button>
             </form>
         </div>
@@ -1180,28 +1214,61 @@
             }
         });
         
-        // Phone mask for verification modal
-        document.getElementById('verifyPhone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
+        // Умная маска телефона (российский формат)
+        function formatPhoneNumber(input) {
+            // Удаляем всё кроме цифр
+            let value = input.value.replace(/\D/g, '');
+            
+            // Если начинается с 8, заменяем на 7
+            if (value.startsWith('8')) {
+                value = '7' + value.slice(1);
+            }
+            
+            // Если не начинается с 7, добавляем
+            if (value.length > 0 && !value.startsWith('7')) {
+                value = '7' + value;
+            }
+            
+            // Ограничиваем 11 цифрами
+            value = value.slice(0, 11);
+            
+            // Форматируем: +7 (XXX) XXX-XX-XX
+            let formatted = '';
             if (value.length > 0) {
-                if (!value.startsWith('7')) {
-                    value = '7' + value;
-                }
-                let formatted = '+7';
+                formatted = '+7';
                 if (value.length > 1) {
-                    formatted += ' (' + value.substring(1, 4);
+                    formatted += ' (' + value.slice(1, 4);
                 }
                 if (value.length >= 5) {
-                    formatted += ') ' + value.substring(4, 7);
+                    formatted += ') ' + value.slice(4, 7);
                 }
                 if (value.length >= 8) {
-                    formatted += '-' + value.substring(7, 9);
+                    formatted += '-' + value.slice(7, 9);
                 }
                 if (value.length >= 10) {
-                    formatted += '-' + value.substring(9, 11);
+                    formatted += '-' + value.slice(9, 11);
                 }
-                e.target.value = formatted;
             }
+            
+            input.value = formatted;
+            return value;
+        }
+        
+        // Phone mask for verification modal
+        document.getElementById('verifyPhone').addEventListener('input', function(e) {
+            formatPhoneNumber(e.target);
+        });
+        
+        // Автофокус и подсказка
+        document.getElementById('verifyPhone').addEventListener('focus', function(e) {
+            if (!e.target.value) {
+                e.target.value = '+7 (';
+            }
+        });
+        
+        // Phone mask for order form
+        document.getElementById('clientPhone').addEventListener('input', function(e) {
+            formatPhoneNumber(e.target);
         });
         
         // === НОВЫЕ ФУНКЦИИ ===
@@ -1277,8 +1344,14 @@ ${message}
         
         // Закрытие модального окна
         function closePhoneModal() {
-            document.getElementById('phoneModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
+            // Редирект при попытке закрыть
+            if (document.referrer && document.referrer !== window.location.href) {
+                // Если пришёл с другой страницы - возвращаем назад
+                window.history.back();
+            } else {
+                // Иначе - на главную
+                window.location.href = 'https://app.balt-set.ru/';
+            }
         }
         
         // Подтверждение телефона
