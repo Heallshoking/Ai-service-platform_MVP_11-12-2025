@@ -303,6 +303,12 @@ async def blog_usb_rozetki():
 async def calculator():
     return FileResponse("static/calculator.html")
 
+# Интегрированный калькулятор с функционалом React
+@app.get("/calculator-integrated")
+@app.get("/calculator-integrated.html")
+async def calculator_integrated():
+    return FileResponse("static/calculator-integrated.html")
+
 @app.get("/catalog")
 @app.get("/catalog.html")
 async def catalog():
