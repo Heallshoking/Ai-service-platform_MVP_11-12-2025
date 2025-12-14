@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет мастера</title>
+    
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .master-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .master-details h1 {
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .master-details .phone {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .rating-stars {
+            color: var(--warning);
+            font-size: 1.25rem;
+        }
+
+        .rating-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Orders */
+        .order-item {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .order-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+
+        .order-time {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .order-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .order-address {
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-client {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        /* Calendar */
+        .calendar {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .calendar-month {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-day.header {
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: default;
+        }
+
+        .calendar-day.today {
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+        }
+
+        .calendar-day.has-order {
+            background: var(--success);
+            color: white;
+        }
+
+        .calendar-day.off {
+            background: var(--danger);
+            color: white;
+        }
+
+        .calendar-day:not(.header):hover {
+            background: var(--border);
+        }
+
+        /* Google Sync */
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: start;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="master-info">
+                    <div class="avatar">👨‍🔧</div>
+                    <div class="master-details">
+                        <h1 id="masterName">Загрузка...</h1>
+                        <div class="phone" id="masterPhone">+7 (900) 123-45-67</div>
+                        <div class="rating">
+                            <span class="rating-stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-value" id="masterRating">5.0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="window.location.href='/admin'">
+                        ⚙️ Профиль
+                    </button>
+                    <button class="btn btn-primary" onclick="openGoogleSync()">
+                        📅 Синхронизация
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">💰 Заработано сегодня</div>
+                <div class="stat-value" id="todayEarnings">0 ₽</div>
+                <div class="stat-change positive">+0 ₽ от вчера</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">📋 Активных заказов</div>
+                <div class="stat-value" id="activeOrders">0</div>
+                <div class="stat-change positive">2 новых</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">✅ Завершено в месяце</div>
+                <div class="stat-value" id="completedMonth">0</div>
+                <div class="stat-change positive">+12%</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Orders -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📋 Мои заказы</h2>
+                    <div class="sync-status">
+                        <div class="sync-dot"></div>
+                        <span style="font-size: 0.875rem; color: var(--text-muted);">
+                            Синхронизировано с Google
+                        </span>
+                    </div>
+                </div>
+
+                <div id="ordersList">
+                    <!-- Заказы загружаются через JS -->
+                </div>
+            </div>
+
+            <!-- Calendar & Schedule -->
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📅 Расписание</h2>
+                    </div>
+
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <button class="btn btn-sm btn-secondary">◀</button>
+                            <span class="calendar-month">Декабрь 2025</span>
+                            <button class="btn btn-sm btn-secondary">▶</button>
+                        </div>
+
+                        <div class="calendar-grid">
+                            <div class="calendar-day header">ПН</div>
+                            <div class="calendar-day header">ВТ</div>
+                            <div class="calendar-day header">СР</div>
+                            <div class="calendar-day header">ЧТ</div>
+                            <div class="calendar-day header">ПТ</div>
+                            <div class="calendar-day header">СБ</div>
+                            <div class="calendar-day header">ВС</div>
+                            
+                            <div class="calendar-day">1</div>
+                            <div class="calendar-day">2</div>
+                            <div class="calendar-day has-order">3</div>
+                            <div class="calendar-day has-order">4</div>
+                            <div class="calendar-day">5</div>
+                            <div class="calendar-day">6</div>
+                            <div class="calendar-day off">7</div>
+                            <div class="calendar-day">8</div>
+                            <div class="calendar-day">9</div>
+                            <div class="calendar-day">10</div>
+                            <div class="calendar-day today">11</div>
+                            <div class="calendar-day">12</div>
+                            <div class="calendar-day">13</div>
+                            <div class="calendar-day off">14</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <button class="btn btn-secondary" style="width: 100%;">
+                            🚫 Отметить "Не работаю"
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 1rem;">
+                    <div class="card-header">
+                        <h2 class="card-title">🔗 Интеграции</h2>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.75rem;" onclick="connectGoogleCalendar()">
+                        📅 Google Calendar
+                    </button>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="connectGoogleTasks()">
+                        ✅ Google Tasks
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin;
+        
+        // 🔥 TELEGRAM MINI APP INTEGRATION
+        const tg = window.Telegram?.WebApp;
+        let masterId = localStorage.getItem('master_id') || 1;
+        
+        // Инициализация Telegram WebApp
+        if (tg) {
+            tg.ready();
+            tg.expand(); // Развернуть на весь экран
+            
+            // Кнопка "Назад"
+            tg.BackButton.show();
+            tg.BackButton.onClick(() => tg.close());
+            
+            // Получить Telegram ID пользователя
+            const telegramUser = tg.initDataUnsafe?.user;
+            if (telegramUser) {
+                console.log('Telegram User:', telegramUser);
+                // TODO: Авторизация по Telegram ID
+                // masterId = await getMasterByTelegramId(telegramUser.id);
+            }
+            
+            // Адаптация под тему Telegram
+            const theme = tg.themeParams;
+            if (theme.bg_color) {
+                document.body.style.background = theme.bg_color;
+            }
+        }
+        
+        // Получить ID мастера из Telegram или localStorage
+
+        // Загрузка данных мастера
+        async function loadMasterData() {
+            try {
+                const response = await fetch(`${API_URL}/api/v1/masters/${masterId}`);
+                if (!response.ok) {
+                    window.location.href = '/';
+                    return;
+                }
+                
+                const master = await response.json();
+                
+                document.getElementById('masterName').textContent = master.full_name;
+                document.getElementById('masterPhone').textContent = master.phone;
+                document.getElementById('masterRating').textContent = master.rating.toFixed(1);
+                
+                // Загрузка заказов
+                loadOrders();
+                
+            } catch (error) {
+                console.error('Ошибка загрузки данных мастера:', error);
+            }
+        }
+
+        // Загрузка заказов
+        async function loadOrders() {
+            try {
+                const response = await fetch(`${API_URL}/api/v1/jobs?master_id=${masterId}`);
+                const orders = await response.json();
+                
+                const activeOrders = orders.filter(o => o.status !== 'completed' && o.status !== 'cancelled');
+                
+                document.getElementById('activeOrders').textContent = activeOrders.length;
+                
+                // Отображение заказов
+                const ordersList = document.getElementById('ordersList');
+                
+                if (activeOrders.length === 0) {
+                    ordersList.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
+                            <p>Нет активных заказов</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                ordersList.innerHTML = activeOrders.map(order => {
+                    const time = order.preferred_time || '09:00';
+                    const address = order.address || 'Адрес не указан';
+                    const price = (order.estimated_price || 0) * 0.75; // 75% мастеру
+                    const client = order.client_name || 'Клиент';
+                    
+                    return `
+                        <div class="order-item">
+                            <div class="order-header">
+                                <div class="order-time">${time}</div>
+                                <div class="order-price">${price.toLocaleString('ru-RU')} ₽</div>
+                            </div>
+                            <div class="order-address">📍 ${address}</div>
+                            <div class="order-client">👤 ${client} • ${order.client_phone || ''}</div>
+                            <div class="order-actions">
+                                <button class="btn btn-sm btn-success" onclick="acceptOrder(${order.id})">
+                                    ✅ Принять
+                                </button>
+                                <button class="btn btn-sm btn-warning" onclick="departToClient(${order.id})">
+                                    🚗 Выехал
+                                </button>
+                                <button class="btn btn-sm" style="background: #10b981; color: white;" onclick="arriveAtClient(${order.id})">
+                                    📍 Я на месте
+                                </button>
+                                <button class="btn btn-sm btn-secondary" onclick="viewOrderDetails(${order.id})">
+                                    👁️ Детали
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Ошибка загрузки заказов:', error);
+            }
+        }
+
+        // Google Calendar интеграция
+        function connectGoogleCalendar() {
+            alert('🔄 Интеграция с Google Calendar в разработке!\n\nБудет доступно:\n- Автоматическое добавление заказов\n- Синхронизация времени\n- Уведомления');
+        }
+
+        // Google Tasks интеграция
+        function connectGoogleTasks() {
+            alert('🔄 Интеграция с Google Tasks в разработке!\n\nБудет доступно:\n- Виджет на рабочий стол\n- Формат: "00:00, Адрес, Сумма"\n- Быстрый доступ к заявкам');
+        }
+
+        // Принять заказ
+        async function acceptOrder(orderId) {
+            try {
+                // Haptic feedback (вибрация) в Telegram
+                if (tg?.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('medium');
+                }
+                
+                const response = await fetch(`${API_URL}/api/v1/jobs/${orderId}/assign`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ master_id: masterId })
+                });
+                
+                if (response.ok) {
+                    // Успешное принятие
+                    if (tg?.HapticFeedback) {
+                        tg.HapticFeedback.notificationOccurred('success');
+                    }
+                    if (tg?.showAlert) {
+                        tg.showAlert('✅ Заказ принят!');
+                    } else {
+                        alert('✅ Заказ принят!');
+                    }
+                    loadOrders();
+                } else {
+                    if (tg?.HapticFeedback) {
+                        tg.HapticFeedback.notificationOccurred('error');
+                    }
+                    alert('❌ Ошибка при принятии заказа');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        }
+
+        // Детали заказа
+        function viewOrderDetails(orderId) {
+            window.location.href = `/admin#order-${orderId}`;
+        }
+        
+        // 🚗 Мастер выехал
+        async function departToClient(orderId) {
+            // Получить GPS координаты
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const location = {
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude
+                    };
+                    
+                    // Сгенерировать ссылку на Google Maps
+                    const routeUrl = `https://www.google.com/maps/dir/?api=1&origin=${location.lat},${location.lon}`;
+                    
+                    try {
+                        const response = await fetch(`${API_URL}/api/v1/master/depart/${orderId}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                location: location,
+                                route_screenshot_url: routeUrl
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (tg?.showAlert) {
+                                tg.showAlert('🚗 Выезд зафиксирован! Клиент получил уведомление.');
+                            } else {
+                                alert('🚗 Выезд зафиксирован!');
+                            }
+                            loadOrders();
+                        }
+                    } catch (error) {
+                        console.error('Ошибка:', error);
+                        alert('❌ Ошибка сети');
+                    }
+                }, (error) => {
+                    alert('❌ Не удалось получить ваше местоположение. Разрешите доступ к GPS.');
+                });
+            } else {
+                alert('❌ GPS недоступен на вашем устройстве');
+            }
+        }
+        
+        // 📍 Мастер прибыл - "Я НА МЕСТЕ"
+        async function arriveAtClient(orderId) {
+            if (tg?.showConfirm) {
+                tg.showConfirm('Вы действительно на месте у клиента?', async (confirmed) => {
+                    if (confirmed) {
+                        await performArrive(orderId);
+                    }
+                });
+            } else {
+                if (confirm('Вы действительно на месте у клиента?')) {
+                    await performArrive(orderId);
+                }
+            }
+        }
+        
+        async function performArrive(orderId) {
+            try {
+                const response = await fetch(`${API_URL}/api/v1/master/arrive/${orderId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    // Вибрация успеха
+                    if (tg?.HapticFeedback) {
+                        tg.HapticFeedback.notificationOccurred('success');
+                    }
+                    
+                    // Показать контакт клиента
+                    const message = `✅ Контакт открыт!\n\n👤 ${result.client_name}\n📞 ${result.client_phone}`;
+                    
+                    if (tg?.showAlert) {
+                        tg.showAlert(message);
+                    } else {
+                        alert(message);
+                    }
+                    
+                    // Предложить позвонить
+                    if (confirm('Хотите позвонить клиенту?')) {
+                        window.location.href = `tel:${result.client_phone}`;
+                    }
+                    
+                    loadOrders();
+                } else {
+                    alert('❌ Ошибка при отметке прибытия');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('❌ Ошибка сети');
+            }
+        }
+
+        // Загрузка при открытии
+        loadMasterData();
+        
+        // Автообновление каждые 30 секунд
+        setInterval(loadOrders, 30000);
+    </script>
+</body>
+</html>

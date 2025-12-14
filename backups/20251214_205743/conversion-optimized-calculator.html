@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор стоимости электромонтажа | БАЛТСЕТЬ</title>
+    <meta name="description" content="Рассчитайте стоимость электромонтажных работ в Калининграде онлайн. Система скидок до 25%. Точный расчёт за 2 минуты. Установка розеток, замена проводки, штробление.">
+    <meta name="keywords" content="калькулятор электрика, расчет стоимости электромонтажа, калькулятор электромонтажных работ калининград">
+    <link rel="canonical" href="https://app.balt-set.ru/calculator.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://app.balt-set.ru/calculator.html">
+    <meta property="og:title" content="Калькулятор стоимости электромонтажа в Калининграде">
+    <meta property="og:description" content="Онлайн-калькулятор для расчёта стоимости электромонтажных работ. Скидки до 25% при большом объёме.">
+    <meta property="og:image" content="https://app.balt-set.ru/og-calculator.jpg">
+    <meta property="og:locale" content="ru_RU">
+    
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(98765432, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/98765432" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1d1d1f;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #1d1d1f;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        .nav-links a.active {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        /* Burger Menu */
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .burger-menu span {
+            width: 24px;
+            height: 3px;
+            background: #1d1d1f;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        
+        .burger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .burger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .burger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-weight: 800;
+        }
+        
+        .hero p {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* Card - глассморфизм как на эталонном сайте */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.3) inset;
+            margin-bottom: 2rem;
+            animation: cardAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1d1d1f;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* Calculator Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: white;
+            font-family: inherit;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* Conversion Optimization Elements - Donald Norman Principles */
+        
+        /* Visibility Principle - Make all options clearly visible */
+        .scenario-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .scenario-option {
+            background: #f8f9fa;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+        }
+        
+        .scenario-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .scenario-option.selected {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .scenario-option h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1d1d1f;
+        }
+        
+        .scenario-option p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0;
+        }
+        
+        /* Feedback Principle - Provide immediate visual feedback */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .quantity-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        
+        .quantity-btn:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+            transform: scale(1.05);
+        }
+        
+        .quantity-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .quantity-display {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #667eea;
+            animation: pulse 0.3s ease;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Affordance Principle - Make interactive elements obvious */
+        .discount-hint {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f59e0b;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .discount-hint.urgent {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+            border-left: 4px solid #ef4444;
+        }
+        
+        .discount-hint.success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border-left: 4px solid #10b981;
+        }
+        
+        /* Results */
+        .results {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-label {
+            font-weight: 500;
+        }
+        
+        .result-value {
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .total {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1d1d1f;
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+        
+        .discount-badge {
+            background: #10b981;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.8);
+            color: #667eea;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Info Section */
+        .info-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .info-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #1d1d1f;
+        }
+        
+        .discount-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .discount-table th,
+        .discount-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .discount-table th {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        /* Urgency Indicator */
+        .urgency-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            color: #ef4444;
+            font-weight: 500;
+        }
+        
+        .urgency-timer {
+            font-weight: 700;
+            background: #ef4444;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .burger-menu {
+                display: flex;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .scenario-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">⚡ БАЛТСЕТЬ</a>
+            <nav class="nav-links">
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог услуг</a>
+                <a href="/services.html">Услуги электрика</a>
+                <a href="/calculator.html" class="active">Калькулятор</a>
+                <a href="/ai-chat.html">AI-чат</a>
+            </nav>
+            <button class="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="hero">
+            <h1>Калькулятор стоимости</h1>
+            <p>Рассчитайте точную стоимость работ за 2 минуты</p>
+        </div>
+        
+        <div class="card">
+            <h2 class="card-title">📊 Расчет стоимости электромонтажа</h2>
+            
+            <!-- Scenario Selection (Visibility Principle) -->
+            <div class="form-group">
+                <label>Что вам нужно?</label>
+                <div class="scenario-selector">
+                    <div class="scenario-option" id="scenarioA" onclick="selectScenario('A')">
+                        <h3>Провести электрику с нуля</h3>
+                        <p>Для новостроек и капитального ремонта</p>
+                    </div>
+                    <div class="scenario-option" id="scenarioB" onclick="selectScenario('B')">
+                        <h3>Установить розетки/выключатели</h3>
+                        <p>Когда проводка уже есть</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scenario A Form -->
+            <div id="scenarioAForm" style="display: none;">
+                <div class="form-group">
+                    <label>Тип ремонта</label>
+                    <select class="form-control" id="repairType" onchange="updateCalculations()">
+                        <option value="cosmetic">Косметический (только установка)</option>
+                        <option value="major">Капитальный (проводка + установка)</option>
+                    </select>
+                </div>
+                
+                <div id="majorRepairOptions" style="display: none;">
+                    <div class="form-group">
+                        <label>Тип расчёта</label>
+                        <select class="form-control" id="calcType" onchange="updateCalculations()">
+                            <option value="simple">Упрощённый (дешевле, но менее детальный)</option>
+                            <option value="detailed">Детальный (точнее, но дороже)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Тип монтажа</label>
+                        <select class="form-control" id="installType" onchange="updateCalculations()">
+                            <option value="surface">Открытая проводка</option>
+                            <option value="concealed">Скрытая проводка</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Выключатели</label>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity('switches')">-</button>
+                        <span class="quantity-display" id="switches-count">0</span>
+                        <button class="quantity-btn" onclick="increaseQuantity('switches')">+</button>
+                        <span style="margin-left: auto; font-weight: 600; color: #667eea;">400 ₽/шт</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Розетки</label>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity('sockets')">-</button>
+                        <span class="quantity-display" id="sockets-count">0</span>
+                        <button class="quantity-btn" onclick="increaseQuantity('sockets')">+</button>
+                        <span style="margin-left: auto; font-weight: 600; color: #667eea;">500 ₽/шт</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Освещение</label>
+                    <select class="form-control" id="lightingType" onchange="updateCalculations()">
+                        <option value="none">Не требуется</option>
+                        <option value="chandelier">Люстра (800 ₽)</option>
+                        <option value="spots">Точечные светильники (1200 ₽)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Мощная техника</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="washer" onchange="updateCalculations()"> 
+                            Стиральная машина (+1500 ₽)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="dishwasher" onchange="updateCalculations()"> 
+                            Посудомоечная машина (+1500 ₽)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="oven" onchange="updateCalculations()"> 
+                            Электроплита/духовка (+2000 ₽)
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scenario B Form -->
+            <div id="scenarioBForm" style="display: none;">
+                <div class="form-group">
+                    <label>Выключатели</label>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity('switchesB')">-</button>
+                        <span class="quantity-display" id="switchesB-count">0</span>
+                        <button class="quantity-btn" onclick="increaseQuantity('switchesB')">+</button>
+                        <span style="margin-left: auto; font-weight: 600; color: #667eea;">250 ₽/шт</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Розетки</label>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity('socketsB')">-</button>
+                        <span class="quantity-display" id="socketsB-count">0</span>
+                        <button class="quantity-btn" onclick="increaseQuantity('socketsB')">+</button>
+                        <span style="margin-left: auto; font-weight: 600; color: #667eea;">250 ₽/шт</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Есть ли провода в стенах?</label>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="hasWires" value="yes" onchange="updateCalculations()"> 
+                            Да, провода уже есть (-30%)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="hasWires" value="partial" onchange="updateCalculations()"> 
+                            Частично есть (-15%)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="hasWires" value="no" onchange="updateCalculations()" checked> 
+                            Нет, нужна прокладка
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Discount Hint (Feedback Principle) -->
+            <div class="discount-hint" id="discountHint">
+                <span>💡</span>
+                <span id="hintText">Выберите сценарий и добавьте услуги для расчёта стоимости</span>
+            </div>
+            
+            <!-- Urgency Indicator -->
+            <div class="urgency-indicator">
+                <span>🔥</span>
+                <span>Сегодня действует скидка 10% на первый заказ! Осталось: <span class="urgency-timer" id="timer">23:59:59</span></span>
+            </div>
+            
+            <!-- Results -->
+            <div class="results" id="results" style="display: none;">
+                <div class="result-item">
+                    <span class="result-label">Стоимость работ:</span>
+                    <span class="result-value" id="work-cost">0 ₽</span>
+                </div>
+                <div class="result-item" id="discount-row" style="display: none;">
+                    <span class="result-label">Скидка: <span class="discount-badge" id="discount-percent">0%</span></span>
+                    <span class="result-value" id="discount-amount">0 ₽</span>
+                </div>
+                <div class="result-item total">
+                    <span>Итого к оплате:</span>
+                    <span id="total-cost">0 ₽</span>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-primary" onclick="placeOrder()" id="orderBtn" disabled>Оформить заказ</button>
+                <button class="btn btn-secondary" onclick="resetCalculator()">Сбросить</button>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3>ℹ️ Система скидок</h3>
+            <p>Получите скидку при заказе нескольких услуг:</p>
+            
+            <table class="discount-table">
+                <thead>
+                    <tr>
+                        <th>Количество услуг</th>
+                        <th>Скидка</th>
+                        <th>Условия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>3-5 услуг</td>
+                        <td>5%</td>
+                        <td>При единовременном заказе</td>
+                    </tr>
+                    <tr>
+                        <td>6-10 услуг</td>
+                        <td>10%</td>
+                        <td>При заказе комплексного ремонта</td>
+                    </tr>
+                    <tr>
+                        <td>11-20 услуг</td>
+                        <td>15%</td>
+                        <td>Для крупных объектов</td>
+                    </tr>
+                    <tr>
+                        <td>21+ услуг</td>
+                        <td>25%</td>
+                        <td>Для юридических лиц и больших проектов</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05)); border-radius: 12px; border-left: 4px solid #10b981;">
+                <p style="margin: 0; font-weight: 500;">
+                    💡 <strong>Совет:</strong> Закажите комплексный ремонт и получите максимальную скидку 25%!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management (Donald Norman's Constraints Principle)
+        let state = {
+            scenario: null,
+            // Scenario A
+            repairType: 'cosmetic',
+            calcType: 'simple',
+            installType: 'surface',
+            switches: 0,
+            sockets: 0,
+            lightingType: 'none',
+            washer: false,
+            dishwasher: false,
+            oven: false,
+            // Scenario B
+            switchesB: 0,
+            socketsB: 0,
+            hasWires: 'no'
+        };
+        
+        // DOM Elements
+        const scenarioA = document.getElementById('scenarioA');
+        const scenarioB = document.getElementById('scenarioB');
+        const scenarioAForm = document.getElementById('scenarioAForm');
+        const scenarioBForm = document.getElementById('scenarioBForm');
+        const orderBtn = document.getElementById('orderBtn');
+        const results = document.getElementById('results');
+        const discountRow = document.getElementById('discount-row');
+        const discountHint = document.getElementById('discountHint');
+        const hintText = document.getElementById('hintText');
+        
+        // Select scenario (Visibility & Feedback Principles)
+        function selectScenario(scenario) {
+            state.scenario = scenario;
+            
+            // Update UI
+            scenarioA.classList.toggle('selected', scenario === 'A');
+            scenarioB.classList.toggle('selected', scenario === 'B');
+            
+            // Show/hide forms
+            scenarioAForm.style.display = scenario === 'A' ? 'block' : 'none';
+            scenarioBForm.style.display = scenario === 'B' ? 'block' : 'none';
+            
+            // Update repair type visibility
+            if (scenario === 'A') {
+                document.getElementById('majorRepairOptions').style.display = 
+                    state.repairType === 'major' ? 'block' : 'none';
+            }
+            
+            updateCalculations();
+        }
+        
+        // Quantity controls (Affordance & Feedback Principles)
+        function increaseQuantity(type) {
+            state[type]++;
+            updateDisplay();
+            updateCalculations();
+        }
+        
+        function decreaseQuantity(type) {
+            if (state[type] > 0) {
+                state[type]--;
+                updateDisplay();
+                updateCalculations();
+            }
+        }
+        
+        // Update display (Feedback Principle)
+        function updateDisplay() {
+            // Update counters with animation
+            document.getElementById('switches-count').textContent = state.switches;
+            document.getElementById('sockets-count').textContent = state.sockets;
+            document.getElementById('switchesB-count').textContent = state.switchesB;
+            document.getElementById('socketsB-count').textContent = state.socketsB;
+            
+            // Add pulse animation
+            document.getElementById('switches-count').style.animation = 'none';
+            document.getElementById('sockets-count').style.animation = 'none';
+            document.getElementById('switchesB-count').style.animation = 'none';
+            document.getElementById('socketsB-count').style.animation = 'none';
+            
+            // Trigger reflow
+            void document.getElementById('switches-count').offsetWidth;
+            void document.getElementById('sockets-count').offsetWidth;
+            void document.getElementById('switchesB-count').offsetWidth;
+            void document.getElementById('socketsB-count').offsetWidth;
+            
+            // Re-add animation
+            document.getElementById('switches-count').style.animation = 'pulse 0.3s ease';
+            document.getElementById('sockets-count').style.animation = 'pulse 0.3s ease';
+            document.getElementById('switchesB-count').style.animation = 'pulse 0.3s ease';
+            document.getElementById('socketsB-count').style.animation = 'pulse 0.3s ease';
+        }
+        
+        // Update calculations (Visibility & Feedback Principles)
+        function updateCalculations() {
+            // Update state from form elements
+            if (state.scenario === 'A') {
+                state.repairType = document.getElementById('repairType').value;
+                state.calcType = document.getElementById('calcType').value;
+                state.installType = document.getElementById('installType').value;
+                state.lightingType = document.getElementById('lightingType').value;
+                state.washer = document.getElementById('washer').checked;
+                state.dishwasher = document.getElementById('dishwasher').checked;
+                state.oven = document.getElementById('oven').checked;
+                
+                // Show/hide major repair options
+                document.getElementById('majorRepairOptions').style.display = 
+                    state.repairType === 'major' ? 'block' : 'none';
+            } else if (state.scenario === 'B') {
+                const wireRadios = document.getElementsByName('hasWires');
+                for (let radio of wireRadios) {
+                    if (radio.checked) {
+                        state.hasWires = radio.value;
+                        break;
+                    }
+                }
+            }
+            
+            // Calculate estimate
+            let total = 0;
+            
+            if (state.scenario === 'A') {
+                if (state.repairType === 'cosmetic') {
+                    total = state.switches * 400 + state.sockets * 500;
+                    if (state.lightingType === 'chandelier') total += 800;
+                    if (state.lightingType === 'spots') total += 1200;
+                    if (state.washer) total += 1500;
+                    if (state.dishwasher) total += 1500;
+                    if (state.oven) total += 2000;
+                } else if (state.repairType === 'major') {
+                    const basePrice = state.calcType === 'simple' ? 1200 : 1800;
+                    const totalPoints = state.switches + state.sockets;
+                    total = totalPoints * basePrice;
+                    
+                    if (state.lightingType === 'spots') total += totalPoints * 200;
+                    if (state.washer || state.dishwasher || state.oven) {
+                        const equipmentCount = [state.washer, state.dishwasher, state.oven].filter(Boolean).length;
+                        total += equipmentCount * 1500;
+                    }
+                    if (state.installType === 'concealed') total += totalPoints * 300;
+                }
+            } else if (state.scenario === 'B') {
+                total = state.switchesB * 250 + state.socketsB * 250;
+                
+                if (state.hasWires === 'yes') {
+                    total *= 0.7;
+                } else if (state.hasWires === 'partial') {
+                    total *= 0.85;
+                }
+            }
+            
+            // Calculate discount based on volume (Donald Norman's Mapping Principle)
+            const itemCount = state.scenario === 'A' ? 
+                (state.switches + state.sockets) : 
+                (state.switchesB + state.socketsB);
+            
+            let discountPercent = 0;
+            if (itemCount >= 21) {
+                discountPercent = 25;
+            } else if (itemCount >= 11) {
+                discountPercent = 15;
+            } else if (itemCount >= 6) {
+                discountPercent = 10;
+            } else if (itemCount >= 3) {
+                discountPercent = 5;
+            }
+            
+            const discountAmount = total * (discountPercent / 100);
+            const finalTotal = total - discountAmount;
+            
+            // Update UI with results (Visibility Principle)
+            if (state.scenario && (itemCount > 0 || total > 0)) {
+                results.style.display = 'block';
+                document.getElementById('work-cost').textContent = Math.round(total).toLocaleString('ru-RU') + ' ₽';
+                
+                if (discountPercent > 0) {
+                    discountRow.style.display = 'flex';
+                    document.getElementById('discount-percent').textContent = discountPercent + '%';
+                    document.getElementById('discount-amount').textContent = Math.round(discountAmount).toLocaleString('ru-RU') + ' ₽';
+                } else {
+                    discountRow.style.display = 'none';
+                }
+                
+                document.getElementById('total-cost').textContent = Math.round(finalTotal).toLocaleString('ru-RU') + ' ₽';
+                
+                // Enable order button
+                orderBtn.disabled = false;
+                
+                // Update discount hint (Feedback Principle)
+                updateDiscountHint(itemCount, discountPercent);
+            } else {
+                results.style.display = 'none';
+                orderBtn.disabled = true;
+                discountHint.className = 'discount-hint';
+                hintText.textContent = 'Выберите сценарий и добавьте услуги для расчёта стоимости';
+            }
+            
+            // Track in analytics
+            if (typeof ym !== 'undefined' && total > 0) {
+                ym(98765432, 'reachGoal', 'calculator_calculation', {
+                    scenario: state.scenario,
+                    total: Math.round(finalTotal),
+                    items: itemCount
+                });
+            }
+        }
+        
+        // Update discount hint (Feedback Principle)
+        function updateDiscountHint(itemCount, discountPercent) {
+            if (itemCount === 0) {
+                discountHint.className = 'discount-hint';
+                hintText.textContent = 'Добавьте услуги для расчёта стоимости';
+            } else if (discountPercent > 0) {
+                discountHint.className = 'discount-hint success';
+                hintText.textContent = `🎉 Получена скидка ${discountPercent}%! Экономия: ${Math.round(itemCount * (discountPercent/100) * 500)} ₽`;
+            } else if (itemCount >= 20) {
+                discountHint.className = 'discount-hint urgent';
+                hintText.textContent = '🔥 Добавьте ещё 1 услугу для получения максимальной скидки 25%!';
+            } else if (itemCount >= 10) {
+                discountHint.className = 'discount-hint';
+                hintText.textContent = '✨ Добавьте ещё 1 услугу для получения скидки 15%!';
+            } else if (itemCount >= 5) {
+                discountHint.className = 'discount-hint';
+                hintText.textContent = '🎯 Добавьте ещё 1 услугу для получения скидки 10%!';
+            } else if (itemCount >= 2) {
+                discountHint.className = 'discount-hint';
+                hintText.textContent = '💡 Добавьте ещё 1 услугу для получения скидки 5%!';
+            } else {
+                discountHint.className = 'discount-hint';
+                hintText.textContent = 'Выберите больше услуг для получения скидки';
+            }
+        }
+        
+        // Reset calculator (Constraints Principle)
+        function resetCalculator() {
+            // Reset state
+            state = {
+                scenario: null,
+                // Scenario A
+                repairType: 'cosmetic',
+                calcType: 'simple',
+                installType: 'surface',
+                switches: 0,
+                sockets: 0,
+                lightingType: 'none',
+                washer: false,
+                dishwasher: false,
+                oven: false,
+                // Scenario B
+                switchesB: 0,
+                socketsB: 0,
+                hasWires: 'no'
+            };
+            
+            // Reset UI
+            scenarioA.classList.remove('selected');
+            scenarioB.classList.remove('selected');
+            scenarioAForm.style.display = 'none';
+            scenarioBForm.style.display = 'none';
+            results.style.display = 'none';
+            orderBtn.disabled = true;
+            
+            // Reset form elements
+            document.getElementById('repairType').value = 'cosmetic';
+            document.getElementById('calcType').value = 'simple';
+            document.getElementById('installType').value = 'surface';
+            document.getElementById('lightingType').value = 'none';
+            document.getElementById('washer').checked = false;
+            document.getElementById('dishwasher').checked = false;
+            document.getElementById('oven').checked = false;
+            
+            const wireRadios = document.getElementsByName('hasWires');
+            for (let radio of wireRadios) {
+                radio.checked = radio.value === 'no';
+            }
+            
+            document.getElementById('majorRepairOptions').style.display = 'none';
+            
+            updateDisplay();
+            updateDiscountHint(0, 0);
+        }
+        
+        // Place order (Affordance Principle)
+        function placeOrder() {
+            const total = document.getElementById('total-cost').textContent;
+            
+            // Show confirmation with feedback
+            alert(`✅ Заказ оформлен!
+
+Общая стоимость: ${total}
+
+Наш менеджер свяжется с вами в ближайшее время.
+Телефон для связи: +7 (900) 123-45-67`);
+            
+            // Track in analytics
+            if (typeof ym !== 'undefined') {
+                ym(98765432, 'reachGoal', 'calculator_order', {
+                    total: parseInt(total.replace(/\D/g, '')),
+                    scenario: state.scenario
+                });
+            }
+            
+            // Reset after order
+            setTimeout(resetCalculator, 1000);
+        }
+        
+        // Timer countdown (Urgency Principle)
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const diff = tomorrow - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('timer').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Initialize
+        setInterval(updateTimer, 1000);
+        updateTimer();
+        updateDisplay();
+        
+        // Burger menu
+        document.querySelector('.burger-menu').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

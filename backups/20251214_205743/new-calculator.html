@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор стоимости электромонтажа | БАЛТСЕТЬ</title>
+    <meta name="description" content="Рассчитайте стоимость электромонтажных работ в Калининграде онлайн. Система скидок до 25%. Точный расчёт за 2 минуты. Установка розеток, замена проводки, штробление.">
+    <meta name="keywords" content="калькулятор электрика, расчет стоимости электромонтажа, калькулятор электромонтажных работ калининград">
+    <link rel="canonical" href="https://app.balt-set.ru/calculator.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://app.balt-set.ru/calculator.html">
+    <meta property="og:title" content="Калькулятор стоимости электромонтажа в Калининграде">
+    <meta property="og:description" content="Онлайн-калькулятор для расчёта стоимости электромонтажных работ. Скидки до 25% при большом объёме.">
+    <meta property="og:image" content="https://app.balt-set.ru/og-calculator.jpg">
+    <meta property="og:locale" content="ru_RU">
+    
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(98765432, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/98765432" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1d1d1f;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* Фоновое изображение как на эталонном сайте */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+        }
+        
+        /* Паттерн поверх градиента */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #1d1d1f;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        .nav-links a.active {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        /* Burger Menu */
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .burger-menu span {
+            width: 24px;
+            height: 3px;
+            background: #1d1d1f;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        
+        .burger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .burger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .burger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-weight: 800;
+        }
+        
+        .hero p {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* Card - глассморфизм как на эталонном сайте */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.3) inset;
+            margin-bottom: 2rem;
+            animation: cardAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1d1d1f;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* Calculator Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: white;
+            font-family: inherit;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .quantity-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+        
+        .quantity-btn:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+        
+        .quantity-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        /* Results */
+        .results {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-label {
+            font-weight: 500;
+        }
+        
+        .result-value {
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .total {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1d1d1f;
+            margin-top: 0.5rem;
+        }
+        
+        .discount-badge {
+            background: #10b981;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.8);
+            color: #667eea;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Info Section */
+        .info-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .info-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #1d1d1f;
+        }
+        
+        .discount-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .discount-table th,
+        .discount-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .discount-table th {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .burger-menu {
+                display: flex;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">⚡ БАЛТСЕТЬ</a>
+            <nav class="nav-links">
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог услуг</a>
+                <a href="/services.html">Услуги электрика</a>
+                <a href="/calculator.html" class="active">Калькулятор</a>
+                <a href="/ai-chat.html">AI-чат</a>
+            </nav>
+            <button class="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="hero">
+            <h1>Калькулятор стоимости</h1>
+            <p>Рассчитайте точную стоимость работ за 2 минуты</p>
+        </div>
+        
+        <div class="card">
+            <h2 class="card-title">📊 Расчет стоимости электромонтажа</h2>
+            
+            <div class="form-group">
+                <label>Тип помещения</label>
+                <select class="form-control" id="roomType">
+                    <option value="room">Комната</option>
+                    <option value="1-room">1-комнатная квартира</option>
+                    <option value="2-room">2-комнатная квартира</option>
+                    <option value="3-room">3-комнатная квартира</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Установка розеток</label>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="decreaseQuantity('outlets')">-</button>
+                    <span class="quantity-display" id="outlets-count">4</span>
+                    <button class="quantity-btn" onclick="increaseQuantity('outlets')">+</button>
+                    <span style="margin-left: auto; font-weight: 600; color: #667eea;">400 ₽/шт</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Установка выключателей</label>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="decreaseQuantity('switches')">-</button>
+                    <span class="quantity-display" id="switches-count">1</span>
+                    <button class="quantity-btn" onclick="increaseQuantity('switches')">+</button>
+                    <span style="margin-left: auto; font-weight: 600; color: #667eea;">350 ₽/шт</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Штробление стен (метры)</label>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="decreaseQuantity('grooving')">-</button>
+                    <span class="quantity-display" id="grooving-count">0</span>
+                    <button class="quantity-btn" onclick="increaseQuantity('grooving')">+</button>
+                    <span style="margin-left: auto; font-weight: 600; color: #667eea;">350 ₽/м</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Установка люстр</label>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="decreaseQuantity('chandeliers')">-</button>
+                    <span class="quantity-display" id="chandeliers-count">0</span>
+                    <button class="quantity-btn" onclick="increaseQuantity('chandeliers')">+</button>
+                    <span style="margin-left: auto; font-weight: 600; color: #667eea;">1000 ₽/шт</span>
+                </div>
+            </div>
+            
+            <div class="results">
+                <div class="result-item">
+                    <span class="result-label">Стоимость розеток:</span>
+                    <span class="result-value" id="outlets-cost">1600 ₽</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Стоимость выключателей:</span>
+                    <span class="result-value" id="switches-cost">350 ₽</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Стоимость штробления:</span>
+                    <span class="result-value" id="grooving-cost">0 ₽</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Стоимость люстр:</span>
+                    <span class="result-value" id="chandeliers-cost">0 ₽</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Скидка: <span class="discount-badge" id="discount-percent">0%</span></span>
+                    <span class="result-value" id="discount-amount">0 ₽</span>
+                </div>
+                <div class="result-item total">
+                    <span>Итого:</span>
+                    <span id="total-cost">1950 ₽</span>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-primary" onclick="placeOrder()">Оформить заказ</button>
+                <button class="btn btn-secondary" onclick="resetCalculator()">Сбросить</button>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3>ℹ️ Система скидок</h3>
+            <p>Получите скидку при заказе нескольких услуг:</p>
+            
+            <table class="discount-table">
+                <thead>
+                    <tr>
+                        <th>Количество услуг</th>
+                        <th>Скидка</th>
+                        <th>Условия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>3-5 услуг</td>
+                        <td>5%</td>
+                        <td>При единовременном заказе</td>
+                    </tr>
+                    <tr>
+                        <td>6-10 услуг</td>
+                        <td>10%</td>
+                        <td>При заказе комплексного ремонта</td>
+                    </tr>
+                    <tr>
+                        <td>11-20 услуг</td>
+                        <td>15%</td>
+                        <td>Для крупных объектов</td>
+                    </tr>
+                    <tr>
+                        <td>21+ услуг</td>
+                        <td>25%</td>
+                        <td>Для юридических лиц и больших проектов</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05)); border-radius: 12px; border-left: 4px solid #10b981;">
+                <p style="margin: 0; font-weight: 500;">
+                    💡 <strong>Совет:</strong> Закажите комплексный ремонт и получите максимальную скидку 25%!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initial values
+        const quantities = {
+            outlets: 4,
+            switches: 1,
+            grooving: 0,
+            chandeliers: 0
+        };
+        
+        // Prices
+        const prices = {
+            outlets: 400,
+            switches: 350,
+            grooving: 350,
+            chandeliers: 1000
+        };
+        
+        // Update display
+        function updateDisplay() {
+            // Update counters
+            document.getElementById('outlets-count').textContent = quantities.outlets;
+            document.getElementById('switches-count').textContent = quantities.switches;
+            document.getElementById('grooving-count').textContent = quantities.grooving;
+            document.getElementById('chandeliers-count').textContent = quantities.chandeliers;
+            
+            // Update costs
+            const outletsCost = quantities.outlets * prices.outlets;
+            const switchesCost = quantities.switches * prices.switches;
+            const groovingCost = quantities.grooving * prices.grooving;
+            const chandeliersCost = quantities.chandeliers * prices.chandeliers;
+            
+            document.getElementById('outlets-cost').textContent = outletsCost.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('switches-cost').textContent = switchesCost.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('grooving-cost').textContent = groovingCost.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('chandeliers-cost').textContent = chandeliersCost.toLocaleString('ru-RU') + ' ₽';
+            
+            // Calculate total
+            const subtotal = outletsCost + switchesCost + groovingCost + chandeliersCost;
+            
+            // Calculate discount
+            const totalItems = quantities.outlets + quantities.switches + quantities.grooving + quantities.chandeliers;
+            let discountPercent = 0;
+            
+            if (totalItems >= 21) {
+                discountPercent = 25;
+            } else if (totalItems >= 11) {
+                discountPercent = 15;
+            } else if (totalItems >= 6) {
+                discountPercent = 10;
+            } else if (totalItems >= 3) {
+                discountPercent = 5;
+            }
+            
+            const discountAmount = subtotal * (discountPercent / 100);
+            const total = subtotal - discountAmount;
+            
+            // Update discount display
+            document.getElementById('discount-percent').textContent = discountPercent + '%';
+            document.getElementById('discount-amount').textContent = discountAmount.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('total-cost').textContent = total.toLocaleString('ru-RU') + ' ₽';
+        }
+        
+        // Quantity controls
+        function increaseQuantity(type) {
+            quantities[type]++;
+            updateDisplay();
+        }
+        
+        function decreaseQuantity(type) {
+            if (quantities[type] > 0) {
+                quantities[type]--;
+                updateDisplay();
+            }
+        }
+        
+        // Reset calculator
+        function resetCalculator() {
+            quantities.outlets = 4;
+            quantities.switches = 1;
+            quantities.grooving = 0;
+            quantities.chandeliers = 0;
+            updateDisplay();
+        }
+        
+        // Place order
+        function placeOrder() {
+            const total = document.getElementById('total-cost').textContent;
+            alert(`Заказ оформлен! Общая стоимость: ${total}\n\nНаш менеджер свяжется с вами в ближайшее время.`);
+        }
+        
+        // Initialize
+        updateDisplay();
+        
+        // Burger menu
+        document.querySelector('.burger-menu').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

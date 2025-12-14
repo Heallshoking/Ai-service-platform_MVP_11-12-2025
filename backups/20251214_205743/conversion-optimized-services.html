@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Услуги электрика в Калининграде — Цены 2024, Вызов мастера от 400₽ | БАЛТСЕТЬ</title>
+    <meta name="description" content="⚡ Услуги профессионального электрика в Калининграде. Установка розеток от 400₽, замена проводки, монтаж освещения. Скидки до 25%! Выезд в день обращения. Калькулятор прямо на странице.">
+    <meta name="keywords" content="электрик Калининград, вызов электрика, услуги электрика цены, установка розеток, замена проводки, электромонтаж Калининград">
+    <link rel="canonical" href="https://app.balt-set.ru/services.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Услуги электрика в Калининграде — от 400₽">
+    <meta property="og:description" content="Калькулятор стоимости прямо на странице! Рассчитайте и закажите за 2 минуты.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://app.balt-set.ru/services.html">
+    
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(98765432, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/98765432" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #1d1d1f;
+            line-height: 1.5;
+        }
+        
+        /* Анимация появления карточек */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .service-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .service-card:nth-child(2) {
+            animation-delay: 0.1s;
+            animation-fill-mode: both;
+        }
+        
+        .service-card:nth-child(3) {
+            animation-delay: 0.2s;
+            animation-fill-mode: both;
+        }
+        
+        /* Header - Air стиль */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1d1d1f;
+            cursor: pointer;
+        }
+        
+        .logo:hover {
+            opacity: 0.8;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #1d1d1f;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.7;
+        }
+        
+        .nav-links a.active {
+            font-weight: 600;
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #1d1d1f;
+        }
+        
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+        
+        .burger-line {
+            width: 25px;
+            height: 2px;
+            background: #1d1d1f;
+            transition: 0.3s;
+        }
+        
+        /* Hero Section */
+        .hero {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1d1d1f, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* Services Grid */
+        .services-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            border-color: rgba(102, 126, 234, 0.2);
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1d1d1f;
+        }
+        
+        .service-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .service-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+        
+        .original-price {
+            font-size: 1rem;
+            color: #999;
+            text-decoration: line-through;
+            margin-right: 0.5rem;
+        }
+        
+        .discount-badge {
+            background: #10b981;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Features Section */
+        .features-section {
+            background: #fafafa;
+            padding: 5rem 0;
+        }
+        
+        .features-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #1d1d1f;
+        }
+        
+        .section-header p {
+            font-size: 1.25rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1d1d1f;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .cta-card {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 2rem;
+        }
+        
+        .cta-card h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-card p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-light {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* Trust Section */
+        .trust-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+        
+        .trust-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        /* Testimonials */
+        .testimonials-section {
+            background: #fafafa;
+            padding: 5rem 0;
+        }
+        
+        .testimonials-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        /* Urgency Section */
+        .urgency-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(239, 68, 68, 0.1));
+            border-radius: 16px;
+            margin-bottom: 3rem;
+            border-left: 4px solid #ef4444;
+        }
+        
+        .urgency-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .urgency-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .urgency-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ef4444;
+        }
+        
+        .urgency-timer {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ef4444;
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1d1d1f;
+            color: #fff;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-column a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-column a:hover {
+            color: #fff;
+        }
+        
+        .copyright {
+            max-width: 1400px;
+            margin: 3rem auto 0;
+            padding: 2rem 2rem 0;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .burger-menu {
+                display: flex;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem 2rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .section-header p {
+                font-size: 1rem;
+            }
+            
+            .cta-card h2 {
+                font-size: 2rem;
+            }
+            
+            .cta-card p {
+                font-size: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .trust-stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .urgency-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Conversion optimization elements */
+        .conversion-boost {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .conversion-boost h3 {
+            color: #10b981;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .conversion-boost p {
+            color: #4b5563;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .guarantee-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        
+        .social-proof {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        
+        .proof-item {
+            text-align: center;
+        }
+        
+        .proof-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+        
+        .proof-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">⚡ БАЛТСЕТЬ</a>
+            <nav class="nav-links">
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог услуг</a>
+                <a href="/services.html" class="active">Услуги электрика</a>
+                <a href="/calculator.html">Калькулятор</a>
+                <a href="/ai-chat.html">AI-чат</a>
+            </nav>
+            <button class="burger-menu">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Услуги электрика в Калининграде</h1>
+        <p>Профессиональный электромонтаж от 400₽ с гарантией 2 года. Выезд мастера в день обращения. Онлайн-калькулятор стоимости.</p>
+        
+        <!-- Social proof -->
+        <div class="social-proof">
+            <div class="proof-item">
+                <div class="proof-number">4.9★</div>
+                <div class="proof-label">Рейтинг</div>
+            </div>
+            <div class="proof-item">
+                <div class="proof-number">127+</div>
+                <div class="proof-label">Отзывов</div>
+            </div>
+            <div class="proof-item">
+                <div class="proof-number">2 мин</div>
+                <div class="proof-label">Подбор</div>
+            </div>
+            <div class="proof-item">
+                <div class="proof-number">2 года</div>
+                <div class="proof-label">Гарантия</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conversion boost section -->
+    <div class="conversion-boost">
+        <h3>🚀 Специальное предложение!</h3>
+        <p>Закажите комплексный ремонт и получите скидку до 25%! Только сегодня скидка 10% на первый заказ.</p>
+        <div class="guarantee-badge">
+            <span>🛡️</span>
+            <span>Гарантия качества и возврата денег</span>
+        </div>
+    </div>
+
+    <!-- Services Grid -->
+    <section class="services-section">
+        <div class="services-grid">
+            <!-- Установка розеток -->
+            <div class="service-card">
+                <div class="service-icon">🔌</div>
+                <div class="service-content">
+                    <h3>Установка розеток</h3>
+                    <p>Профессиональная установка одинарных, двойных и тройных розеток с заземлением. Штробление под проводку при необходимости.</p>
+                    <div class="service-price">
+                        <div class="price">400 ₽</div>
+                        <div class="discount-badge">Популярно</div>
+                    </div>
+                    <button class="btn" onclick="orderService('Установка розеток')">Заказать услугу</button>
+                </div>
+            </div>
+            
+            <!-- Замена проводки -->
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <div class="service-content">
+                    <h3>Замена проводки</h3>
+                    <p>Полная замена электропроводки в квартире или доме. Открытый и скрытый монтаж. Установка электрощита.</p>
+                    <div class="service-price">
+                        <div class="original-price">18 000 ₽</div>
+                        <div class="price">15 000 ₽</div>
+                        <div class="discount-badge">-17%</div>
+                    </div>
+                    <button class="btn" onclick="orderService('Замена проводки')">Заказать услугу</button>
+                </div>
+            </div>
+            
+            <!-- Монтаж освещения -->
+            <div class="service-card">
+                <div class="service-icon">💡</div>
+                <div class="service-content">
+                    <h3>Монтаж освещения</h3>
+                    <p>Установка люстр, точечного освещения, светодиодных лент. Подключение и регулировка яркости.</p>
+                    <div class="service-price">
+                        <div class="price">от 800 ₽</div>
+                    </div>
+                    <button class="btn" onclick="orderService('Монтаж освещения')">Заказать услугу</button>
+                </div>
+            </div>
+            
+            <!-- Штробление стен -->
+            <div class="service-card">
+                <div class="service-icon">🛠️</div>
+                <div class="service-content">
+                    <h3>Штробление стен</h3>
+                    <p>Штробление бетонных и кирпичных стен под проводку. С пылеудалением и заделкой штроб.</p>
+                    <div class="service-price">
+                        <div class="price">от 350 ₽/м</div>
+                    </div>
+                    <button class="btn" onclick="orderService('Штробление стен')">Заказать услугу</button>
+                </div>
+            </div>
+            
+            <!-- Установка люстр -->
+            <div class="service-card">
+                <div class="service-icon">吊</div>
+                <div class="service-content">
+                    <h3>Установка люстр</h3>
+                    <p>Установка люстр и потолочных светильников любой сложности. Подключение с гарантией.</p>
+                    <div class="service-price">
+                        <div class="price">от 1 000 ₽</div>
+                    </div>
+                    <button class="btn" onclick="orderService('Установка люстр')">Заказать услугу</button>
+                </div>
+            </div>
+            
+            <!-- Ремонт электрики -->
+            <div class="service-card">
+                <div class="service-icon">🔧</div>
+                <div class="service-content">
+                    <h3>Ремонт электрики</h3>
+                    <p>Диагностика и устранение неисправностей. Ремонт розеток, выключателей, поиск короткого замыкания.</p>
+                    <div class="service-price">
+                        <div class="price">от 300 ₽</div>
+                    </div>
+                    <button class="btn" onclick="orderService('Ремонт электрики')">Заказать услугу</button>
+                </div>
+            </div>
+            
+            <!-- Монтаж электрощитка -->
+            <div class="service-card">
+                <div class="service-icon">🎛️</div>
+                <div class="service-content">
+                    <h3>Монтаж электрощитка</h3>
+                    <p>Установка и сборка распределительных щитков. Монтаж автоматов, УЗО, реле напряжения.</p>
+                    <div class="service-price">
+                        <div class="price">от 3 000 ₽</div>
+                    </div>
+                    <button class="btn" onclick="orderService('Монтаж электрощитка')">Заказать услугу</button>
+                </div>
+            </div>
+            
+            <!-- Электрика под ключ -->
+            <div class="service-card">
+                <div class="service-icon">🔑</div>
+                <div class="service-content">
+                    <h3>Электрика под ключ</h3>
+                    <p>Комплексный электромонтаж квартир, домов, офисов. Проектирование и реализация "под ключ".</p>
+                    <div class="service-price">
+                        <div class="original-price">2 500 ₽/м²</div>
+                        <div class="price">1 500 ₽/м²</div>
+                        <div class="discount-badge">-40%</div>
+                    </div>
+                    <button class="btn" onclick="orderService('Электрика под ключ')">Заказать услугу</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Urgency Section -->
+    <section class="urgency-section">
+        <div class="urgency-content">
+            <div class="urgency-text">
+                <h3>🔥 Ограниченное предложение!</h3>
+                <p>Только до конца дня скидка 10% на все услуги! Закажите сейчас и сэкономьте до 2 000 рублей.</p>
+            </div>
+            <div class="urgency-timer" id="urgencyTimer">23:59:59</div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="features-content">
+            <div class="section-header">
+                <h2>Почему выбирают нас</h2>
+                <p>Наши преимущества перед другими сервисами</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Быстрый выезд</h3>
+                    <p>Мастер приезжает в день обращения. В большинстве случаев в течение 2-3 часов.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Фиксированные цены</h3>
+                    <p>Цены указаны на сайте и не меняются без вашего согласия. Никаких скрытых платежей.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Гарантия 2 года</h3>
+                    <p>Предоставляем официальную гарантию на все выполненные работы и используемые материалы.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-подбор мастера</h3>
+                    <p>Наш искусственный интеллект подберет лучшего специалиста под вашу задачу за 2 минуты.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="testimonials-content">
+            <div class="section-header">
+                <h2>Отзывы клиентов</h2>
+                <p>Что говорят наши клиенты о работе</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Заменили проводку в квартире за один день. Мастер приехал вовремя, сделал всё аккуратно. Очень довольны!"
+                    </div>
+                    <div class="testimonial-author">— Алексей, Калининград</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Установили 8 розеток и 4 выключателя. Цена приятно удивила, качество отличное. Рекомендую!"
+                    </div>
+                    <div class="testimonial-author">— Марина, Калининград</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Сделали монтаж освещения в гостиной. Установили люстру и точечные светильники. Всё работает отлично!"
+                    </div>
+                    <div class="testimonial-author">— Игорь, Калининград</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-card">
+            <h2>Готовы начать работу?</h2>
+            <p>Закажите услугу прямо сейчас и получите скидку 10% на первый заказ!</p>
+            <div class="cta-buttons">
+                <button class="btn btn-light" onclick="openOrderForm()">Оставить заявку</button>
+                <a href="/calculator.html" class="btn btn-outline">Рассчитать стоимость</a>
+                <a href="tel:+79001234567" class="btn btn-outline">Позвонить нам</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Услуги</h3>
+                <ul>
+                    <li><a href="/catalog.html">Каталог услуг</a></li>
+                    <li><a href="/services.html">Услуги электрика</a></li>
+                    <li><a href="/calculator.html">Калькулятор стоимости</a></li>
+                    <li><a href="/ai-chat.html">AI-консультант</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Информация</h3>
+                <ul>
+                    <li><a href="/#about">О компании</a></li>
+                    <li><a href="/#contacts">Контакты</a></li>
+                    <li><a href="/#reviews">Отзывы</a></li>
+                    <li><a href="/#portfolio">Портфолио</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Контакты</h3>
+                <ul>
+                    <li>📍 Калининград</li>
+                    <li>📞 +7 (900) 123-45-67</li>
+                    <li>✉️ info@balt-set.ru</li>
+                    <li>🕒 Ежедневно 8:00-22:00</li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Telegram</h3>
+                <ul>
+                    <li><a href="https://t.me/ai_service_client_bot" target="_blank">@ai_service_client_bot</a></li>
+                    <li><a href="https://t.me/ai_service_master_bot" target="_blank">@ai_service_master_bot</a></li>
+                    <li><a href="https://t.me/baltset_news" target="_blank">Новости</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2024 БАЛТСЕТЬ. Все права защищены. Услуги электрика и сантехника в Калининграде.
+        </div>
+    </footer>
+
+    <script>
+        // Timer countdown function
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const diff = tomorrow - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            const timerElement = document.getElementById('urgencyTimer');
+            if (timerElement) {
+                timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+        
+        // Update timer every second
+        setInterval(updateTimer, 1000);
+        updateTimer(); // Initial call
+        
+        // Service ordering function
+        function orderService(serviceName) {
+            alert(`Вы выбрали услугу: ${serviceName}
+
+Наш менеджер свяжется с вами в ближайшее время для уточнения деталей.
+
+Телефон для связи: +7 (900) 123-45-67`);
+            // In a real implementation, this would open a modal or redirect to an order form
+        }
+        
+        // Open order form function
+        function openOrderForm() {
+            alert('Открытие формы заказа...\n\nВ реальной реализации здесь откроется форма для оформления заявки.');
+            // In a real implementation, this would open a modal with the order form
+        }
+        
+        // Burger menu
+        document.querySelector('.burger-menu').addEventListener('click', function() {
+            this.classList.toggle('active');
+            // In a real implementation, this would toggle the mobile menu
+        });
+    </script>
+</body>
+</html>
