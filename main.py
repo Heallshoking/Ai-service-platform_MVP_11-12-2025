@@ -232,6 +232,111 @@ if Path("static").exists():
 else:
     print("⚠️ Static files НЕ монтированы (папка не найдена)")
 
+# ==================== КРАСИВЫЕ URL ДЛЯ СТРАНИЦ ====================
+
+# Главная страница
+@app.get("/")
+async def root():
+    return FileResponse("static/index.html")
+
+# Сервисные страницы с красивыми URL
+@app.get("/services/usb-rozetki")
+@app.get("/services/usb-rozetki.html")
+async def usb_rozetki():
+    return FileResponse("static/services/usb-rozetki.html")
+
+@app.get("/services/smart-home")
+@app.get("/services/smart-home.html")
+async def smart_home():
+    return FileResponse("static/services/smart-home.html")
+
+@app.get("/services/emergency")
+@app.get("/services/emergency.html")
+async def emergency():
+    return FileResponse("static/services/emergency.html")
+
+@app.get("/services/seasonal-packages")
+@app.get("/services/seasonal-packages.html")
+async def seasonal_packages():
+    return FileResponse("static/services/seasonal-packages.html")
+
+# Существующие сервисные страницы
+@app.get("/services/elektroschit")
+@app.get("/services/elektroschit.html")
+async def elektroschit():
+    return FileResponse("static/services/elektroschit.html")
+
+@app.get("/services/osveshchenie")
+@app.get("/services/osveshchenie.html")
+async def osveshchenie():
+    return FileResponse("static/services/osveshchenie.html")
+
+@app.get("/services/pod-klyuch")
+@app.get("/services/pod-klyuch.html")
+async def pod_klyuch():
+    return FileResponse("static/services/pod-klyuch.html")
+
+@app.get("/services/provodka")
+@app.get("/services/provodka.html")
+async def provodka():
+    return FileResponse("static/services/provodka.html")
+
+@app.get("/services/remont-elektriki")
+@app.get("/services/remont-elektriki.html")
+async def remont_elektriki():
+    return FileResponse("static/services/remont-elektriki.html")
+
+@app.get("/services/rozetki")
+@app.get("/services/rozetki.html")
+async def rozetki():
+    return FileResponse("static/services/rozetki.html")
+
+# Блог с красивыми URL
+@app.get("/blog/kak-vybrat-usb-rozetki-dlya-doma")
+@app.get("/blog/kak-vybrat-usb-rozetki-dlya-doma.html")
+async def blog_usb_rozetki():
+    return FileResponse("static/blog/kak-vybrat-usb-rozetki-dlya-doma.html")
+
+# Основные страницы
+@app.get("/calculator")
+@app.get("/calculator.html")
+async def calculator():
+    return FileResponse("static/calculator.html")
+
+@app.get("/catalog")
+@app.get("/catalog.html")
+async def catalog():
+    return FileResponse("static/catalog.html")
+
+@app.get("/services")
+@app.get("/services.html")
+async def services():
+    return FileResponse("static/services.html")
+
+@app.get("/reviews")
+@app.get("/reviews.html")
+async def reviews():
+    return FileResponse("static/reviews.html")
+
+@app.get("/portfolio")
+@app.get("/portfolio.html")
+async def portfolio():
+    return FileResponse("static/portfolio.html")
+
+@app.get("/high-conversion-landing")
+@app.get("/high-conversion-landing.html")
+async def high_conversion_landing():
+    return FileResponse("static/high-conversion-landing.html")
+
+# Sitemap и robots.txt
+@app.get("/sitemap.xml")
+async def sitemap():
+    return FileResponse("static/sitemap.xml", media_type="application/xml")
+
+@app.get("/robots.txt")
+async def robots():
+    return FileResponse("static/robots.txt", media_type="text/plain")
+
 # React Build - Монтируем если есть dist/
 if Path("electric-service-automation-main/dist").exists():
     app.mount("/assets", StaticFiles(directory="electric-service-automation-main/dist/assets"), name="assets")
