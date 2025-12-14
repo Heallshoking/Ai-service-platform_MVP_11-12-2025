@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>AI Platform - Умный сервис вызова мастеров в Калининграде | Электрик, Сантехник</title>
+    <meta name="description" content="🤖 Умная платформа для вызова электриков и сантехников в Калининграде. AI-помощник подберёт мастера за 2 минуты. Цены от 500₽, рейтинг 4.9★, работаем 24/7">
+    
+    <!-- Yandex.Metrika -->
+    <script type="text/javascript">
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+       ym(98765432, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%);
+            color: #1d1d1f;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+        
+        .nav-links a {
+            color: #4b5563;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.95;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* Stats */
+        .stats {
+            background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+            padding: 3rem 2rem;
+        }
+        
+        .stats-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #10b981;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+        
+        /* Services */
+        .services {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            font-weight: 900;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(102, 126, 234, 0.2);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1d1d1f;
+        }
+        
+        .service-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1d1d1f;
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                ⚡ AI Platform
+            </div>
+            <nav class="nav-links">
+                <a href="/services.html">Услуги</a>
+                <a href="/calculator.html">Калькулятор</a>
+                <a href="/catalog.html">Мастера</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>🤖 Умный вызов мастера<br>за 2 минуты</h1>
+        <p>AI-помощник подберёт лучшего электрика или сантехника в Калининграде. Прозрачные цены, реальные отзывы, гарантия качества</p>
+        <div class="cta-buttons">
+            <a href="/services.html" class="btn btn-primary">📋 Выбрать услугу</a>
+            <a href="/ai-chat.html" class="btn btn-secondary">💬 Спросить AI</a>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div>
+                <div class="stat-value">500+</div>
+                <div class="stat-label">Выполненных заказов</div>
+            </div>
+            <div>
+                <div class="stat-value">4.9★</div>
+                <div class="stat-label">Средний рейтинг</div>
+            </div>
+            <div>
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Техподдержка</div>
+            </div>
+            <div>
+                <div class="stat-value">2 часа</div>
+                <div class="stat-label">Среднее время приезда</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services">
+        <h2 class="section-title">Популярные услуги</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🔌</div>
+                <h3>Установка розеток</h3>
+                <p>Монтаж обычных и USB-розеток. От 500₽ за точку. Скидки до 25% при заказе от 10 шт</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <h3>Замена проводки</h3>
+                <p>Полная или частичная замена электропроводки. От 1200₽/м². Гарантия 2 года</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💡</div>
+                <h3>Установка люстр</h3>
+                <p>Профессиональный монтаж люстр и светильников любой сложности. От 800₽ за люстру</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔨</div>
+                <h3>Штробление стен</h3>
+                <p>Прокладка штроб под электропроводку. От 350₽/м. Безпылевое штробление +150₽/м</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔧</div>
+                <h3>Ремонт электрики</h3>
+                <p>Диагностика и устранение неисправностей. От 600₽ за точку. Полная диагностика +1500₽</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚙️</div>
+                <h3>Монтаж электрощитка</h3>
+                <p>Сборка и установка распределительных щитов. От 400₽ за модуль. УЗО/дифавтоматы +2000₽</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2024 AI Platform. Все права защищены.</p>
+            <p style="margin-top: 1rem; opacity: 0.7;">Калининград • 24/7 • ☎ +7 (900) 123-45-67</p>
+        </div>
+    </footer>
+
+    <script>
+        // Отслеживание кликов по кнопкам
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (typeof ym !== 'undefined') {
+                    ym(98765432, 'reachGoal', 'cta_click', {
+                        button: this.textContent.trim()
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
