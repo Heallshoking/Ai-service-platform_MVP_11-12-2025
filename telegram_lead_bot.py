@@ -9,8 +9,8 @@ from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardR
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
 # Конфигурация (можно вынести в .env)
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '6789012345:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw')
-ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID', '-1001234567890')
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8594337620:AAEV59Hi-38xUjTKd70hRTkvcR6miWWWxls')
+ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID', '-1002468635742')
 
 def start(update: Update, context: CallbackContext) -> None:
     """Обработчик команды /start"""
