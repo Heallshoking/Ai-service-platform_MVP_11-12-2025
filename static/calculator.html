@@ -913,7 +913,9 @@
                         <p>Профессиональный электрик приедет в удобное время</p>
                         <span class="banner-badge">🎁 Бесплатный осмотр</span>
                     </div>
-                    <div class="banner-master-image">👨‍🔧</div>
+                    <div class="banner-master-image">
+                        <img src="https://app.balt-set.ru/images/konigelectric-avatar.jpg" alt="Konigelectric" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                    </div>
                 </div>
                 
                 <!-- Banners 2-3: Услуги -->
@@ -1358,5 +1360,15 @@
     <!-- Inline Chat (Fixed Input at Bottom) -->
     <link rel="stylesheet" href="inline-chat.css">
     <script src="inline-chat.js"></script>
+    
+    <script>
+        // Ensure inline chat is initialized
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof InlineChat !== 'undefined' && typeof PortfolioMenu !== 'undefined') {
+                window.inlineChat = new InlineChat();
+                window.portfolioMenu = new PortfolioMenu();
+            }
+        });
+    </script>
 </body>
 </html>
