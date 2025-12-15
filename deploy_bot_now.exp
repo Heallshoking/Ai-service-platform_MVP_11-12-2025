@@ -1,0 +1,56 @@
+#!/usr/bin/expect -f
+set timeout 120
+
+puts "\n🚀 Деплой исправленного Telegram бота\n"
+
+# Копируем файл
+puts "📦 Копирование telegram_lead_bot.py..."
+spawn scp telegram_lead_bot.py root@176.98.178.109:/root/baltset_bot.py
+expect "password:"
+send "pneDRE2K?Tz1k-\r"
+expect eof
+puts "✅ Файл скопирован\n"
+
+# Подключаемся и перезапускаем
+puts "🔄 Перезапуск бота...\n"
+spawn ssh root@176.98.178.109
+expect "password:"
+send "pneDRE2K?Tz1k-\r"
+
+expect "#"
+send "killall -9 python3 2>/dev/null; pkill -9 -f baltset 2>/dev/null\r"
+expect "#"
+puts "✅ Старые процессы остановлены"
+
+send "sleep 3\r"
+expect "#"
+
+send "cd /root && nohup python3 baltset_bot.py > baltset_bot.log 2>&1 &\r"
+expect "#"
+puts "✅ Новый бот запущен в фоне"
+
+send "sleep 5\r"
+expect "#"
+
+send "pgrep -f baltset_bot.py\r"
+expect {
+    -re "(\[0-9\]+)" {
+        puts "\n================================"
+        puts "✅ БОТ УСПЕШНО ЗАПУЩЕН!"
+        puts "================================"
+        puts "\nPID: $expect_out(1,string)\n"
+    }
+    "#" {
+        puts "\n⚠️  Процесс не найден"
+    }
+}
+
+send "tail -20 baltset_bot.log\r"
+expect "#"
+
+send "exit\r"
+expect eof
+
+puts "\n🎉 Деплой завершён!\n"
+puts "📱 Проверьте: https://t.me/Baltset39_bot"
+puts "💬 Напишите /start\n"

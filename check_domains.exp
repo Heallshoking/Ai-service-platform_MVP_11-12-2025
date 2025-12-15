@@ -1,0 +1,23 @@
+#!/usr/bin/expect -f
+set timeout 30
+set password "pneDRE2K?Tz1k-"
+set host "root@176.98.178.109"
+
+puts "\n🔍 Проверка всех доменов...\n"
+
+spawn ssh $host
+expect "password:"
+send "$password\r"
+expect "# "
+
+send "ls -la /etc/nginx/fastpanel2-available/\r"
+expect "# "
+
+send "cat /etc/nginx/fastpanel2-available/*.conf | grep 'server_name' | head -20\r"
+expect "# "
+
+send "ls -la /var/www/\r"
+expect "# "
+
+send "exit\r"
+expect eof

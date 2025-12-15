@@ -1,0 +1,83 @@
+#!/usr/bin/expect -f
+# АВТОМАТИЧЕСКИЙ ДЕПЛОЙ БОТОВ ТОЛЬКО НА VPS
+set timeout 300
+
+puts "\n🚀 ДЕПЛОЙ БОТОВ НА VPS (176.98.178.109)\n"
+
+set vps "176.98.178.109"
+set pass "pneDRE2K?Tz1k-"
+
+# Копируем боты
+puts "📤 Копирование файлов на VPS..."
+spawn bash -c "cd /Users/user/Documents/Projects/Github/balt-set.ru && scp telegram_client_bot.py telegram_master_bot.py .env root@176.98.178.109:/root/"
+expect {
+    "password:" {
+        send "$pass\r"
+        exp_continue
+    }
+    "100%" {
+        exp_continue
+    }
+    eof
+}
+
+puts "\n✅ Файлы скопированы\n"
+
+# Настройка и запуск на VPS
+puts "⚙️  Настройка на VPS...\n"
+spawn ssh root@$vps
+expect "password:"
+send "$pass\r"
+
+expect "#"
+send "mkdir -p /root/ai_service_bots && cd /root/ai_service_bots\r"
+expect "#"
+
+send "mv /root/telegram_client_bot.py /root/telegram_master_bot.py /root/.env . 2>/dev/null\r"
+expect "#"
+
+puts "📦 Установка зависимостей..."
+send "pip3 install python-telegram-bot==20.7 httpx python-dotenv -q\r"
+set timeout 90
+expect "#"
+set timeout 300
+
+puts "\n🛑 Остановка старых процессов..."
+send "pkill -9 -f telegram_client_bot.py; pkill -9 -f telegram_master_bot.py\r"
+expect "#"
+send "sleep 3\r"
+expect "#"
+
+puts "\n🚀 Запуск ботов..."
+send "nohup python3 telegram_client_bot.py > client.log 2>&1 &\r"
+expect "#"
+send "nohup python3 telegram_master_bot.py > master.log 2>&1 &\r"
+expect "#"
+
+send "sleep 7\r"
+expect "#"
+
+puts "\n📊 Проверка статуса:\n"
+send "if pgrep -f telegram_client_bot.py > /dev/null; then echo '✅ Клиент работает (PID:' \$(pgrep -f telegram_client_bot.py)')'; else echo '❌ Клиент НЕ работает'; fi\r"
+expect "#"
+
+send "if pgrep -f telegram_master_bot.py > /dev/null; then echo '✅ Мастер работает (PID:' \$(pgrep -f telegram_master_bot.py)')'; else echo '❌ Мастер НЕ работает'; fi\r"
+expect "#"
+
+puts "\n📋 Последние логи клиента:"
+send "tail -15 client.log\r"
+expect "#"
+
+puts "\n📋 Последние логи мастера:"
+send "tail -15 master.log\r"
+expect "#"
+
+send "exit\r"
+expect eof
+
+puts "\n=================================="
+puts "✅ ДЕПЛОЙ ЗАВЕРШЁН!"
+puts "==================================\n"
+puts "🙋 Клиент: @ai_service_client_bot"
+puts "👷 Мастер: @ai_service_master_bot"
+puts "\n📱 Проверьте ботов в Telegram!\n"

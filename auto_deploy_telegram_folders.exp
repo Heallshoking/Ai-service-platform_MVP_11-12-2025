@@ -1,0 +1,42 @@
+#!/usr/bin/expect -f
+# Автодеплой с вводом пароля
+
+set timeout 120
+set password "vfhufhbnrf"
+
+# Копируем файлы Telegram Folders
+spawn scp telegram_folders_integration.py telegram_client_bot.py root@176.98.178.109:/root/ai_service_bots/
+expect "password:"
+send "$password\r"
+expect eof
+
+# Перезапускаем бота
+spawn ssh root@176.98.178.109
+expect "password:"
+send "$password\r"
+expect "# "
+
+send "cd /root/ai_service_bots/\r"
+expect "# "
+
+send "pkill -f telegram_client_bot.py\r"
+expect "# "
+
+send "sleep 2\r"
+expect "# "
+
+send "nohup python3 telegram_client_bot.py > client_bot.log 2>&1 &\r"
+expect "# "
+
+send "ps aux | grep telegram_client_bot.py | grep -v grep\r"
+expect "# "
+
+send "tail -5 client_bot.log\r"
+expect "# "
+
+send "exit\r"
+expect eof
+
+puts "\n✅ Telegram Folders задеплоен!"
+puts "🧪 Создайте заявку через @ai_service_client_bot"
+puts "🎯 После создания заявки появится кнопка добавления папки\n"

@@ -1,0 +1,22 @@
+#!/usr/bin/expect -f
+set timeout 30
+
+spawn ssh root@176.98.178.109
+expect "password:"
+send "pneDRE2K?Tz1k-\r"
+expect "#"
+
+puts "\n=== ПРОВЕРКА БОТОВ ==="
+send "cd /root/ai_service_bots && ps aux | grep telegram\r"
+expect "#"
+
+puts "\n=== ЛОГИ МАСТЕРА (последние 20 строк) ==="
+send "tail -20 master.log\r"
+expect "#"
+
+puts "\n=== ЛОГИ КЛИЕНТА (последние 10 строк) ==="
+send "tail -10 client.log\r"
+expect "#"
+
+send "exit\r"
+expect eof

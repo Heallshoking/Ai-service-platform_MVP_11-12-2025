@@ -1,0 +1,27 @@
+#!/usr/bin/expect -f
+# Простой перезапуск ботов на VPS
+
+set timeout 60
+set password "pneDRE2K?Tz1k-"
+
+puts "\n🔄 Перезапуск Telegram ботов...\n"
+
+spawn ssh root@176.98.178.109 "cd /root/ai_service_bots && systemctl restart telegram_bots && systemctl status telegram_bots --no-pager | head -20"
+
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "yes/no" {
+        send "yes\r"
+        exp_continue
+    }
+    timeout {
+        puts "\n⏱️ Timeout - проверьте VPS вручную\n"
+        exit 1
+    }
+    eof
+}
+
+puts "\n✅ Готово!\n"

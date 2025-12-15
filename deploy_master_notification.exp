@@ -1,0 +1,89 @@
+#!/usr/bin/expect -f
+# Деплой исправлений от 15.12.2024
+# Автоназначение мастеров + master_notification.py
+
+set timeout 120
+set password "pneDRE2K?Tz1k-"
+set host "root@176.98.178.109"
+
+puts "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+puts "  🚀 ДЕПЛОЙ АВТОНАЗНАЧЕНИЯ МАСТЕРОВ"
+puts "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+
+# ========== КОПИРУЕМ ФАЙЛЫ ==========
+puts "📦 Копирование файлов на VPS...\n"
+
+spawn scp telegram_client_bot.py $host:/root/ai_service_bots/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "yes/no" {
+        send "yes\r"
+        exp_continue
+    }
+    eof
+}
+
+puts "  ✓ telegram_client_bot.py скопирован\n"
+
+spawn scp master_notification.py $host:/root/ai_service_bots/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}
+
+puts "  ✓ master_notification.py скопирован\n"
+
+# ========== ПЕРЕЗАПУСК БОТА ==========
+puts "🔄 Перезапуск клиентского бота...\n"
+
+spawn ssh $host
+expect "password:"
+send "$password\r"
+expect "# "
+
+send "cd /root/ai_service_bots\r"
+expect "# "
+puts "  ✓ Перешли в директорию\n"
+
+send "pkill -f telegram_client_bot.py\r"
+expect "# "
+sleep 2
+puts "  ✓ Остановили старую версию бота\n"
+
+send "screen -dmS client_bot python3 telegram_client_bot.py\r"
+expect "# "
+sleep 2
+puts "  ✓ Запустили новую версию бота\n"
+
+send "screen -ls\r"
+expect "# "
+puts "  ✓ Проверили screen сессии\n"
+
+send "ps aux | grep telegram_client_bot.py\r"
+expect "# "
+puts "  ✓ Проверили процесс\n"
+
+send "exit\r"
+expect eof
+
+puts "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+puts "  ✅ ДЕПЛОЙ ЗАВЕРШЁН УСПЕШНО!"
+puts "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+
+puts "📋 Изменения:"
+puts "  • Добавлен модуль master_notification.py"
+puts "  • Обновлен telegram_client_bot.py"
+puts "  • Мастера теперь получают уведомления!"
+puts ""
+puts "🧪 Как протестировать:"
+puts "  1. Отправь /start боту клиентов"
+puts "  2. Создай тестовую заявку"
+puts "  3. Подтверди заявку"
+puts "  4. ПРОВЕРЬ: мастера должны получить уведомление!\n"
+puts "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"

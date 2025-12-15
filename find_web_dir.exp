@@ -1,0 +1,21 @@
+#!/usr/bin/expect -f
+set timeout 30
+set password "pneDRE2K?Tz1k-"
+set host "root@176.98.178.109"
+
+spawn ssh $host
+expect "password:"
+send "$password\r"
+expect "# "
+
+send "ls -la /var/www/\r"
+expect "# "
+
+send "ls -la /home/\r"
+expect "# "
+
+send "find /var/www /home -name 'app.balt-set.ru' -type d 2>/dev/null\r"
+expect "# "
+
+send "exit\r"
+expect eof

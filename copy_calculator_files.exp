@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+set timeout 30
+set password "pneDRE2K?Tz1k-"
+set host "root@176.98.178.109"
+
+puts "\n📤 Копирование файлов калькулятора...\n"
+
+spawn scp /Users/user/Documents/Projects/Github/balt-set.ru/static/calculator.html $host:/var/www/app_balt_set/data/www/app.balt-set.ru/calculator.html
+expect "password:"
+send "$password\r"
+expect eof
+
+puts "\n✅ HTML скопирован\n"
+
+sleep 2
+
+spawn scp /Users/user/Documents/Projects/Github/balt-set.ru/static/calculator.js $host:/var/www/app_balt_set/data/www/app.balt-set.ru/calculator.js
+expect "password:"
+send "$password\r"
+expect eof
+
+puts "\n✅ JavaScript скопирован\n"
+
+puts "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+puts "🎉 ГОТОВО!"
+puts "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+puts "\n🌐 Калькулятор доступен по адресу:\n"
+puts "   http://app.balt-set.ru/calculator.html\n"
+puts "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"

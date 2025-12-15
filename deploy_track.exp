@@ -1,0 +1,23 @@
+#!/usr/bin/expect -f
+# Деплой track.html на VPS
+
+set timeout 30
+set password "pneDRE2K?Tz1k-"
+
+puts "\n📤 Копирование track.html на VPS...\n"
+
+spawn scp electric-service-automation-main/public/track.html root@176.98.178.109:/var/www/app.balt-set.ru/
+
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "yes/no" {
+        send "yes\r"
+        exp_continue
+    }
+    eof
+}
+
+puts "\n✅ track.html скопирован на https://app.balt-set.ru/track.html\n"

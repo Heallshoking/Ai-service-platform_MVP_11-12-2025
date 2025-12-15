@@ -1,0 +1,40 @@
+#!/usr/bin/expect -f
+set timeout 30
+set password "pneDRE2K?Tz1k-"
+set host "root@176.98.178.109"
+
+puts "\n📁 Создание директории для калькулятора...\n"
+
+spawn ssh $host
+expect "password:"
+send "$password\r"
+expect "# "
+
+send "mkdir -p /var/www/html/calculator\r"
+expect "# "
+
+send "ls -la /var/www/html/\r"
+expect "# "
+
+send "exit\r"
+expect eof
+
+puts "\n✅ Директория создана!\n"
+puts "📤 Копирование файлов...\n"
+
+spawn scp /Users/user/Documents/Projects/Github/balt-set.ru/static/calculator.html $host:/var/www/html/calculator.html
+expect "password:"
+send "$password\r"
+expect eof
+
+puts "\n✅ HTML скопирован\n"
+
+spawn scp /Users/user/Documents/Projects/Github/balt-set.ru/static/calculator.js $host:/var/www/html/calculator.js
+expect "password:"
+send "$password\r"
+expect eof
+
+puts "\n✅ JavaScript скопирован\n"
+puts "\n🎉 ГОТОВО!\n"
+puts "Калькулятор доступен по адресу:\n"
+puts "http://176.98.178.109/calculator.html\n"

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Google Sheets | БАЛТСЕТЬ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .tab:hover:not(.active) {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+        }
+        
+        .stat-card.total::before {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .stat-card.new::before {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .stat-card.progress::before {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+        
+        .stat-card.completed::before {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .stat-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .stat-subtext {
+            font-size: 12px;
+            color: #10b981;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+        
+        .sheets-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        
+        .sheet-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sheet-icon {
+            font-size: 28px;
+        }
+        
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .quick-actions {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .action-btn {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .action-btn.tertiary {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .info-box {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box h3 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+        
+        .info-box p {
+            color: #1e3a8a;
+            line-height: 1.6;
+        }
+        
+        .info-box code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #dc2626;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Dashboard - BALT-SET.RU</h1>
+            <p style="color: #999;">Управление заявками через Google Sheets</p>
+        </div>
+        
+        <!-- Статистика -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <div class="stat-icon">📋</div>
+                <div class="stat-label">Всего заявок</div>
+                <div class="stat-value" id="totalOrders">-</div>
+                <div class="stat-subtext">За все время</div>
+            </div>
+            
+            <div class="stat-card new">
+                <div class="stat-icon">🆕</div>
+                <div class="stat-label">Новые заявки</div>
+                <div class="stat-value" id="newOrders">-</div>
+                <div class="stat-subtext">Требуют назначения мастера</div>
+            </div>
+            
+            <div class="stat-card progress">
+                <div class="stat-icon">⚙️</div>
+                <div class="stat-label">В работе</div>
+                <div class="stat-value" id="progressOrders">-</div>
+                <div class="stat-subtext">Мастер назначен</div>
+            </div>
+            
+            <div class="stat-card completed">
+                <div class="stat-icon">✅</div>
+                <div class="stat-label">Выполнено</div>
+                <div class="stat-value" id="completedOrders">-</div>
+                <div class="stat-subtext">Комиссия 30%</div>
+            </div>
+        </div>
+        
+        <!-- Быстрые действия -->
+        <div class="quick-actions">
+            <h3 style="margin-bottom: 15px;">⚡ Быстрые действия</h3>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="openGoogleSheets()">
+                    <span>📊</span> Открыть Google Sheets
+                </button>
+                <button class="action-btn secondary" onclick="refreshStats()">
+                    <span>🔄</span> Обновить статистику
+                </button>
+                <button class="action-btn tertiary" onclick="openBotManagement()">
+                    <span>🤖</span> Управление ботами
+                </button>
+            </div>
+        </div>
+        
+        <!-- Инфо-блок -->
+        <div class="info-box" id="setupInfo">
+            <h3>⚠️ Настройка Google Sheets</h3>
+            <p>
+                Для полноценной работы дашборда необходимо настроить интеграцию с Google Sheets.<br>
+                📖 Инструкция: <code>НАСТРОЙКА_GOOGLE_SHEETS.md</code><br>
+                🔗 После настройки вставьте <strong>Spreadsheet ID</strong> в код ниже.
+            </p>
+        </div>
+        
+        <!-- Вкладки -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('orders')">📋 Заявки</div>
+            <div class="tab" onclick="switchTab('masters')">👷 Мастера</div>
+            <div class="tab" onclick="switchTab('stats')">📊 Статистика</div>
+        </div>
+        
+        <!-- Заявки -->
+        <div id="ordersSheet" class="sheets-container">
+            <div class="sheet-title">
+                <span class="sheet-icon">📋</span>
+                <span>Все заявки</span>
+            </div>
+            <div class="iframe-container">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Загрузка данных из Google Sheets...</p>
+                    <p style="margin-top: 10px; font-size: 12px; color: #999;">
+                        Если данные не загружаются, проверьте настройки доступа к Google Sheets
+                    </p>
+                </div>
+                <!-- Замените YOUR_SPREADSHEET_ID на реальный ID вашей таблицы -->
+                <iframe id="ordersIframe" 
+                        src="" 
+                        onload="hideLoading(this)"></iframe>
+            </div>
+        </div>
+        
+        <!-- Мастера -->
+        <div id="mastersSheet" class="sheets-container hidden">
+            <div class="sheet-title">
+                <span class="sheet-icon">👷</span>
+                <span>Мастера</span>
+            </div>
+            <div class="iframe-container">
+                <iframe id="mastersIframe" src=""></iframe>
+            </div>
+        </div>
+        
+        <!-- Статистика -->
+        <div id="statsSheet" class="sheets-container hidden">
+            <div class="sheet-title">
+                <span class="sheet-icon">📊</span>
+                <span>Статистика и метрики</span>
+            </div>
+            <div class="iframe-container">
+                <iframe id="statsIframe" src=""></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // =====================================================
+        // НАСТРОЙКА: Вставьте сюда ID вашей Google Таблицы
+        // =====================================================
+        const SPREADSHEET_ID = ''; // Например: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
+        
+        // GID листов (можно узнать из URL после #gid=)
+        const SHEET_GIDS = {
+            orders: '0',      // Заявки - обычно первый лист (gid=0)
+            masters: '1',     // Мастера
+            stats: '2'        // Статистика
+        };
+        
+        // Инициализация
+        function init() {
+            if (!SPREADSHEET_ID) {
+                console.warn('⚠️ SPREADSHEET_ID не установлен. Вставьте ID вашей таблицы.');
+                return;
+            }
+            
+            // Скрываем info box если ID настроен
+            document.getElementById('setupInfo').style.display = 'none';
+            
+            // Загружаем iframe'ы
+            loadSheets();
+            
+            // Загружаем статистику
+            loadStats();
+        }
+        
+        function loadSheets() {
+            if (!SPREADSHEET_ID) return;
+            
+            // Формат встраивания: https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit#gid=GID
+            const baseUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit`;
+            
+            document.getElementById('ordersIframe').src = `${baseUrl}#gid=${SHEET_GIDS.orders}`;
+            document.getElementById('mastersIframe').src = `${baseUrl}#gid=${SHEET_GIDS.masters}`;
+            document.getElementById('statsIframe').src = `${baseUrl}#gid=${SHEET_GIDS.stats}`;
+        }
+        
+        function loadStats() {
+            // TODO: Загрузка статистики через API Google Sheets
+            // Пока показываем демо-данные
+            
+            // Эмуляция загрузки
+            setTimeout(() => {
+                document.getElementById('totalOrders').textContent = '47';
+                document.getElementById('newOrders').textContent = '12';
+                document.getElementById('progressOrders').textContent = '8';
+                document.getElementById('completedOrders').textContent = '27';
+            }, 500);
+        }
+        
+        function refreshStats() {
+            document.getElementById('totalOrders').textContent = '-';
+            document.getElementById('newOrders').textContent = '-';
+            document.getElementById('progressOrders').textContent = '-';
+            document.getElementById('completedOrders').textContent = '-';
+            
+            loadStats();
+            
+            // Перезагружаем iframe'ы
+            const ordersIframe = document.getElementById('ordersIframe');
+            const mastersIframe = document.getElementById('mastersIframe');
+            const statsIframe = document.getElementById('statsIframe');
+            
+            ordersIframe.src = ordersIframe.src;
+            mastersIframe.src = mastersIframe.src;
+            statsIframe.src = statsIframe.src;
+        }
+        
+        function switchTab(tab) {
+            // Убираем active у всех вкладок
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            
+            // Добавляем active к нужной
+            event.target.classList.add('active');
+            
+            // Скрываем все листы
+            document.getElementById('ordersSheet').classList.add('hidden');
+            document.getElementById('mastersSheet').classList.add('hidden');
+            document.getElementById('statsSheet').classList.add('hidden');
+            
+            // Показываем нужный
+            if (tab === 'orders') {
+                document.getElementById('ordersSheet').classList.remove('hidden');
+            } else if (tab === 'masters') {
+                document.getElementById('mastersSheet').classList.remove('hidden');
+            } else if (tab === 'stats') {
+                document.getElementById('statsSheet').classList.remove('hidden');
+            }
+        }
+        
+        function hideLoading(iframe) {
+            const container = iframe.parentElement;
+            const loading = container.querySelector('.loading');
+            if (loading) {
+                loading.style.display = 'none';
+            }
+        }
+        
+        function openGoogleSheets() {
+            if (!SPREADSHEET_ID) {
+                alert('⚠️ SPREADSHEET_ID не установлен. Проверьте настройки.');
+                return;
+            }
+            window.open(`https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit`, '_blank');
+        }
+        
+        function openBotManagement() {
+            // Открываем SSH команды для управления ботами
+            const commands = `
+SSH команды для управления ботами:
+
+📍 Подключение к серверу:
+ssh root@176.98.178.109
+
+📂 Переход в папку ботов:
+cd /root/ai_service_bots/
+
+👀 Просмотр запущенных ботов:
+ps aux | grep telegram
+
+🛑 Остановка ботов:
+pkill -f telegram_client_bot.py
+pkill -f telegram_master_bot.py
+
+🚀 Запуск ботов:
+nohup python3 telegram_client_bot.py > client_bot.log 2>&1 &
+nohup python3 telegram_master_bot.py > master_bot.log 2>&1 &
+
+📋 Просмотр логов:
+tail -f client_bot.log
+tail -f master_bot.log
+
+🔄 Перезапуск (остановка + запуск):
+./restart_bots.sh
+            `;
+            
+            alert(commands);
+        }
+        
+        // Инициализация при загрузке страницы
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

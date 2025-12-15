@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Выбор электромонтажных работ - Калининград | Balt-Set.ru</title>
+  <meta name="description" content="Выберите необходимые электромонтажные работы в Калининграде. Автоматический расчет кабеля, система скидок до 50%, прозрачные цены. График: Пн-Сб 10:00-18:00">
+  <link rel="stylesheet" href="calculator-products.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚡ Выбор электромонтажных работ</h1>
+      <p>Выберите необходимые услуги • Автоматический расчет кабеля и скидок</p>
+      <div class="info-badge">📞 Пн-Сб: 10:00-18:00 (Вс — выходной)</div>
+    </header>
+    
+    <div id="calculator-container"></div>
+    
+    <div id="cable-info-section" style="display: none;"></div>
+    
+    <div id="total-section" class="total-section" style="display: none;">
+      <div class="total-row">
+        <div>
+          <div class="total-label">ИТОГО</div>
+          <button class="clear-btn" onclick="calculator.clearAll()">Очистить всё</button>
+        </div>
+        <div id="calculator-total" class="total-value">0 ₽</div>
+      </div>
+    </div>
+    
+    <button id="order-btn" class="btn-order" onclick="createOrder()" style="display: none;">
+      Добавить в список задач
+    </button>
+  </div>
+  
+  <script src="calculator-products.js"></script>
+</body>
+</html>

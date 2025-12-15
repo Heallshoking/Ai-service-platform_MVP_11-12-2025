@@ -1,0 +1,348 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 16px;
+  padding: 16px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  font-size: 24px;
+  color: #1e40af;
+  margin-bottom: 6px;
+}
+
+header p {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.info-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+  border: 1px solid #3b82f6;
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: #1e40af;
+}
+
+.cable-info {
+  background: #dbeafe;
+  border: 2px solid #3b82f6;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 16px 0;
+}
+
+.cable-info p {
+  font-size: 12px;
+  color: #1e40af;
+  margin: 4px 0;
+}
+
+.cable-info .price {
+  font-weight: 700;
+  color: #059669;
+}
+
+.discount-label {
+  color: #059669;
+  font-weight: 600;
+}
+
+.service-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.service-card:hover {
+  border-color: #3b82f6;
+}
+
+.service-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.service-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.icon-amber { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+.icon-blue { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.icon-green { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+
+.service-header h3 {
+  font-size: 16px;
+  color: #111827;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.service-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-item {
+  padding: 14px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.option-item.enabled {
+  background: #d1fae5;
+  border-color: #059669;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+.option-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #059669;
+}
+
+.option-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.option-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-controls button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-minus {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.btn-minus:hover {
+  background: #d1d5db;
+}
+
+.btn-plus {
+  background: #f97316;
+  color: white;
+}
+
+.btn-plus:hover {
+  background: #ea580c;
+}
+
+.quantity-value {
+  font-size: 18px;
+  font-weight: 700;
+  min-width: 32px;
+  text-align: center;
+}
+
+.option-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #059669;
+  white-space: nowrap;
+}
+
+.option-price.base {
+  color: #059669;
+}
+
+.discount-info {
+  width: 100%;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+  padding-left: 32px;
+}
+
+.discount-info.active {
+  color: #059669;
+  font-weight: 600;
+}
+
+.total-section {
+  background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 2px solid #3b82f6;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.total-row:last-child {
+  margin-bottom: 0;
+  padding-top: 12px;
+  border-top: 2px solid #3b82f6;
+}
+
+.clear-btn {
+  font-size: 11px;
+  color: #dc2626;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 4px;
+  display: block;
+}
+
+.clear-btn:hover {
+  color: #991b1b;
+}
+
+.total-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.total-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #059669;
+}
+
+.savings-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #059669;
+}
+
+.btn-order {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(to right, #2563eb, #4f46e5);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  transition: all 0.3s;
+}
+
+.btn-order:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
+}
+
+.btn-order:active {
+  transform: translateY(0);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: #9ca3af;
+}
+
+.empty-state svg {
+  margin: 0 auto 16px;
+  opacity: 0.3;
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  .total-value {
+    font-size: 24px;
+  }
+
+  .option-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .option-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

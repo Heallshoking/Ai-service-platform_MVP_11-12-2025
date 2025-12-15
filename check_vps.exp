@@ -1,0 +1,23 @@
+#!/usr/bin/expect -f
+# Проверка структуры ботов на VPS
+
+set timeout 30
+set password "pneDRE2K?Tz1k-"
+
+puts "\n📋 Проверка структуры директории ботов...\n"
+
+spawn ssh root@176.98.178.109 "cd /root && find . -name '*bot*.py' -o -name '*bot*.sh' | head -20"
+
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "yes/no" {
+        send "yes\r"
+        exp_continue
+    }
+    eof
+}
+
+puts "\n✅ Готово!\n"

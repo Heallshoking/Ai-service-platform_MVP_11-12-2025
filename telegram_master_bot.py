@@ -45,11 +45,11 @@ master_cache: Dict[int, Dict[str, Any]] = {}
 def get_status_emoji(status: str) -> str:
     """Эмодзи для статусов (Norman UX: визуальная обратная связь)"""
     status_map = {
-        'pending': '🟡',
-        'accepted': '🟢',
-        'in_progress': '⚙️',
+        'pending': '',
+        'accepted': '',
+        'in_progress': '⚙',
         'completed': '✅',
-        'cancelled': '🔴'
+        'cancelled': ''
     }
     return status_map.get(status, '❓')
 
@@ -195,7 +195,7 @@ async def show_new_jobs(update: Update, context: ContextTypes.DEFAULT_TYPE):
         master_cache[user.id] = master
     
     # Loading индикатор
-    loading = await update.message.reply_text("🔍 Поиск заказов...")
+    loading = await update.message.reply_text(" Поиск заказов...")
     
     # Получаем доступные заказы
     jobs = await get_available_jobs(city=master.get('city'))
@@ -204,7 +204,7 @@ async def show_new_jobs(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if not jobs:
         await update.message.reply_text(
-            "📭 Новых заказов пока нет.\n"
+            " Новых заказов пока нет.\n"
             "Я уведомлю вас, когда появятся!"
         )
         return
@@ -215,7 +215,7 @@ async def show_new_jobs(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if len(jobs) > 5:
         await update.message.reply_text(
-            f"📊 Показано 5 из {len(jobs)} заказов.\n"
+            f" Показано 5 из {len(jobs)} заказов.\n"
             "Примите текущие, чтобы увидеть следующие."
         )
 
@@ -228,7 +228,7 @@ async def show_my_jobs(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ Ошибка: мастер не найден")
         return
     
-    loading = await update.message.reply_text("📋 Загрузка ваших заказов...")
+    loading = await update.message.reply_text(" Загрузка ваших заказов...")
     
     jobs = await get_my_jobs(master['id'])
     
@@ -236,8 +236,8 @@ async def show_my_jobs(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if not jobs:
         await update.message.reply_text(
-            "📭 У вас пока нет активных заказов.\n\n"
-            "Нажмите <b>🆕 Новые заказы</b> чтобы принять работу!",
+            " У вас пока нет активных заказов.\n\n"
+            "Нажмите <b> Новые заказы</b> чтобы принять работу!",
             parse_mode='HTML'
         )
         return
@@ -247,7 +247,7 @@ async def show_my_jobs(update: Update, context: ContextTypes.DEFAULT_TYPE):
     completed = [j for j in jobs if j['status'] == 'completed']
     
     if active:
-        await update.message.reply_text(f"<b>⚙️ Активные заказы ({len(active)}):</b>", parse_mode='HTML')
+        await update.message.reply_text(f"<b>⚙ Активные заказы ({len(active)}):</b>", parse_mode='HTML')
         for job in active:
             await show_job_card(update, context, job, is_new=False)
     
@@ -271,13 +271,13 @@ async def show_job_card(update: Update, context: ContextTypes.DEFAULT_TYPE, job:
     # Форматирование (без placeholder, только факты)
     message = (
         f"{status_emoji} <b>Заказ #{job.get('id')}</b>\n\n"
-        f"📋 {job.get('category_name', job.get('category', ''))}\n"
-        f"📝 {job.get('problem_description', '')}\n\n"
-        f"👤 {job.get('client_name', '')}\n"
-        f"📱 {job.get('client_phone', '')}\n"
-        f"📍 {job.get('address', '')}\n\n"
-        f"💰 Примерно: {format_price(job.get('estimated_price', 0))}\n"
-        f"📅 {job.get('created_at', '')}"
+        f" {job.get('category_name', job.get('category', ''))}\n"
+        f" {job.get('problem_description', '')}\n\n"
+        f" {job.get('client_name', '')}\n"
+        f" {job.get('client_phone', '')}\n"
+        f" {job.get('address', '')}\n\n"
+        f" Примерно: {format_price(job.get('estimated_price', 0))}\n"
+        f" {job.get('created_at', '')}"
     )
     
     # Кнопки зависят от статуса (Norman UX: действия зависят от контекста)
@@ -292,7 +292,7 @@ async def show_job_card(update: Update, context: ContextTypes.DEFAULT_TYPE, job:
         # Мой заказ - можно обновить статус
         if status == 'accepted':
             keyboard.append([
-                InlineKeyboardButton("🚀 Начать работу", callback_data=f"start_{job['id']}")
+                InlineKeyboardButton(" Начать работу", callback_data=f"start_{job['id']}")
             ])
             keyboard.append([
                 InlineKeyboardButton("❌ Отказаться", callback_data=f"cancel_{job['id']}")
@@ -303,7 +303,7 @@ async def show_job_card(update: Update, context: ContextTypes.DEFAULT_TYPE, job:
             ])
         elif status == 'completed':
             keyboard.append([
-                InlineKeyboardButton("📞 Связаться с клиентом", url=f"tel:{job.get('client_phone', '')}")
+                InlineKeyboardButton(" Связаться с клиентом", url=f"tel:{job.get('client_phone', '')}")
             ])
     
     reply_markup = InlineKeyboardMarkup(keyboard) if keyboard else None
@@ -323,7 +323,7 @@ async def show_statistics(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ Ошибка: мастер не найден")
         return
     
-    loading = await update.message.reply_text("📊 Загрузка статистики...")
+    loading = await update.message.reply_text(" Загрузка статистики...")
     
     try:
         async with httpx.AsyncClient() as client:
@@ -338,9 +338,9 @@ async def show_statistics(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 stats = response.json()
                 
                 message = (
-                    f"📊 <b>Статистика</b>\n\n"
+                    f" <b>Статистика</b>\n\n"
                     f"✅ Завершено заказов: {stats.get('completed_jobs', 0)}\n"
-                    f"💰 Общий заработок: {format_price(stats.get('total_earnings', 0))}\n"
+                    f" Общий заработок: {format_price(stats.get('total_earnings', 0))}\n"
                     f"⭐ Средняя оценка: {stats.get('average_rating', 5.0):.1f}/5.0\n\n"
                     f"<b>За сегодня:</b>\n"
                     f"• Заказов: {stats.get('today_jobs', 0)}\n"
@@ -391,7 +391,7 @@ async def toggle_terminal(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     )
                 else:
                     message = (
-                        "⏸️ <b>Терминал выключен</b>\n\n"
+                        "⏸ <b>Терминал выключен</b>\n\n"
                         "Вы не будете получать новые заказы до включения."
                     )
                 
@@ -423,6 +423,10 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         job_id = int(data.split("_")[1])
         await accept_job(query, context, job_id, master['id'])
     
+    elif data.startswith("call_"):
+        job_id = int(data.split("_")[1])
+        await show_client_phone(query, context, job_id)
+    
     elif data.startswith("start_"):
         job_id = int(data.split("_")[1])
         await start_job(query, context, job_id)
@@ -436,69 +440,134 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await cancel_job(query, context, job_id)
 
 async def accept_job(query, context, job_id: int, master_id: int):
-    """Принять заказ"""
+    """Принять заказ - УЛУЧШЕННО с быстрыми действиями"""
     try:
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                f"{API_URL}/api/v1/jobs/{job_id}/assign",
-                json={"master_id": master_id},
-                timeout=10.0
-            )
-            
-            if response.status_code == 200:
-                # Обновляем сообщение
-                await query.edit_message_text(
-                    f"{query.message.text}\n\n✅ <b>Заказ принят!</b>\n"
-                    "Свяжитесь с клиентом в ближайшее время.",
-                    parse_mode='HTML'
-                )
-            else:
-                await query.message.reply_text("❌ Не удалось принять заказ")
+        # Обновляем Google Sheets
+        try:
+            from google_sheets_integration import sheets_manager
+            # Назначаем мастера в таблице
+            master = master_cache.get(context._user_id) or {}
+            master_name = master.get('full_name', 'Мастер')
+            sheets_manager.assign_master(job_id, master_name)
+            logger.info(f"✅ Google Sheets: Мастер {master_name} назначен на заказ #{job_id}")
+        except Exception as e:
+            logger.error(f"⚠️ Ошибка Google Sheets: {e}")
+        
+        # Обновляем сообщение с УДОБНЫМИ кнопками для дальнейшей работы
+        keyboard = [
+            [InlineKeyboardButton("📞 Позвонить клиенту", callback_data=f"call_{job_id}")],
+            [InlineKeyboardButton("⚡ Начать работу", callback_data=f"start_{job_id}")],
+            [InlineKeyboardButton("❌ Отказаться", callback_data=f"cancel_{job_id}")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        await query.edit_message_text(
+            f"{query.message.text}\n\n"
+            f"✅ <b>Заказ принят!</b>\n\n"
+            f"📞 <b>Следующий шаг:</b> Свяжитесь с клиентом\n"
+            f"💡 <i>Уточните детали и договоритесь о времени</i>",
+            parse_mode='HTML',
+            reply_markup=reply_markup
+        )
     
     except Exception as e:
         logger.error(f"Ошибка принятия заказа: {e}")
         await query.message.reply_text("❌ Произошла ошибка")
 
-async def start_job(query, context, job_id: int):
-    """Начать работу"""
+async def show_client_phone(query, context, job_id: int):
+    """Показать телефон клиента - БЫСТРЫЙ ДОСТУП"""
     try:
-        async with httpx.AsyncClient() as client:
-            response = await client.patch(
-                f"{API_URL}/api/v1/jobs/{job_id}/status",
-                json={"status": "in_progress"},
-                timeout=10.0
-            )
+        # Получаем данные заказа из Google Sheets
+        from google_sheets_integration import sheets_manager
+        all_orders = sheets_manager.get_orders()
+        
+        client_phone = None
+        client_name = None
+        
+        for order in all_orders:
+            if str(order.get('ID')) == str(job_id):
+                client_phone = order.get('Телефон')
+                client_name = order.get('Имя')
+                break
+        
+        if client_phone:
+            # Показываем телефон С КНОПКОЙ ДЛЯ ЗВОНКА
+            keyboard = [
+                [InlineKeyboardButton("⚡ Начать работу", callback_data=f"start_{job_id}")],
+                [InlineKeyboardButton("❌ Отказаться", callback_data=f"cancel_{job_id}")]
+            ]
+            reply_markup = InlineKeyboardMarkup(keyboard)
             
-            if response.status_code == 200:
-                await query.edit_message_text(
-                    f"{query.message.text}\n\n⚙️ <b>Работа начата!</b>",
-                    parse_mode='HTML'
-                )
-            else:
-                await query.message.reply_text("❌ Не удалось обновить статус")
+            await query.edit_message_text(
+                f"{query.message.text}\n\n"
+                f"📞 <b>Контакты клиента:</b>\n\n"
+                f"👤 Имя: <b>{client_name}</b>\n"
+                f"📱 Телефон: <code>{client_phone}</code>\n\n"
+                f"💡 <i>Нажмите на номер, чтобы позвонить</i>",
+                parse_mode='HTML',
+                reply_markup=reply_markup
+            )
+        else:
+            await query.answer("❌ Телефон не найден", show_alert=True)
+    
+    except Exception as e:
+        logger.error(f"Ошибка получения телефона: {e}")
+        await query.answer("❌ Произошла ошибка", show_alert=True)
+
+async def start_job(query, context, job_id: int):
+    """Начать работу - ОДНА КНОПКА ДЛЯ ЗАВЕРШЕНИЯ"""
+    try:
+        # Обновляем Google Sheets: статус "В работе"
+        try:
+            from google_sheets_integration import sheets_manager
+            # Обновляем статус в таблице
+            all_orders = sheets_manager.get_orders()
+            for order in all_orders:
+                if str(order.get('ID')) == str(job_id):
+                    row_num = job_id + 1
+                    sheets_manager.orders_sheet.update_cell(row_num, 9, "В работе")
+                    logger.info(f"✅ Google Sheets: Заказ #{job_id} переведён в статус 'В работе'")
+                    break
+        except Exception as e:
+            logger.error(f"⚠️ Ошибка Google Sheets: {e}")
+        
+        # ПОКАЗЫВАЕМ ОДНУ ЯРКУЮ КНОПКУ - "ЗАВЕРШИТЬ"
+        keyboard = [[
+            InlineKeyboardButton(
+                "✅ ЗАВЕРШИТЬ РАБОТУ 🎉", 
+                callback_data=f"complete_{job_id}"
+            )
+        ]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        await query.edit_message_text(
+            f"{query.message.text}\n\n"
+            f"⚡ <b>Работа начата!</b>\n\n"
+            f"🛠️ Выполняйте работу...\n"
+            f"💡 <i>После завершения нажмите кнопку ниже</i>",
+            parse_mode='HTML',
+            reply_markup=reply_markup
+        )
     
     except Exception as e:
         logger.error(f"Ошибка начала работы: {e}")
         await query.message.reply_text("❌ Произошла ошибка")
 
 async def complete_job(query, context, job_id: int):
-    """Завершить заказ"""
+    """Завершить заказ - БЫСТРЫЙ ВВОД ЦЕНЫ"""
     try:
-        async with httpx.AsyncClient() as client:
-            response = await client.patch(
-                f"{API_URL}/api/v1/jobs/{job_id}/status",
-                json={"status": "completed"},
-                timeout=10.0
-            )
-            
-            if response.status_code == 200:
-                await query.edit_message_text(
-                    f"{query.message.text}\n\n✅ <b>Заказ завершён!</b>\n"
-                    "Отличная работа! 🎉",
-                    parse_mode='HTML'
-                )
-            else:
-                await query.message.reply_text("❌ Не удалось завершить заказ")
+        # Сохраняем job_id для следующего шага
+        context.user_data['completing_job_id'] = job_id
+        
+        # Просим ввести цену - ПРОСТО И БЫСТРО
+        await query.edit_message_text(
+            f"{query.message.text}\n\n"
+            f"🎉 <b>Отлично! Работа завершена!</b>\n\n"
+            f"💰 <b>Укажите стоимость работы:</b>\n"
+            f"💡 Просто напишите сумму (например: 2000)\n\n"
+            f"ℹ️ <i>Комиссия 30% будет рассчитана автоматически</i>",
+            parse_mode='HTML'
+        )
     
     except Exception as e:
         logger.error(f"Ошибка завершения заказа: {e}")
@@ -516,7 +585,7 @@ async def cancel_job(query, context, job_id: int):
             
             if response.status_code == 200:
                 await query.edit_message_text(
-                    f"{query.message.text}\n\n🔴 <b>Заказ отменён</b>",
+                    f"{query.message.text}\n\n <b>Заказ отменён</b>",
                     parse_mode='HTML'
                 )
             else:
@@ -532,16 +601,21 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка текстовых команд с кнопок"""
     text = update.message.text
     
-    if text == "🆕 Новые заказы":
+    # Проверяем, не вводит ли мастер цену для завершения заказа
+    if 'completing_job_id' in context.user_data:
+        await handle_price_input(update, context)
+        return
+    
+    if text == " Новые заказы":
         await show_new_jobs(update, context)
     
-    elif text == "📋 Мои заказы":
+    elif text == " Мои заказы":
         await show_my_jobs(update, context)
     
-    elif text == "💰 Статистика":
+    elif text == " Статистика":
         await show_statistics(update, context)
     
-    elif text == "⚙️ Терминал":
+    elif text == "⚙ Терминал":
         await toggle_terminal(update, context)
     
     else:
@@ -549,12 +623,56 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "❓ Используйте кнопки меню для навигации"
         )
 
+async def handle_price_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработка ввода цены для завершения заказа"""
+    text = update.message.text.strip()
+    job_id = context.user_data.get('completing_job_id')
+    
+    # Валидация цены
+    try:
+        price = float(text.replace(' ', '').replace('₽', '').replace(',', '.'))
+        
+        if price <= 0:
+            raise ValueError("Цена должна быть больше 0")
+        
+        # Рассчитываем комиссию 30%
+        commission = price * 0.30
+        master_earnings = price - commission
+        
+        # Обновляем Google Sheets
+        try:
+            from google_sheets_integration import sheets_manager
+            sheets_manager.complete_order(job_id, price, rating=5)
+            logger.info(f"✅ Google Sheets: Заказ #{job_id} завершён. Цена: {price}₽, Комиссия: {commission}₽")
+        except Exception as e:
+            logger.error(f"⚠️ Ошибка Google Sheets: {e}")
+        
+        # Отправляем красивое подтверждение
+        await update.message.reply_text(
+            f"✅ <b>Заказ #{job_id} успешно завершён!</b>\n\n"
+            f"💵 <b>Финансы:</b>\n"
+            f"• Стоимость работы: {price:,.0f}₽\n"
+            f"• Комиссия (30%): {commission:,.0f}₽\n"
+            f"• <b>Ваш заработок: {master_earnings:,.0f}₽</b> 💰\n\n"
+            f"🎉 Отличная работа! Продолжайте в том же духе!",
+            parse_mode='HTML'
+        )
+        
+        # Очищаем состояние
+        del context.user_data['completing_job_id']
+        
+    except ValueError:
+        await update.message.reply_text(
+            "❌ Неверный формат цены!\n\n"
+            "💡 Укажите только число (например: 2000)"
+        )
+
 # ==================== РЕГИСТРАЦИЯ МАСТЕРА ====================
 
 async def start_registration(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Начало регистрации"""
     await update.message.reply_text(
-        "🎯 <b>Регистрация мастера</b>\n\n"
+        " <b>Регистрация мастера</b>\n\n"
         "Отлично! Давайте заполним ваш профиль.\n\n"
         "Как вас зовут? (Имя и фамилия)",
         reply_markup=ReplyKeyboardRemove(),
@@ -596,7 +714,7 @@ async def reg_get_phone(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data['reg_phone'] = phone
     
     await update.message.reply_text(
-        "📱 Номер принят!\n\n"
+        " Номер принят!\n\n"
         "В каком городе вы работаете?\n"
         "(Например: Калининград)"
     )
@@ -617,15 +735,15 @@ async def reg_get_city(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Клавиатура со специализациями
     keyboard = ReplyKeyboardMarkup(
         [
-            ["⚡ Электрика", "🚰 Сантехника"],
-            ["🔌 Бытовая техника", "🔨 Общие работы"],
+            ["⚡ Электрика", " Сантехника"],
+            [" Бытовая техника", " Общие работы"],
             ["✅ Выбрал всё"]
         ],
         resize_keyboard=True
     )
     
     await update.message.reply_text(
-        "🔧 Выберите ваши специализации\n"
+        " Выберите ваши специализации\n"
         "(Можно выбрать несколько, потом нажмите \"✅ Выбрал всё\")",
         reply_markup=keyboard
     )
@@ -648,14 +766,14 @@ async def reg_get_specializations(update: Update, context: ContextTypes.DEFAULT_
         
         # Показать резюме
         data = context.user_data
-        specs_text = ', '.join([s.replace('⚡ ', '').replace('🚰 ', '').replace('🔌 ', '').replace('🔨 ', '') for s in specs])
+        specs_text = ', '.join([s.replace('⚡ ', '').replace(' ', '').replace(' ', '').replace(' ', '') for s in specs])
         
         summary = (
-            "📋 <b>Проверьте ваши данные:</b>\n\n"
-            f"👤 Имя: {data['reg_name']}\n"
-            f"📱 Телефон: {data['reg_phone']}\n"
-            f"📍 Город: {data['reg_city']}\n"
-            f"🔧 Специализации: {specs_text}\n\n"
+            " <b>Проверьте ваши данные:</b>\n\n"
+            f" Имя: {data['reg_name']}\n"
+            f" Телефон: {data['reg_phone']}\n"
+            f" Город: {data['reg_city']}\n"
+            f" Специализации: {specs_text}\n\n"
             "Всё верно?"
         )
         
@@ -675,9 +793,9 @@ async def reg_get_specializations(update: Update, context: ContextTypes.DEFAULT_
     # Добавить специализацию
     spec_map = {
         "⚡ Электрика": "electrical",
-        "🚰 Сантехника": "plumbing",
-        "🔌 Бытовая техника": "appliance",
-        "🔨 Общие работы": "general"
+        " Сантехника": "plumbing",
+        " Бытовая техника": "appliance",
+        " Общие работы": "general"
     }
     
     if text in spec_map:
@@ -694,7 +812,7 @@ async def reg_get_specializations(update: Update, context: ContextTypes.DEFAULT_
             )
         else:
             await update.message.reply_text(
-                f"⚠️ {text} уже добавлена!"
+                f"⚠ {text} уже добавлена!"
             )
     
     return REG_SPECIALIZATIONS
@@ -718,9 +836,9 @@ async def reg_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Преобразовать специализации
     spec_map = {
         "⚡ Электрика": "electrical",
-        "🚰 Сантехника": "plumbing",
-        "🔌 Бытовая техника": "appliance",
-        "🔨 Общие работы": "general"
+        " Сантехника": "plumbing",
+        " Бытовая техника": "appliance",
+        " Общие работы": "general"
     }
     
     specializations = []
@@ -759,10 +877,10 @@ async def reg_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
                 
                 await update.message.reply_text(
-                    "🎉 <b>Регистрация завершена!</b>\n\n"
+                    " <b>Регистрация завершена!</b>\n\n"
                     f"✅ Ваш ID: {master_id}\n"
-                    f"👤 {data['reg_name']}\n"
-                    f"📍 {data['reg_city']}\n\n"
+                    f" {data['reg_name']}\n"
+                    f" {data['reg_city']}\n\n"
                     "Теперь вы можете принимать заказы!\n"
                     "Используйте /start чтобы открыть терминал.",
                     parse_mode='HTML'
@@ -837,7 +955,7 @@ def main():
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     
     # Запуск бота
-    logger.info("🤖 Telegram бот для мастеров запущен!")
+    logger.info(" Telegram бот для мастеров запущен!")
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == "__main__":

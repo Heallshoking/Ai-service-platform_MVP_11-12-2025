@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вызов мастера в Калининграде за 2 минуты | БАЛТСЕТЬ</title>
+    <meta name="description" content="Срочный вызов электрика и сантехника в Калининграде. AI-помощник подберёт специалиста за 2 минуты. Цены от 400₽">
+    <link rel="stylesheet" href="services-calculator.css">
+    <link rel="stylesheet" href="ai-chat-styles.css">
+    <style>
+        /* Главная страница - Telegram-стиль */
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #fef3c7 100%);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .main-hero {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .main-hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        
+        .main-hero p {
+            font-size: 18px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .main-container {
+            max-width: 768px;
+            margin: -40px auto 40px;
+            padding: 0 16px;
+        }
+        
+        .telegram-chat-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            margin-bottom: 24px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-hero h1 {
+                font-size: 32px;
+            }
+            
+            .main-hero p {
+                font-size: 16px;
+            }
+            
+            .main-hero {
+                padding: 40px 16px;
+            }
+            
+            .hero-stats {
+                gap: 24px;
+            }
+            
+            .stat-number {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Главный экран -->
+    <div class="main-hero">
+        <h1>⚡ Вызов мастера за 2 минуты</h1>
+        <p>Электрик, сантехник, мастер на час в Калининграде и области</p>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number">2 мин</div>
+                <div class="stat-label">Подбор мастера</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4.9</div>
+                <div class="stat-label">Рейтинг мастеров</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Работаем круглосуточно</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Telegram-стиль чат -->
+    <div class="main-container">
+        <div class="telegram-chat-card">
+            <div id="chat-container"></div>
+        </div>
+    </div>
+
+    <script src="ai-chat-funnel.js"></script>
+    <script>
+        // Класс для главной страницы с фокусом на заявках
+        class HomePageChat {
+            constructor() {
+                this.messages = [];
+                this.step = 0;
+                this.scenario = null;
+                this.data = {};
+                this.init();
+            }
+
+            init() {
+                const container = document.getElementById('chat-container');
+                container.innerHTML = `
+                    <div class="chat-window" style="background: #f0f2f5; min-height: 500px; display: flex; flex-direction: column;">
+                        <div class="chat-header" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 16px 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                            <div class="message-avatar" style="width: 44px; height: 44px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 24px;">🤖</div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 16px;">Ассистент БАЛТСЕТЬ</div>
+                                <div style="font-size: 12px; opacity: 0.9;">в сети</div>
+                            </div>
+                        </div>
+                        <div id="messages" class="chat-messages" style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;"></div>
+                    </div>
+                `;
+                
+                setTimeout(() => this.start(), 300);
+            }
+
+            start() {
+                this.addBot('👋 Привет! Я помогу вам вызвать мастера или рассчитать стоимость работ.\n\n🎯 Что вас интересует?', 'scenario-choice');
+            }
+
+            addBot(text, inputType = null, field = null) {
+                this.showTyping();
+                setTimeout(() => {
+                    this.removeTyping();
+                    const container = document.getElementById('messages');
+                    const html = `
+                        <div class="chat-message ai-message" style="display: flex; align-items: flex-start; gap: 8px;">
+                            <div class="message-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">🤖</div>
+                            <div style="flex: 1;">
+                                <div class="message-bubble" style="background: white; padding: 12px 16px; border-radius: 18px 18px 18px 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); font-size: 15px; line-height: 1.5;">${text}</div>
+                                <div style="font-size: 11px; color: #999; margin-top: 4px; padding-left: 4px;">${new Date().toLocaleTimeString('ru', {hour: '2-digit', minute: '2-digit'})}</div>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', html);
+                    
+                    if (inputType) {
+                        container.insertAdjacentHTML('beforeend', this.renderInput(inputType, field));
+                    }
+                    
+                    this.scrollToBottom();
+                }, 800);
+            }
+
+            addUser(text) {
+                const container = document.getElementById('messages');
+                const html = `
+                    <div class="chat-message user-message" style="display: flex; align-items: flex-start; gap: 8px; justify-content: flex-end;">
+                        <div style="flex: 1; text-align: right;">
+                            <div class="message-bubble" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 12px 16px; border-radius: 18px 18px 4px 18px; display: inline-block; max-width: 70%; text-align: left; font-size: 15px; line-height: 1.5;">${text}</div>
+                            <div style="font-size: 11px; color: #999; margin-top: 4px; padding-right: 4px;">${new Date().toLocaleTimeString('ru', {hour: '2-digit', minute: '2-digit'})}</div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+                this.scrollToBottom();
+            }
+
+            renderInput(type, field) {
+                if (type === 'scenario-choice') {
+                    return `
+                        <div class="chat-buttons" style="padding: 0 44px 0 0; display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                            <button onclick="homeChat.selectScenario('inspection')" style="background: linear-gradient(135deg, #3b82f6, #6366f1); color: white; border: none; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);">
+                                👨‍🔧 Вызвать мастера
+                            </button>
+                            <button onclick="homeChat.selectScenario('estimate')" style="background: linear-gradient(135deg, #10b981, #14b8a6); color: white; border: none; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);">
+                                💰 Рассчитать стоимость
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                if (type === 'time-select') {
+                    return `
+                        <div class="chat-buttons" style="padding: 0 44px 0 0; display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                            <button onclick="homeChat.handleTime('Утро (9:00-12:00)')" style="background: white; color: #333; border: 2px solid #3b82f6; padding: 12px 16px; border-radius: 12px; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                                ☀️ Утро (9:00-12:00)
+                            </button>
+                            <button onclick="homeChat.handleTime('День (12:00-17:00)')" style="background: white; color: #333; border: 2px solid #3b82f6; padding: 12px 16px; border-radius: 12px; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                                🌞 День (12:00-17:00)
+                            </button>
+                            <button onclick="homeChat.handleTime('Вечер (17:00-21:00)')" style="background: white; color: #333; border: 2px solid #3b82f6; padding: 12px 16px; border-radius: 12px; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                                🌙 Вечер (17:00-21:00)
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                if (type === 'text-input') {
+                    return `
+                        <div class="chat-input-container" style="padding: 12px 0; display: flex; gap: 8px; align-items: center;">
+                            <input type="text" class="chat-input" placeholder="Введите текст..." id="chat-text-input" onkeypress="if(event.key==='Enter')homeChat.submitText('${field}')" style="flex: 1; padding: 12px 16px; border: 2px solid #3b82f6; border-radius: 20px; font-size: 14px; outline: none; font-family: inherit;">
+                            <button class="chat-send-btn" onclick="homeChat.submitText('${field}')" style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);">✈️</button>
+                        </div>
+                    `;
+                }
+                
+                if (type === 'phone-input') {
+                    return `
+                        <div class="chat-input-container" style="padding: 12px 0; display: flex; gap: 8px; align-items: center;">
+                            <input type="tel" class="chat-input" placeholder="+7 (900) 123-45-67" id="chat-phone-input" onkeypress="if(event.key==='Enter')homeChat.submitPhone('${field}')" style="flex: 1; padding: 12px 16px; border: 2px solid #3b82f6; border-radius: 20px; font-size: 14px; outline: none; font-family: inherit;">
+                            <button class="chat-send-btn" onclick="homeChat.submitPhone('${field}')" style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);">✈️</button>
+                        </div>
+                    `;
+                }
+                
+                return '';
+            }
+
+            selectScenario(scenario) {
+                if (scenario === 'inspection') {
+                    this.addUser('👨‍🔧 Вызвать мастера');
+                    this.scenario = 'inspection';
+                    setTimeout(() => {
+                        this.addBot('📋 Отлично! Запишу вас на <b>бесплатный осмотр</b>.\n\n🕐 Удобное время для визита?', 'time-select');
+                    }, 500);
+                } else if (scenario === 'estimate') {
+                    this.addUser('💰 Рассчитать стоимость');
+                    setTimeout(() => {
+                        window.location.href = '/services-calculator.html';
+                    }, 800);
+                }
+            }
+
+            handleTime(time) {
+                this.data.visitTime = time;
+                this.addUser(time);
+                document.querySelector('.chat-buttons').remove();
+                setTimeout(() => {
+                    this.addBot('✍️ Кратко опишите задачу\n\n<span style="font-size:12px;color:#999">например: установить розетку / сделать новую проводку</span>', 'text-input', 'taskDescription');
+                }, 500);
+            }
+
+            submitText(field) {
+                const input = document.getElementById('chat-text-input');
+                const value = input.value.trim();
+                if (!value) return;
+                
+                this.data[field] = value;
+                this.addUser(value);
+                input.closest('.chat-input-container').remove();
+                
+                if (field === 'taskDescription') {
+                    setTimeout(() => {
+                        this.addBot('📞 Укажите контактный телефон\n\n<span style="font-size:12px;color:#999">например: +7 (900) 123-45-67</span>', 'phone-input', 'phone');
+                    }, 500);
+                }
+            }
+
+            submitPhone(field) {
+                const input = document.getElementById('chat-phone-input');
+                const value = input.value.trim();
+                if (!value) return;
+                
+                this.data[field] = value;
+                this.addUser(value);
+                input.closest('.chat-input-container').remove();
+                
+                setTimeout(() => {
+                    this.addBot(`✅ Отлично! Ваша заявка принята.
+
+👨‍🔧 Мастер свяжется с вами в течение 5 минут!
+
+<b>Время визита:</b> ${this.data.visitTime}
+<b>Задача:</b> ${this.data.taskDescription}
+<b>Телефон:</b> ${this.data.phone}`);
+                    
+                    // Отправка данных на сервер
+                    console.log('Заявка отправлена:', this.data);
+                }, 500);
+            }
+
+            showTyping() {
+                const container = document.getElementById('messages');
+                const html = `
+                    <div class="chat-message ai-message" id="typing-indicator" style="display: flex; align-items: flex-start; gap: 8px;">
+                        <div class="message-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px;">🤖</div>
+                        <div class="message-bubble" style="background: white; padding: 12px 16px; border-radius: 18px 18px 18px 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                            <div class="typing-indicator" style="display: flex; gap: 4px; align-items: center;">
+                                <div class="typing-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #999; animation: typingBounce 1.4s infinite;"></div>
+                                <div class="typing-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #999; animation: typingBounce 1.4s infinite 0.2s;"></div>
+                                <div class="typing-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #999; animation: typingBounce 1.4s infinite 0.4s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+                this.scrollToBottom();
+            }
+
+            removeTyping() {
+                const typing = document.getElementById('typing-indicator');
+                if (typing) typing.remove();
+            }
+
+            scrollToBottom() {
+                const messages = document.getElementById('messages');
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        // Инициализация
+        let homeChat;
+        setTimeout(() => {
+            homeChat = new HomePageChat();
+        }, 100);
+    </script>
+    
+    <style>
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        
+        .chat-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</body>
+</html>
