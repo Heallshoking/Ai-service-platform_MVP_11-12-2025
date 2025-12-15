@@ -1,0 +1,90 @@
+#!/usr/bin/expect -f
+# Автоматический деплой с паролем
+set timeout 120
+set password "pneDRE2K?Tz1k-"
+set vps "176.98.178.109"
+
+puts "\n🚀 Деплой Telegram бота @Baltset39_bot на VPS\n"
+
+# Копируем telegram_lead_bot.py
+puts "📦 Копируем telegram_lead_bot.py..."
+spawn scp -o StrictHostKeyChecking=no telegram_lead_bot.py root@$vps:/root/
+expect {
+    "password:" { send "$password\r" }
+    timeout { puts "❌ Timeout"; exit 1 }
+}
+expect eof
+
+# Копируем .env
+puts "📦 Копируем .env..."
+spawn scp -o StrictHostKeyChecking=no .env root@$vps:/root/
+expect {
+    "password:" { send "$password\r" }
+    timeout { puts "❌ Timeout"; exit 1 }
+}
+expect eof
+
+puts "\n📦 Настраиваем и запускаем бота...\n"
+
+# SSH и настройка
+spawn ssh -o StrictHostKeyChecking=no root@$vps
+expect {
+    "password:" { send "$password\r" }
+    timeout { puts "❌ Timeout"; exit 1 }
+}
+
+expect "# "
+send "cd /root && mkdir -p baltset_bot && mv telegram_lead_bot.py baltset_bot/ && mv .env baltset_bot/ && cd baltset_bot\r"
+expect "# "
+
+send "apt-get update -qq && apt-get install -y python3 python3-pip -qq\r"
+expect "# " { puts "✅ Python установлен" }
+
+send "pip3 install python-telegram-bot==13.15 -q\r"
+expect "# " { puts "✅ Библиотеки установлены" }
+
+send "systemctl stop baltset-bot 2>/dev/null || true\r"
+expect "# "
+
+send "cat > /etc/systemd/system/baltset-bot.service << 'EOFSERVICE'\r"
+send "\[Unit\]\r"
+send "Description=BALTSET Telegram Lead Bot\r"
+send "After=network.target\r"
+send "\r"
+send "\[Service\]\r"
+send "Type=simple\r"
+send "User=root\r"
+send "WorkingDirectory=/root/baltset_bot\r"
+send "ExecStart=/usr/bin/python3 /root/baltset_bot/telegram_lead_bot.py\r"
+send "Restart=always\r"
+send "RestartSec=10\r"
+send "\r"
+send "\[Install\]\r"
+send "WantedBy=multi-user.target\r"
+send "EOFSERVICE\r"
+expect "# " { puts "✅ Systemd сервис создан" }
+
+send "systemctl daemon-reload\r"
+expect "# "
+
+send "systemctl start baltset-bot\r"
+expect "# "
+
+send "systemctl enable baltset-bot\r"
+expect "# "
+
+send "sleep 3\r"
+expect "# "
+
+puts "\n================================"
+send "systemctl status baltset-bot --no-pager -l | head -15\r"
+expect "# " { puts "================================\n" }
+
+puts "✅ БОТ УСПЕШНО ЗАПУЩЕН!\n"
+puts "📱 Проверьте: https://t.me/Baltset39_bot"
+puts "💬 Напишите /start боту\n"
+
+send "exit\r"
+expect eof
+
+puts "\n🎉 Деплой завершён!\n"

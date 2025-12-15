@@ -124,10 +124,14 @@ def help_command(update: Update, context: CallbackContext) -> None:
     
     update.message.reply_text(help_text, parse_mode='HTML')
 
+def error_handler(update: object, context: CallbackContext) -> None:
+    """Обработчик ошибок"""
+    print(f"❌ Ошибка: {context.error}")
+
 def main():
     """Запуск бота"""
     # Создаём updater и dispatcher
-    updater = Updater(TELEGRAM_BOT_TOKEN)
+    updater = Updater(TELEGRAM_BOT_TOKEN, use_context=True)
     dispatcher = updater.dispatcher
     
     # Регистрируем обработчики
@@ -136,10 +140,21 @@ def main():
     dispatcher.add_handler(MessageHandler(Filters.contact, contact_received))
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, message_received))
     
+    # Обработчик ошибок
+    dispatcher.add_error_handler(error_handler)
+    
     # Запускаем бота
     print("🤖 Telegram бот запущен!")
     print(f"📊 Admin Chat ID: {ADMIN_CHAT_ID}")
-    updater.start_polling()
+    print(f"🔑 Token: {TELEGRAM_BOT_TOKEN[:20]}...")
+    
+    # Очищаем webhook и запускаем polling
+    updater.bot.delete_webhook()
+    updater.start_polling(
+        drop_pending_updates=True,
+        timeout=30,
+        read_timeout=30
+    )
     updater.idle()
 
 if __name__ == '__main__':

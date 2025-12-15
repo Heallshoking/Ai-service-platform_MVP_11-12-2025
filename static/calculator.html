@@ -34,6 +34,9 @@
     <noscript><div><img src="https://mc.yandex.ru/watch/98765432" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
     
+    <!-- AI Chat Styles -->
+    <link rel="stylesheet" href="ai-chat-styles.css">
+    
     <style>
         * {
             margin: 0;
@@ -47,35 +50,9 @@
             line-height: 1.6;
             position: relative;
             min-height: 100vh;
-        }
-        
-        /* Фоновое изображение как на эталонном сайте */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            background-size: 400% 400%;
+            background-size: 200% 200%;
             animation: gradientShift 15s ease infinite;
-            z-index: -2;
-        }
-        
-        /* Паттерн поверх градиента */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%);
-            z-index: -1;
         }
         
         @keyframes gradientShift {
@@ -172,6 +149,7 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 2rem 1.5rem;
+            padding-bottom: 120px; /* Space for inline chat input */
         }
         
         .hero {
@@ -199,7 +177,7 @@
             backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 2.5rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.3) inset;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.3) inset;
             margin-bottom: 2rem;
             animation: cardAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -254,6 +232,216 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
+        /* Scenario Selection (Visibility Principle) */
+        .scenario-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .scenario-option {
+            background: #f8f9fa;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .scenario-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .scenario-option:nth-child(1) .scenario-icon {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+        }
+        
+        .scenario-option:nth-child(2) .scenario-icon {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        }
+        
+        .scenario-option:nth-child(3) .scenario-icon {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        }
+        
+        .scenario-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .scenario-option.selected {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .scenario-option h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1d1d1f;
+            margin-top: 0;
+        }
+        
+        .scenario-option p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0;
+        }
+        
+        /* Conversion Banners */
+        .conversion-banners {
+            display: grid;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .banner-master {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .banner-master-content h3 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .banner-master-content p {
+            font-size: 1.125rem;
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+        
+        .banner-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .banner-master-image {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .banner-services {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .service-banner {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .service-banner:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+        
+        .service-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .service-banner:nth-child(1) .service-icon {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+        }
+        
+        .service-banner:nth-child(2) .service-icon {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        }
+        
+        .service-banner h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin: 0;
+        }
+        
+        .service-banner p {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .service-price {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-top: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .banner-master {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .banner-master-image {
+                margin: 0 auto;
+            }
+            
+            .banner-services {
+                grid-template-columns: 1fr;
+            }
+            
+            .scenario-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Feedback Principle - Provide immediate visual feedback */
         .quantity-controls {
             display: flex;
             align-items: center;
@@ -261,8 +449,8 @@
         }
         
         .quantity-btn {
-            width: 36px;
-            height: 36px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             border: 2px solid #e5e7eb;
             background: white;
@@ -270,27 +458,74 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             transition: all 0.2s;
+            font-weight: bold;
         }
         
         .quantity-btn:hover {
             border-color: #667eea;
             background: #f8f9fa;
+            transform: scale(1.05);
+        }
+        
+        .quantity-btn:active {
+            transform: scale(0.95);
         }
         
         .quantity-display {
-            min-width: 40px;
+            min-width: 50px;
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #667eea;
+            animation: pulse 0.3s ease;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Affordance Principle - Make interactive elements obvious */
+        .discount-hint {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(217, 119, 6, 0.08));
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            border-left: 3px solid #f59e0b;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            backdrop-filter: blur(5px);
+        }
+        
+        .discount-hint.urgent {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(220, 38, 38, 0.08));
+            border-left: 3px solid #ef4444;
+        }
+        
+        .discount-hint.success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(5, 150, 105, 0.08));
+            border-left: 3px solid #10b981;
         }
         
         /* Results */
         .results {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border-radius: 16px;
-            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+            border-radius: 20px;
+            padding: 1.8rem;
             margin-top: 2rem;
+            animation: fadeIn 0.5s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .result-item {
@@ -314,10 +549,40 @@
         }
         
         .total {
-            font-size: 1.25rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: #1d1d1f;
             margin-top: 0.5rem;
+            text-align: right;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Service Notification - Calming & Unobtrusive */
+        .service-notification {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #667eea;
+            animation: fadeIn 0.5s ease;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .notification-text {
+            font-size: 0.95rem;
+            color: #4a5568;
+            line-height: 1.5;
+            font-weight: 400;
         }
         
         .discount-badge {
@@ -335,6 +600,7 @@
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
+            align-items: center;
         }
         
         .btn {
@@ -353,11 +619,22 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            padding: 1rem 2rem;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
         }
         
         .btn-secondary {
@@ -403,6 +680,28 @@
             color: #667eea;
         }
         
+        /* Urgency Indicator */
+        .urgency-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            color: #ef4444;
+            font-weight: 500;
+        }
+        
+        .urgency-timer {
+            font-weight: 700;
+            background: #ef4444;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
@@ -427,6 +726,10 @@
             
             .actions {
                 flex-direction: column;
+            }
+            
+            .scenario-selector {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -461,86 +764,206 @@
         <div class="card">
             <h2 class="card-title">📊 Расчет стоимости электромонтажа</h2>
             
+            <!-- Scenario Selection (Visibility Principle) -->
             <div class="form-group">
-                <label>Тип помещения</label>
-                <select class="form-control" id="roomType">
-                    <option value="room">Комната</option>
-                    <option value="1-room">1-комнатная квартира</option>
-                    <option value="2-room">2-комнатная квартира</option>
-                    <option value="3-room">3-комнатная квартира</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Установка розеток</label>
-                <div class="quantity-controls">
-                    <button class="quantity-btn" onclick="decreaseQuantity('outlets')">-</button>
-                    <span class="quantity-display" id="outlets-count">4</span>
-                    <button class="quantity-btn" onclick="increaseQuantity('outlets')">+</button>
-                    <span style="margin-left: auto; font-weight: 600; color: #667eea;">400 ₽/шт</span>
+                <label>Что вам нужно?</label>
+                <div class="scenario-selector">
+                    <div class="scenario-option" id="scenarioA" onclick="selectScenario('A')">
+                        <div class="scenario-icon">💡</div>
+                        <h3>Провести электрику с нуля</h3>
+                        <p>Для новостроек и капитального ремонта</p>
+                    </div>
+                    <div class="scenario-option" id="scenarioB" onclick="selectScenario('B')">
+                        <div class="scenario-icon">🔌</div>
+                        <h3>Установить розетки/выключатели</h3>
+                        <p>Когда проводка уже есть</p>
+                    </div>
                 </div>
             </div>
             
-            <div class="form-group">
-                <label>Установка выключателей</label>
-                <div class="quantity-controls">
-                    <button class="quantity-btn" onclick="decreaseQuantity('switches')">-</button>
-                    <span class="quantity-display" id="switches-count">1</span>
-                    <button class="quantity-btn" onclick="increaseQuantity('switches')">+</button>
-                    <span style="margin-left: auto; font-weight: 600; color: #667eea;">350 ₽/шт</span>
+            <!-- Conversion Banners -->
+            <div class="conversion-banners">
+                <!-- Banner 1: Вызвать мастера -->
+                <div class="banner-master">
+                    <div class="banner-master-content">
+                        <h3>Вызвать мастера на дом</h3>
+                        <p>Профессиональный электрик приедет в удобное время</p>
+                        <span class="banner-badge">🎁 Бесплатный осмотр</span>
+                    </div>
+                    <div class="banner-master-image">👨‍🔧</div>
+                </div>
+                
+                <!-- Banners 2-3: Услуги -->
+                <div class="banner-services">
+                    <div class="service-banner" onclick="selectScenario('A')">
+                        <div class="service-icon">⚡</div>
+                        <h4>Провести электрику с нуля</h4>
+                        <p>Полный комплекс работ: проводка, розетки, освещение</p>
+                        <div class="service-price">от 5 000 ₽</div>
+                    </div>
+                    
+                    <div class="service-banner" onclick="selectScenario('B')">
+                        <div class="service-icon">🔧</div>
+                        <h4>Установить розетки/выключатели</h4>
+                        <p>Быстрая установка за 1-2 часа, готовая проводка</p>
+                        <div class="service-price">от 250 ₽</div>
+                    </div>
                 </div>
             </div>
             
-            <div class="form-group">
-                <label>Штробление стен (метры)</label>
-                <div class="quantity-controls">
-                    <button class="quantity-btn" onclick="decreaseQuantity('grooving')">-</button>
-                    <span class="quantity-display" id="grooving-count">0</span>
-                    <button class="quantity-btn" onclick="increaseQuantity('grooving')">+</button>
-                    <span style="margin-left: auto; font-weight: 600; color: #667eea;">350 ₽/м</span>
+            <!-- Scenario A Form -->
+            <div id="scenarioAForm" style="display: none;">
+                <div class="form-group">
+                    <label>Тип ремонта</label>
+                    <select class="form-control" id="repairType" onchange="updateCalculations()">
+                        <option value="cosmetic">Косметический (только установка)</option>
+                        <option value="major">Капитальный (проводка + установка)</option>
+                    </select>
+                </div>
+                
+                <div id="majorRepairOptions" style="display: none;">
+                    <div class="form-group">
+                        <label>Тип расчёта</label>
+                        <select class="form-control" id="calcType" onchange="updateCalculations()">
+                            <option value="simple">Упрощённый (дешевле, но менее детальный)</option>
+                            <option value="detailed">Детальный (точнее, но дороже)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Тип монтажа</label>
+                        <select class="form-control" id="installType" onchange="updateCalculations()">
+                            <option value="surface">Открытая проводка</option>
+                            <option value="concealed">Скрытая проводка</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>💡 Выключатели</label>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity('switches')">-</button>
+                        <span class="quantity-display" id="switches-count">0</span>
+                        <button class="quantity-btn" onclick="increaseQuantity('switches')">+</button>
+                        <span style="margin-left: auto; font-weight: 600; color: #667eea;">400 ₽/шт</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>🔌 Розетки</label>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity('sockets')">-</button>
+                        <span class="quantity-display" id="sockets-count">0</span>
+                        <button class="quantity-btn" onclick="increaseQuantity('sockets')">+</button>
+                        <span style="margin-left: auto; font-weight: 600; color: #667eea;">500 ₽/шт</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>💡 Освещение</label>
+                    <select class="form-control" id="lightingType" onchange="updateCalculations()">
+                        <option value="none">Не требуется</option>
+                        <option value="chandelier">Люстра (800 ₽)</option>
+                        <option value="spots">Точечные светильники (1200 ₽)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Мощная техника</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="washer" onchange="updateCalculations()"> 
+                            Стиральная машина (+1500 ₽)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="dishwasher" onchange="updateCalculations()"> 
+                            Посудомоечная машина (+1500 ₽)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="oven" onchange="updateCalculations()"> 
+                            Электроплита/духовка (+2000 ₽)
+                        </label>
+                    </div>
                 </div>
             </div>
             
-            <div class="form-group">
-                <label>Установка люстр</label>
-                <div class="quantity-controls">
-                    <button class="quantity-btn" onclick="decreaseQuantity('chandeliers')">-</button>
-                    <span class="quantity-display" id="chandeliers-count">0</span>
-                    <button class="quantity-btn" onclick="increaseQuantity('chandeliers')">+</button>
-                    <span style="margin-left: auto; font-weight: 600; color: #667eea;">1000 ₽/шт</span>
+            <!-- Scenario B Form -->
+            <div id="scenarioBForm" style="display: none;">
+                <div class="form-group">
+                    <label>💡 Выключатели</label>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity('switchesB')">-</button>
+                        <span class="quantity-display" id="switchesB-count">0</span>
+                        <button class="quantity-btn" onclick="increaseQuantity('switchesB')">+</button>
+                        <span style="margin-left: auto; font-weight: 600; color: #667eea;">250 ₽/шт</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>🔌 Розетки</label>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity('socketsB')">-</button>
+                        <span class="quantity-display" id="socketsB-count">0</span>
+                        <button class="quantity-btn" onclick="increaseQuantity('socketsB')">+</button>
+                        <span style="margin-left: auto; font-weight: 600; color: #667eea;">250 ₽/шт</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Есть ли провода в стенах?</label>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="hasWires" value="yes" onchange="updateCalculations()"> 
+                            Да, провода уже есть (-30%)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="hasWires" value="partial" onchange="updateCalculations()"> 
+                            Частично есть (-15%)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="hasWires" value="no" onchange="updateCalculations()" checked> 
+                            Нет, нужна прокладка
+                        </label>
+                    </div>
                 </div>
             </div>
             
-            <div class="results">
+            <!-- Discount Hint (Feedback Principle) -->
+            <div class="discount-hint" id="discountHint">
+                <span>💡</span>
+                <span id="hintText">Выберите сценарий и добавьте услуги для расчёта стоимости</span>
+            </div>
+            
+            <!-- Urgency Indicator -->
+            <div class="urgency-indicator">
+                <span>🔥</span>
+                <span>Сегодня действует скидка 10% на первый заказ! Осталось: <span class="urgency-timer" id="timer">23:59:59</span></span>
+            </div>
+            
+            <!-- Results -->
+            <div class="results" id="results" style="display: none;">
                 <div class="result-item">
-                    <span class="result-label">Стоимость розеток:</span>
-                    <span class="result-value" id="outlets-cost">1600 ₽</span>
+                    <span class="result-label">Стоимость работ:</span>
+                    <span class="result-value" id="work-cost">0 ₽</span>
                 </div>
-                <div class="result-item">
-                    <span class="result-label">Стоимость выключателей:</span>
-                    <span class="result-value" id="switches-cost">350 ₽</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Стоимость штробления:</span>
-                    <span class="result-value" id="grooving-cost">0 ₽</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Стоимость люстр:</span>
-                    <span class="result-value" id="chandeliers-cost">0 ₽</span>
-                </div>
-                <div class="result-item">
+                <div class="result-item" id="discount-row" style="display: none;">
                     <span class="result-label">Скидка: <span class="discount-badge" id="discount-percent">0%</span></span>
                     <span class="result-value" id="discount-amount">0 ₽</span>
                 </div>
                 <div class="result-item total">
-                    <span>Итого:</span>
-                    <span id="total-cost">1950 ₽</span>
+                    <div class="service-notification" id="serviceNotification" style="display: none;">
+                        <div class="notification-content">
+                            <span class="notification-text" id="notificationText"></span>
+                        </div>
+                    </div>
+                    <span>Итого к оплате:</span>
+                    <span id="total-cost">0 ₽</span>
                 </div>
             </div>
             
             <div class="actions">
-                <button class="btn btn-primary" onclick="placeOrder()">Оформить заказ</button>
                 <button class="btn btn-secondary" onclick="resetCalculator()">Сбросить</button>
+                <button class="btn btn-primary" onclick="placeOrder()" id="orderBtn" disabled style="margin-left: auto;">Продолжить →</button>
             </div>
         </div>
         
@@ -589,96 +1012,369 @@
     </div>
 
     <script>
-        // Initial values
-        const quantities = {
-            outlets: 4,
-            switches: 1,
-            grooving: 0,
-            chandeliers: 0
+        // State management (Donald Norman's Constraints Principle)
+        let state = {
+            scenario: null,
+            // Scenario A
+            repairType: 'cosmetic',
+            calcType: 'simple',
+            installType: 'surface',
+            switches: 0,
+            sockets: 0,
+            lightingType: 'none',
+            washer: false,
+            dishwasher: false,
+            oven: false,
+            // Scenario B
+            switchesB: 0,
+            socketsB: 0,
+            hasWires: 'no'
         };
         
-        // Prices
-        const prices = {
-            outlets: 400,
-            switches: 350,
-            grooving: 350,
-            chandeliers: 1000
-        };
+        // DOM Elements
+        const scenarioA = document.getElementById('scenarioA');
+        const scenarioB = document.getElementById('scenarioB');
+        const scenarioAForm = document.getElementById('scenarioAForm');
+        const scenarioBForm = document.getElementById('scenarioBForm');
+        const orderBtn = document.getElementById('orderBtn');
+        const results = document.getElementById('results');
+        const discountRow = document.getElementById('discount-row');
+        const discountHint = document.getElementById('discountHint');
+        const hintText = document.getElementById('hintText');
         
-        // Update display
-        function updateDisplay() {
-            // Update counters
-            document.getElementById('outlets-count').textContent = quantities.outlets;
-            document.getElementById('switches-count').textContent = quantities.switches;
-            document.getElementById('grooving-count').textContent = quantities.grooving;
-            document.getElementById('chandeliers-count').textContent = quantities.chandeliers;
+        // Select scenario (Visibility & Feedback Principles)
+        function selectScenario(scenario) {
+            state.scenario = scenario;
             
-            // Update costs
-            const outletsCost = quantities.outlets * prices.outlets;
-            const switchesCost = quantities.switches * prices.switches;
-            const groovingCost = quantities.grooving * prices.grooving;
-            const chandeliersCost = quantities.chandeliers * prices.chandeliers;
+            // Update UI
+            scenarioA.classList.toggle('selected', scenario === 'A');
+            scenarioB.classList.toggle('selected', scenario === 'B');
             
-            document.getElementById('outlets-cost').textContent = outletsCost.toLocaleString('ru-RU') + ' ₽';
-            document.getElementById('switches-cost').textContent = switchesCost.toLocaleString('ru-RU') + ' ₽';
-            document.getElementById('grooving-cost').textContent = groovingCost.toLocaleString('ru-RU') + ' ₽';
-            document.getElementById('chandeliers-cost').textContent = chandeliersCost.toLocaleString('ru-RU') + ' ₽';
+            // Show/hide forms
+            scenarioAForm.style.display = scenario === 'A' ? 'block' : 'none';
+            scenarioBForm.style.display = scenario === 'B' ? 'block' : 'none';
             
-            // Calculate total
-            const subtotal = outletsCost + switchesCost + groovingCost + chandeliersCost;
-            
-            // Calculate discount
-            const totalItems = quantities.outlets + quantities.switches + quantities.grooving + quantities.chandeliers;
-            let discountPercent = 0;
-            
-            if (totalItems >= 21) {
-                discountPercent = 25;
-            } else if (totalItems >= 11) {
-                discountPercent = 15;
-            } else if (totalItems >= 6) {
-                discountPercent = 10;
-            } else if (totalItems >= 3) {
-                discountPercent = 5;
+            // Update repair type visibility
+            if (scenario === 'A') {
+                document.getElementById('majorRepairOptions').style.display = 
+                    state.repairType === 'major' ? 'block' : 'none';
             }
             
-            const discountAmount = subtotal * (discountPercent / 100);
-            const total = subtotal - discountAmount;
-            
-            // Update discount display
-            document.getElementById('discount-percent').textContent = discountPercent + '%';
-            document.getElementById('discount-amount').textContent = discountAmount.toLocaleString('ru-RU') + ' ₽';
-            document.getElementById('total-cost').textContent = total.toLocaleString('ru-RU') + ' ₽';
+            updateCalculations();
         }
         
-        // Quantity controls
+        // Quantity controls (Affordance & Feedback Principles)
         function increaseQuantity(type) {
-            quantities[type]++;
+            state[type]++;
             updateDisplay();
+            updateCalculations();
         }
         
         function decreaseQuantity(type) {
-            if (quantities[type] > 0) {
-                quantities[type]--;
+            if (state[type] > 0) {
+                state[type]--;
                 updateDisplay();
+                updateCalculations();
             }
         }
         
-        // Reset calculator
-        function resetCalculator() {
-            quantities.outlets = 4;
-            quantities.switches = 1;
-            quantities.grooving = 0;
-            quantities.chandeliers = 0;
-            updateDisplay();
+        // Update display (Feedback Principle)
+        function updateDisplay() {
+            // Update counters with animation
+            document.getElementById('switches-count').textContent = state.switches;
+            document.getElementById('sockets-count').textContent = state.sockets;
+            document.getElementById('switchesB-count').textContent = state.switchesB;
+            document.getElementById('socketsB-count').textContent = state.socketsB;
+            
+            // Add pulse animation
+            document.getElementById('switches-count').style.animation = 'none';
+            document.getElementById('sockets-count').style.animation = 'none';
+            document.getElementById('switchesB-count').style.animation = 'none';
+            document.getElementById('socketsB-count').style.animation = 'none';
+            
+            // Trigger reflow
+            void document.getElementById('switches-count').offsetWidth;
+            void document.getElementById('sockets-count').offsetWidth;
+            void document.getElementById('switchesB-count').offsetWidth;
+            void document.getElementById('socketsB-count').offsetWidth;
+            
+            // Re-add animation
+            document.getElementById('switches-count').style.animation = 'pulse 0.3s ease';
+            document.getElementById('sockets-count').style.animation = 'pulse 0.3s ease';
+            document.getElementById('switchesB-count').style.animation = 'pulse 0.3s ease';
+            document.getElementById('socketsB-count').style.animation = 'pulse 0.3s ease';
         }
         
-        // Place order
+        // Update calculations (Visibility & Feedback Principles)
+        function updateCalculations() {
+            // Update state from form elements
+            if (state.scenario === 'A') {
+                state.repairType = document.getElementById('repairType').value;
+                state.calcType = document.getElementById('calcType').value;
+                state.installType = document.getElementById('installType').value;
+                state.lightingType = document.getElementById('lightingType').value;
+                state.washer = document.getElementById('washer').checked;
+                state.dishwasher = document.getElementById('dishwasher').checked;
+                state.oven = document.getElementById('oven').checked;
+                
+                // Show/hide major repair options
+                document.getElementById('majorRepairOptions').style.display = 
+                    state.repairType === 'major' ? 'block' : 'none';
+            } else if (state.scenario === 'B') {
+                const wireRadios = document.getElementsByName('hasWires');
+                for (let radio of wireRadios) {
+                    if (radio.checked) {
+                        state.hasWires = radio.value;
+                        break;
+                    }
+                }
+            }
+            
+            // Calculate estimate
+            let total = 0;
+            
+            if (state.scenario === 'A') {
+                if (state.repairType === 'cosmetic') {
+                    total = state.switches * 400 + state.sockets * 500;
+                    if (state.lightingType === 'chandelier') total += 800;
+                    if (state.lightingType === 'spots') total += 1200;
+                    if (state.washer) total += 1500;
+                    if (state.dishwasher) total += 1500;
+                    if (state.oven) total += 2000;
+                } else if (state.repairType === 'major') {
+                    const basePrice = state.calcType === 'simple' ? 1200 : 1800;
+                    const totalPoints = state.switches + state.sockets;
+                    total = totalPoints * basePrice;
+                    
+                    if (state.lightingType === 'spots') total += totalPoints * 200;
+                    if (state.washer || state.dishwasher || state.oven) {
+                        const equipmentCount = [state.washer, state.dishwasher, state.oven].filter(Boolean).length;
+                        total += equipmentCount * 1500;
+                    }
+                    if (state.installType === 'concealed') total += totalPoints * 300;
+                }
+            } else if (state.scenario === 'B') {
+                total = state.switchesB * 250 + state.socketsB * 250;
+                
+                if (state.hasWires === 'yes') {
+                    total *= 0.7;
+                } else if (state.hasWires === 'partial') {
+                    total *= 0.85;
+                }
+            }
+            
+            // Calculate discount based on volume (Donald Norman's Mapping Principle)
+            const itemCount = state.scenario === 'A' ? 
+                (state.switches + state.sockets) : 
+                (state.switchesB + state.socketsB);
+            
+            let discountPercent = 0;
+            if (itemCount >= 21) {
+                discountPercent = 25;
+            } else if (itemCount >= 11) {
+                discountPercent = 15;
+            } else if (itemCount >= 6) {
+                discountPercent = 10;
+            } else if (itemCount >= 3) {
+                discountPercent = 5;
+            }
+            
+            const discountAmount = total * (discountPercent / 100);
+            const finalTotal = total - discountAmount;
+            
+            // Update UI with results (Visibility Principle)
+            if (state.scenario && (itemCount > 0 || total > 0)) {
+                results.style.display = 'block';
+                document.getElementById('work-cost').textContent = Math.round(total).toLocaleString('ru-RU') + ' ₽';
+                
+                if (discountPercent > 0) {
+                    discountRow.style.display = 'flex';
+                    document.getElementById('discount-percent').textContent = discountPercent + '%';
+                    document.getElementById('discount-amount').textContent = Math.round(discountAmount).toLocaleString('ru-RU') + ' ₽';
+                } else {
+                    discountRow.style.display = 'none';
+                }
+                
+                document.getElementById('total-cost').textContent = Math.round(finalTotal).toLocaleString('ru-RU') + ' ₽';
+                
+                // Enable order button
+                orderBtn.disabled = false;
+                
+                // Update discount hint (Feedback Principle)
+                updateDiscountHint(itemCount, discountPercent);
+                        
+                // Update service notification
+                updateServiceNotification(itemCount, discountPercent, finalTotal);
+            } else {
+                results.style.display = 'none';
+                orderBtn.disabled = true;
+                discountHint.className = 'discount-hint';
+                hintText.textContent = 'Выберите сценарий и добавьте услуги для расчёта стоимости';
+                        
+                // Hide service notification
+                document.getElementById('serviceNotification').style.display = 'none';
+            }
+            
+            // Track in analytics
+            if (typeof ym !== 'undefined' && total > 0) {
+                ym(98765432, 'reachGoal', 'calculator_calculation', {
+                    scenario: state.scenario,
+                    total: Math.round(finalTotal),
+                    items: itemCount
+                });
+            }
+        }
+        
+        // Update discount hint (Feedback Principle)
+        function updateDiscountHint(itemCount, discountPercent) {
+            if (itemCount === 0) {
+                discountHint.className = 'discount-hint';
+                hintText.textContent = 'Добавьте услуги для расчёта стоимости';
+            } else if (discountPercent > 0) {
+                discountHint.className = 'discount-hint success';
+                hintText.textContent = `🎉 Получена скидка ${discountPercent}%! Экономия: ${Math.round(itemCount * (discountPercent/100) * 500)} ₽`;
+            } else if (itemCount >= 20) {
+                discountHint.className = 'discount-hint urgent';
+                hintText.textContent = '🔥 Добавьте ещё 1 услугу для получения максимальной скидки 25%!';
+            } else if (itemCount >= 10) {
+                discountHint.className = 'discount-hint';
+                hintText.textContent = '✨ Добавьте ещё 1 услугу для получения скидки 15%!';
+            } else if (itemCount >= 5) {
+                discountHint.className = 'discount-hint';
+                hintText.textContent = '🎯 Добавьте ещё 1 услугу для получения скидки 10%!';
+            } else if (itemCount >= 2) {
+                discountHint.className = 'discount-hint';
+                hintText.textContent = '💡 Добавьте ещё 1 услугу для получения скидки 5%!';
+            } else {
+                discountHint.className = 'discount-hint';
+                hintText.textContent = 'Выберите больше услуг для получения скидки';
+            }
+        }
+        
+        // Update service notification (Calming & Unobtrusive)
+        function updateServiceNotification(itemCount, discountPercent, total) {
+            const notification = document.getElementById('serviceNotification');
+            const notificationText = document.getElementById('notificationText');
+            
+            if (itemCount > 0) {
+                const messages = [
+                    `Вы выбрали ${itemCount} услуг${getItemEnding(itemCount)} на сумму ${Math.round(total).toLocaleString('ru-RU')} ₽. Нажмите "Продолжить" для оформления заказа.`,
+                    `Ваш выбор: ${itemCount} услуг${getItemEnding(itemCount)}. Общая стоимость: ${Math.round(total).toLocaleString('ru-RU')} ₽. Готовы продолжить?`,
+                    `Выбрано ${itemCount} позици${getItemEnding(itemCount)}. Сумма к оплате: ${Math.round(total).toLocaleString('ru-RU')} ₽. Продолжить оформление?`
+                ];
+                
+                // Select random message
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                notificationText.textContent = randomMessage;
+                notification.style.display = 'block';
+            } else {
+                notification.style.display = 'none';
+            }
+        }
+        
+        // Helper function for proper Russian word endings
+        function getItemEnding(count) {
+            if (count % 10 === 1 && count % 100 !== 11) {
+                return 'у';
+            } else if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) {
+                return 'и';
+            } else {
+                return '';
+            }
+        }
+        
+        // Reset calculator (Constraints Principle)
+        function resetCalculator() {
+            // Reset state
+            state = {
+                scenario: null,
+                // Scenario A
+                repairType: 'cosmetic',
+                calcType: 'simple',
+                installType: 'surface',
+                switches: 0,
+                sockets: 0,
+                lightingType: 'none',
+                washer: false,
+                dishwasher: false,
+                oven: false,
+                // Scenario B
+                switchesB: 0,
+                socketsB: 0,
+                hasWires: 'no'
+            };
+            
+            // Reset UI
+            scenarioA.classList.remove('selected');
+            scenarioB.classList.remove('selected');
+            scenarioAForm.style.display = 'none';
+            scenarioBForm.style.display = 'none';
+            results.style.display = 'none';
+            orderBtn.disabled = true;
+            
+            // Reset form elements
+            document.getElementById('repairType').value = 'cosmetic';
+            document.getElementById('calcType').value = 'simple';
+            document.getElementById('installType').value = 'surface';
+            document.getElementById('lightingType').value = 'none';
+            document.getElementById('washer').checked = false;
+            document.getElementById('dishwasher').checked = false;
+            document.getElementById('oven').checked = false;
+            
+            const wireRadios = document.getElementsByName('hasWires');
+            for (let radio of wireRadios) {
+                radio.checked = radio.value === 'no';
+            }
+            
+            document.getElementById('majorRepairOptions').style.display = 'none';
+            
+            updateDisplay();
+            updateDiscountHint(0, 0);
+        }
+        
+        // Place order (Affordance Principle)
         function placeOrder() {
             const total = document.getElementById('total-cost').textContent;
-            alert(`Заказ оформлен! Общая стоимость: ${total}\n\nНаш менеджер свяжется с вами в ближайшее время.`);
+            
+            // Show confirmation with feedback
+            alert(`✅ Заказ оформлен!
+
+Общая стоимость: ${total}
+
+Наш менеджер свяжется с вами в ближайшее время.
+Телефон для связи: +7 (900) 123-45-67`);
+            
+            // Track in analytics
+            if (typeof ym !== 'undefined') {
+                ym(98765432, 'reachGoal', 'calculator_order', {
+                    total: parseInt(total.replace(/\D/g, '')),
+                    scenario: state.scenario
+                });
+            }
+            
+            // Reset after order
+            setTimeout(resetCalculator, 1000);
+        }
+        
+        // Timer countdown (Urgency Principle)
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const diff = tomorrow - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('timer').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
         
         // Initialize
+        setInterval(updateTimer, 1000);
+        updateTimer();
         updateDisplay();
         
         // Burger menu
@@ -686,5 +1382,9 @@
             this.classList.toggle('active');
         });
     </script>
+    
+    <!-- Inline Chat (Fixed Input at Bottom) -->
+    <link rel="stylesheet" href="inline-chat.css">
+    <script src="inline-chat.js"></script>
 </body>
 </html>

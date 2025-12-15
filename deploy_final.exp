@@ -1,0 +1,67 @@
+#!/usr/bin/expect -f
+set timeout 120
+
+puts "\n🚀 Деплой бота @Baltset39_bot\n"
+
+# Копируем файл
+puts "📦 Копирование файла..."
+spawn scp -o StrictHostKeyChecking=no telegram_lead_bot.py root@176.98.178.109:/root/baltset_bot.py
+expect "password:"
+send "pneDRE2K?Tz1k-\r"
+expect eof
+puts "✅ Файл скопирован\n"
+
+# SSH и запуск
+puts "🚀 Подключение к VPS..."
+spawn ssh -o StrictHostKeyChecking=no root@176.98.178.109
+expect "password:"
+send "pneDRE2K?Tz1k-\r"
+
+expect "#"
+puts "✅ Подключено\n"
+
+send "pkill -f baltset_bot.py 2>/dev/null || true\r"
+expect "#"
+
+send "pkill -f telegram_lead_bot.py 2>/dev/null || true\r"
+expect "#"
+puts "✅ Старые процессы остановлены\n"
+
+send "pip3 --version > /dev/null 2>&1 || apt-get install -y python3-pip -qq\r"
+expect "#"
+
+send "pip3 install python-telegram-bot==13.15 -q\r"
+expect "#"
+puts "✅ Зависимости установлены\n"
+
+send "cd /root\r"
+expect "#"
+
+send "nohup python3 baltset_bot.py > baltset_bot.log 2>&1 &\r"
+expect "#"
+puts "✅ Бот запущен в фоне\n"
+
+send "sleep 3\r"
+expect "#"
+
+send "pgrep -f baltset_bot.py\r"
+expect {
+    -re "(\[0-9\]+)" {
+        puts "\n================================"
+        puts "✅ БОТ УСПЕШНО ЗАПУЩЕН!"
+        puts "================================"
+        puts "\nPID: $expect_out(1,string)"
+        puts "\n📱 https://t.me/Baltset39_bot"
+        puts "💬 Напишите /start\n"
+    }
+    "#" {
+        puts "\n⚠️  Процесс не найден, проверяем логи..."
+        send "tail -20 baltset_bot.log\r"
+        expect "#"
+    }
+}
+
+send "exit\r"
+expect eof
+
+puts "\n🎉 Деплой завершён!\n"
