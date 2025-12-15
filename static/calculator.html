@@ -203,6 +203,149 @@
             gap: 0.75rem;
         }
         
+        /* New Calculator Styles */
+        .results {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .result-item.total {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+        
+        .cost-value, .discount-value, .total-value {
+            font-weight: 600;
+        }
+        
+        .discount-value {
+            color: #10b981;
+        }
+        
+        .total-value {
+            color: #667eea;
+        }
+        
+        /* Service Notification */
+        .service-notification {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(118, 75, 162, 0.05));
+            border-radius: 16px;
+            padding: 1.25rem;
+            border-left: 4px solid #3b82f6;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .notification-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .notification-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #374151;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+        }
+        
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 2rem;
+            font-weight: 300;
+            cursor: pointer;
+            color: #9ca3af;
+            transition: color 0.2s;
+        }
+        
+        .close:hover {
+            color: #1d1d1f;
+        }
+        
+        .modal-content h2 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            color: #1d1d1f;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
         /* Calculator Form */
         .form-group {
             margin-bottom: 1.5rem;
@@ -1011,256 +1154,169 @@
         </div>
     </div>
 
+    <!-- Simplified Calculator Content -->
+    <div class="container">
+        <div class="hero">
+            <h1>⚡ Калькулятор услуг</h1>
+            <p>Рассчитайте стоимость работ онлайн за 2 минуты</p>
+        </div>
+        
+        <div class="card">
+            <h2 class="card-title">Выберите услугу</h2>
+            
+            <div class="scenario-selector">
+                <div class="scenario-option" onclick="selectScenario('sockets')">
+                    <div class="scenario-icon">🔌</div>
+                    <h3>Установка розеток</h3>
+                    <p>От 400₽ за штуку</p>
+                </div>
+                
+                <div class="scenario-option" onclick="selectScenario('switches')">
+                    <div class="scenario-icon">💡</div>
+                    <h3>Установка выключателей</h3>
+                    <p>От 350₽ за штуку</p>
+                </div>
+                
+                <div class="scenario-option" onclick="selectScenario('lighting')">
+                    <div class="scenario-icon">🔦</div>
+                    <h3>Установка освещения</h3>
+                    <p>От 800₽ за точку</p>
+                </div>
+                
+                <div class="scenario-option" onclick="selectScenario('wiring')">
+                    <div class="scenario-icon">⚡</div>
+                    <h3>Замена проводки</h3>
+                    <p>От 1200₽ за точку</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Количество единиц:</label>
+                <input type="number" id="quantity" class="form-control" min="1" value="1" onchange="calculateCost()">
+            </div>
+            
+            <div class="results" id="results" style="display: none;">
+                <div class="result-item">
+                    <span>Стоимость работ:</span>
+                    <span id="cost" class="cost-value">0 ₽</span>
+                </div>
+                <div class="result-item">
+                    <span>Скидка:</span>
+                    <span id="discount" class="discount-value">0 ₽</span>
+                </div>
+                <div class="result-item total">
+                    <span>Итого:</span>
+                    <span id="total" class="total-value">0 ₽</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="showOrderForm()" style="width: 100%; margin-top: 1.5rem;">
+                Оформить заказ
+            </button>
+        </div>
+        
+        <!-- Service Notification (Calming & Unobtrusive) -->
+        <div class="service-notification" id="serviceNotification" style="display: none; margin-top: 1rem;">
+            <div class="notification-content">
+                <div class="notification-icon">ℹ️</div>
+                <div class="notification-text" id="notificationText"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Form Modal -->
+    <div class="modal" id="orderModal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Оформление заказа</h2>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label>Ваше имя:</label>
+                    <input type="text" class="form-control" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Телефон:</label>
+                    <input type="tel" class="form-control" id="customerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label>Адрес:</label>
+                    <input type="text" class="form-control" id="customerAddress" required>
+                </div>
+                <div class="form-group">
+                    <label>Комментарий:</label>
+                    <textarea class="form-control" id="customerComment" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Отправить заявку</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // State management (Donald Norman's Constraints Principle)
-        let state = {
-            scenario: null,
-            // Scenario A
-            repairType: 'cosmetic',
-            calcType: 'simple',
-            installType: 'surface',
-            switches: 0,
-            sockets: 0,
-            lightingType: 'none',
-            washer: false,
-            dishwasher: false,
-            oven: false,
-            // Scenario B
-            switchesB: 0,
-            socketsB: 0,
-            hasWires: 'no'
+        let currentScenario = null;
+        const prices = {
+            sockets: 400,
+            switches: 350,
+            lighting: 800,
+            wiring: 1200
         };
-        
-        // DOM Elements
-        const scenarioA = document.getElementById('scenarioA');
-        const scenarioB = document.getElementById('scenarioB');
-        const scenarioAForm = document.getElementById('scenarioAForm');
-        const scenarioBForm = document.getElementById('scenarioBForm');
-        const orderBtn = document.getElementById('orderBtn');
-        const results = document.getElementById('results');
-        const discountRow = document.getElementById('discount-row');
-        const discountHint = document.getElementById('discountHint');
-        const hintText = document.getElementById('hintText');
-        
-        // Select scenario (Visibility & Feedback Principles)
+
         function selectScenario(scenario) {
-            state.scenario = scenario;
+            // Remove selected class from all options
+            document.querySelectorAll('.scenario-option').forEach(option => {
+                option.classList.remove('selected');
+            });
             
-            // Update UI
-            scenarioA.classList.toggle('selected', scenario === 'A');
-            scenarioB.classList.toggle('selected', scenario === 'B');
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
             
-            // Show/hide forms
-            scenarioAForm.style.display = scenario === 'A' ? 'block' : 'none';
-            scenarioBForm.style.display = scenario === 'B' ? 'block' : 'none';
-            
-            // Update repair type visibility
-            if (scenario === 'A') {
-                document.getElementById('majorRepairOptions').style.display = 
-                    state.repairType === 'major' ? 'block' : 'none';
-            }
-            
-            updateCalculations();
+            currentScenario = scenario;
+            calculateCost();
         }
-        
-        // Quantity controls (Affordance & Feedback Principles)
-        function increaseQuantity(type) {
-            state[type]++;
-            updateDisplay();
-            updateCalculations();
-        }
-        
-        function decreaseQuantity(type) {
-            if (state[type] > 0) {
-                state[type]--;
-                updateDisplay();
-                updateCalculations();
-            }
-        }
-        
-        // Update display (Feedback Principle)
-        function updateDisplay() {
-            // Update counters with animation
-            document.getElementById('switches-count').textContent = state.switches;
-            document.getElementById('sockets-count').textContent = state.sockets;
-            document.getElementById('switchesB-count').textContent = state.switchesB;
-            document.getElementById('socketsB-count').textContent = state.socketsB;
+
+        function calculateCost() {
+            if (!currentScenario) return;
             
-            // Add pulse animation
-            document.getElementById('switches-count').style.animation = 'none';
-            document.getElementById('sockets-count').style.animation = 'none';
-            document.getElementById('switchesB-count').style.animation = 'none';
-            document.getElementById('socketsB-count').style.animation = 'none';
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            const unitPrice = prices[currentScenario];
+            let cost = unitPrice * quantity;
             
-            // Trigger reflow
-            void document.getElementById('switches-count').offsetWidth;
-            void document.getElementById('sockets-count').offsetWidth;
-            void document.getElementById('switchesB-count').offsetWidth;
-            void document.getElementById('socketsB-count').offsetWidth;
-            
-            // Re-add animation
-            document.getElementById('switches-count').style.animation = 'pulse 0.3s ease';
-            document.getElementById('sockets-count').style.animation = 'pulse 0.3s ease';
-            document.getElementById('switchesB-count').style.animation = 'pulse 0.3s ease';
-            document.getElementById('socketsB-count').style.animation = 'pulse 0.3s ease';
-        }
-        
-        // Update calculations (Visibility & Feedback Principles)
-        function updateCalculations() {
-            // Update state from form elements
-            if (state.scenario === 'A') {
-                state.repairType = document.getElementById('repairType').value;
-                state.calcType = document.getElementById('calcType').value;
-                state.installType = document.getElementById('installType').value;
-                state.lightingType = document.getElementById('lightingType').value;
-                state.washer = document.getElementById('washer').checked;
-                state.dishwasher = document.getElementById('dishwasher').checked;
-                state.oven = document.getElementById('oven').checked;
-                
-                // Show/hide major repair options
-                document.getElementById('majorRepairOptions').style.display = 
-                    state.repairType === 'major' ? 'block' : 'none';
-            } else if (state.scenario === 'B') {
-                const wireRadios = document.getElementsByName('hasWires');
-                for (let radio of wireRadios) {
-                    if (radio.checked) {
-                        state.hasWires = radio.value;
-                        break;
-                    }
-                }
-            }
-            
-            // Calculate estimate
-            let total = 0;
-            
-            if (state.scenario === 'A') {
-                if (state.repairType === 'cosmetic') {
-                    total = state.switches * 400 + state.sockets * 500;
-                    if (state.lightingType === 'chandelier') total += 800;
-                    if (state.lightingType === 'spots') total += 1200;
-                    if (state.washer) total += 1500;
-                    if (state.dishwasher) total += 1500;
-                    if (state.oven) total += 2000;
-                } else if (state.repairType === 'major') {
-                    const basePrice = state.calcType === 'simple' ? 1200 : 1800;
-                    const totalPoints = state.switches + state.sockets;
-                    total = totalPoints * basePrice;
-                    
-                    if (state.lightingType === 'spots') total += totalPoints * 200;
-                    if (state.washer || state.dishwasher || state.oven) {
-                        const equipmentCount = [state.washer, state.dishwasher, state.oven].filter(Boolean).length;
-                        total += equipmentCount * 1500;
-                    }
-                    if (state.installType === 'concealed') total += totalPoints * 300;
-                }
-            } else if (state.scenario === 'B') {
-                total = state.switchesB * 250 + state.socketsB * 250;
-                
-                if (state.hasWires === 'yes') {
-                    total *= 0.7;
-                } else if (state.hasWires === 'partial') {
-                    total *= 0.85;
-                }
-            }
-            
-            // Calculate discount based on volume (Donald Norman's Mapping Principle)
-            const itemCount = state.scenario === 'A' ? 
-                (state.switches + state.sockets) : 
-                (state.switchesB + state.socketsB);
-            
+            // Calculate discount
+            let discount = 0;
             let discountPercent = 0;
-            if (itemCount >= 21) {
+            
+            if (quantity >= 20) {
                 discountPercent = 25;
-            } else if (itemCount >= 11) {
+            } else if (quantity >= 10) {
                 discountPercent = 15;
-            } else if (itemCount >= 6) {
+            } else if (quantity >= 5) {
                 discountPercent = 10;
-            } else if (itemCount >= 3) {
+            } else if (quantity >= 3) {
                 discountPercent = 5;
             }
             
-            const discountAmount = total * (discountPercent / 100);
-            const finalTotal = total - discountAmount;
+            discount = cost * (discountPercent / 100);
+            const total = cost - discount;
             
-            // Update UI with results (Visibility Principle)
-            if (state.scenario && (itemCount > 0 || total > 0)) {
-                results.style.display = 'block';
-                document.getElementById('work-cost').textContent = Math.round(total).toLocaleString('ru-RU') + ' ₽';
-                
-                if (discountPercent > 0) {
-                    discountRow.style.display = 'flex';
-                    document.getElementById('discount-percent').textContent = discountPercent + '%';
-                    document.getElementById('discount-amount').textContent = Math.round(discountAmount).toLocaleString('ru-RU') + ' ₽';
-                } else {
-                    discountRow.style.display = 'none';
-                }
-                
-                document.getElementById('total-cost').textContent = Math.round(finalTotal).toLocaleString('ru-RU') + ' ₽';
-                
-                // Enable order button
-                orderBtn.disabled = false;
-                
-                // Update discount hint (Feedback Principle)
-                updateDiscountHint(itemCount, discountPercent);
-                        
-                // Update service notification
-                updateServiceNotification(itemCount, discountPercent, finalTotal);
-            } else {
-                results.style.display = 'none';
-                orderBtn.disabled = true;
-                discountHint.className = 'discount-hint';
-                hintText.textContent = 'Выберите сценарий и добавьте услуги для расчёта стоимости';
-                        
-                // Hide service notification
-                document.getElementById('serviceNotification').style.display = 'none';
-            }
+            // Update UI
+            document.getElementById('cost').textContent = cost.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('discount').textContent = discount.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('total').textContent = total.toLocaleString('ru-RU') + ' ₽';
             
-            // Track in analytics
-            if (typeof ym !== 'undefined' && total > 0) {
-                ym(98765432, 'reachGoal', 'calculator_calculation', {
-                    scenario: state.scenario,
-                    total: Math.round(finalTotal),
-                    items: itemCount
-                });
-            }
+            document.getElementById('results').style.display = 'block';
+            
+            // Update service notification
+            updateServiceNotification(quantity, discountPercent, total);
         }
-        
-        // Update discount hint (Feedback Principle)
-        function updateDiscountHint(itemCount, discountPercent) {
-            if (itemCount === 0) {
-                discountHint.className = 'discount-hint';
-                hintText.textContent = 'Добавьте услуги для расчёта стоимости';
-            } else if (discountPercent > 0) {
-                discountHint.className = 'discount-hint success';
-                hintText.textContent = `🎉 Получена скидка ${discountPercent}%! Экономия: ${Math.round(itemCount * (discountPercent/100) * 500)} ₽`;
-            } else if (itemCount >= 20) {
-                discountHint.className = 'discount-hint urgent';
-                hintText.textContent = '🔥 Добавьте ещё 1 услугу для получения максимальной скидки 25%!';
-            } else if (itemCount >= 10) {
-                discountHint.className = 'discount-hint';
-                hintText.textContent = '✨ Добавьте ещё 1 услугу для получения скидки 15%!';
-            } else if (itemCount >= 5) {
-                discountHint.className = 'discount-hint';
-                hintText.textContent = '🎯 Добавьте ещё 1 услугу для получения скидки 10%!';
-            } else if (itemCount >= 2) {
-                discountHint.className = 'discount-hint';
-                hintText.textContent = '💡 Добавьте ещё 1 услугу для получения скидки 5%!';
-            } else {
-                discountHint.className = 'discount-hint';
-                hintText.textContent = 'Выберите больше услуг для получения скидки';
-            }
-        }
-        
-        // Update service notification (Calming & Unobtrusive)
-        function updateServiceNotification(itemCount, discountPercent, total) {
+
+        function updateServiceNotification(quantity, discountPercent, total) {
             const notification = document.getElementById('serviceNotification');
             const notificationText = document.getElementById('notificationText');
             
-            if (itemCount > 0) {
+            if (quantity > 0) {
                 const messages = [
-                    `Вы выбрали ${itemCount} услуг${getItemEnding(itemCount)} на сумму ${Math.round(total).toLocaleString('ru-RU')} ₽. Нажмите "Продолжить" для оформления заказа.`,
-                    `Ваш выбор: ${itemCount} услуг${getItemEnding(itemCount)}. Общая стоимость: ${Math.round(total).toLocaleString('ru-RU')} ₽. Готовы продолжить?`,
-                    `Выбрано ${itemCount} позици${getItemEnding(itemCount)}. Сумма к оплате: ${Math.round(total).toLocaleString('ru-RU')} ₽. Продолжить оформление?`
+                    `Вы выбрали ${quantity} услуг на сумму ${Math.round(total).toLocaleString('ru-RU')} ₽. Нажмите "Оформить заказ" для продолжения.`,
+                    `Ваш выбор: ${quantity} позиций. Общая стоимость: ${Math.round(total).toLocaleString('ru-RU')} ₽. Готовы оформить?`,
+                    `Выбрано ${quantity} услуг. Сумма к оплате: ${Math.round(total).toLocaleString('ru-RU')} ₽. Продолжить оформление?`
                 ];
                 
                 // Select random message
@@ -1271,115 +1327,51 @@
                 notification.style.display = 'none';
             }
         }
-        
-        // Helper function for proper Russian word endings
-        function getItemEnding(count) {
-            if (count % 10 === 1 && count % 100 !== 11) {
-                return 'у';
-            } else if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) {
-                return 'и';
-            } else {
-                return '';
+
+        function showOrderForm() {
+            if (!currentScenario) {
+                alert('Пожалуйста, выберите услугу');
+                return;
+            }
+            
+            document.getElementById('orderModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('orderModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
             }
         }
-        
-        // Reset calculator (Constraints Principle)
-        function resetCalculator() {
-            // Reset state
-            state = {
-                scenario: null,
-                // Scenario A
-                repairType: 'cosmetic',
-                calcType: 'simple',
-                installType: 'surface',
-                switches: 0,
-                sockets: 0,
-                lightingType: 'none',
-                washer: false,
-                dishwasher: false,
-                oven: false,
-                // Scenario B
-                switchesB: 0,
-                socketsB: 0,
-                hasWires: 'no'
+
+        // Form submission
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('customerName').value,
+                phone: document.getElementById('customerPhone').value,
+                address: document.getElementById('customerAddress').value,
+                comment: document.getElementById('customerComment').value,
+                scenario: currentScenario,
+                quantity: document.getElementById('quantity').value,
+                total: document.getElementById('total').textContent
             };
             
-            // Reset UI
-            scenarioA.classList.remove('selected');
-            scenarioB.classList.remove('selected');
-            scenarioAForm.style.display = 'none';
-            scenarioBForm.style.display = 'none';
-            results.style.display = 'none';
-            orderBtn.disabled = true;
+            // Here you would typically send the data to your server
+            console.log('Order data:', formData);
             
-            // Reset form elements
-            document.getElementById('repairType').value = 'cosmetic';
-            document.getElementById('calcType').value = 'simple';
-            document.getElementById('installType').value = 'surface';
-            document.getElementById('lightingType').value = 'none';
-            document.getElementById('washer').checked = false;
-            document.getElementById('dishwasher').checked = false;
-            document.getElementById('oven').checked = false;
+            // Show success message
+            alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
             
-            const wireRadios = document.getElementsByName('hasWires');
-            for (let radio of wireRadios) {
-                radio.checked = radio.value === 'no';
-            }
-            
-            document.getElementById('majorRepairOptions').style.display = 'none';
-            
-            updateDisplay();
-            updateDiscountHint(0, 0);
-        }
-        
-        // Place order (Affordance Principle)
-        function placeOrder() {
-            const total = document.getElementById('total-cost').textContent;
-            
-            // Show confirmation with feedback
-            alert(`✅ Заказ оформлен!
-
-Общая стоимость: ${total}
-
-Наш менеджер свяжется с вами в ближайшее время.
-Телефон для связи: +7 (900) 123-45-67`);
-            
-            // Track in analytics
-            if (typeof ym !== 'undefined') {
-                ym(98765432, 'reachGoal', 'calculator_order', {
-                    total: parseInt(total.replace(/\D/g, '')),
-                    scenario: state.scenario
-                });
-            }
-            
-            // Reset after order
-            setTimeout(resetCalculator, 1000);
-        }
-        
-        // Timer countdown (Urgency Principle)
-        function updateTimer() {
-            const now = new Date();
-            const tomorrow = new Date(now);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            tomorrow.setHours(0, 0, 0, 0);
-            
-            const diff = tomorrow - now;
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            document.getElementById('timer').textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        // Initialize
-        setInterval(updateTimer, 1000);
-        updateTimer();
-        updateDisplay();
-        
-        // Burger menu
-        document.querySelector('.burger-menu').addEventListener('click', function() {
-            this.classList.toggle('active');
+            // Close modal and reset form
+            closeModal();
+            this.reset();
         });
     </script>
     
