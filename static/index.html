@@ -1074,5 +1074,15 @@
     <!-- Inline Chat (Fixed Input at Bottom) -->
     <link rel="stylesheet" href="inline-chat.css">
     <script src="inline-chat.js"></script>
+    
+    <script>
+        // Ensure inline chat is initialized
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof InlineChat !== 'undefined' && typeof PortfolioMenu !== 'undefined') {
+                window.inlineChat = new InlineChat();
+                window.portfolioMenu = new PortfolioMenu();
+            }
+        });
+    </script>
 </body>
 </html>
