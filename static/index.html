@@ -917,87 +917,35 @@
             </div>
             <div class="testimonial-author">— Алексей, Калининград</div>
             
-
+            <div class="testimonial">
+                "Установили 8 розеток и 4 выключателя. Цена приятно удивила, качество отличное. Рекомендую!"
+            </div>
+            <div class="testimonial-author">— Марина, Калининград</div>
+            
+            <div class="testimonial">
+                "Сантехник приехал в тот же день и устранил протечку. Профессионально и быстро. Спасибо!"
+            </div>
+            <div class="testimonial-author">— Игорь, Калининград</div>
+            
+            <div class="testimonial">
+                "Подключили стиральную машину и починили розетку. Всё сделали качественно, без задержек."
+            </div>
+            <div class="testimonial-author">— Елена, Калининград</div>
         </div>
         
-        <!-- Telegram-стиль поисковая строка -->
-        <div class="telegram-search" onclick="openChat()">
-            <div class="search-icon">🤖</div>
-            <div class="search-placeholder">Спросите AI: "Нужен электрик"...</div>
-            <div class="telegram-indicator">⚡</div>
-        </div>
-        
-        <!-- Быстрые действия -->
-        <div class="quick-actions">
-            <a href="/ai-chat.html" class="quick-action-card" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
-                <span class="quick-action-icon">🤖</span>
-                <span class="quick-action-text">AI-Помощник</span>
-            </a>
-            <a href="/calculator.html" class="quick-action-card">
-                <span class="quick-action-icon">📊</span>
-                <span class="quick-action-text">Калькулятор</span>
-            </a>
-            <a href="/catalog.html" class="quick-action-card">
-                <span class="quick-action-icon">📖</span>
-                <span class="quick-action-text">Каталог</span>
-            </a>
-            <a href="tel:+79001234567" class="quick-action-card">
-                <span class="quick-action-icon">📞</span>
-                <span class="quick-action-text">Позвонить</span>
-            </a>
-        </div>
-        
-        <div style="margin: 30px 0 20px; padding: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05)); border-radius: 16px; border-left: 4px solid #10b981;">
+        <div style="margin: 30px 0 20px; padding: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05)); border-radius: 16px; border-left: 4px solid #10b981; cursor: pointer;" onclick="window.open('https://t.me/konigelectric', '_blank');">
             <h3 style="margin: 0 0 8px; color: #10b981; font-size: 16px;">🚀 Быстрая заявка</h3>
-            <p style="margin: 0; color: #666; font-size: 14px;">Заполните форму и AI подберёт мастера за 2 минуты</p>
+            <p style="margin: 0; color: #666; font-size: 14px;">Нажмите для связи с администратором в Telegram</p>
         </div>
         
-        <form id="requestForm">
-            <div class="form-group">
-                <label for="name">Ваше имя</label>
-                <input type="text" id="name" required placeholder="Иван Иванов">
-            </div>
-            
-            <div class="form-group">
-                <label for="phone">Телефон</label>
-                <input type="tel" id="phone" required placeholder="+7 (900) 123-45-67">
-            </div>
-            
-            <div class="form-group">
-                <label for="category">Категория</label>
-                <select id="category" required>
-                    <option value="">Выберите категорию</option>
-                    <option value="electrical">⚡ Электрика</option>
-                    <option value="plumbing">🚰 Сантехника</option>
-                    <option value="appliance">🔌 Бытовая техника</option>
-                    <option value="general">🔨 Общие работы</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="problem">Описание проблемы</label>
-                <textarea id="problem" required placeholder="Опишите проблему подробнее..."></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="address">Адрес</label>
-                <input type="text" id="address" required placeholder="г. Калининград, ул. Ленина, д. 10">
-            </div>
-            
-            <button type="submit">Отправить заявку</button>
-        </form>
-        
-        <div class="loader" id="loader">
-            <p>⏳ Обрабатываем заявку...</p>
-        </div>
-        
-        <div class="result" id="result"></div>
+        <!-- Chat simulation will be added here -->
     </div>
     
+    <!-- Inline Chat (Fixed Input at Bottom) -->
+    <link rel="stylesheet" href="inline-chat.css">
+    <script src="inline-chat.js"></script>
+    
     <script>
-        const form = document.getElementById('requestForm');
-        const loader = document.getElementById('loader');
-        const result = document.getElementById('result');
         const aiChat = document.getElementById('aiChat');
         const chatMessages = document.getElementById('chatMessages');
         const chatInput = document.getElementById('chatInput');
@@ -1113,66 +1061,66 @@
             return messageDiv;
         }
         
-        // Основная форма
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // Inline Chat Functions
+        async function sendInlineMessage() {
+            const input = document.getElementById('inlineChatInput');
+            const message = input.value.trim();
+            if (!message) return;
             
-            // Показать загрузку
-            loader.classList.add('active');
-            result.style.display = 'none';
+            // Add user message
+            addInlineMessage(message, 'user');
+            input.value = '';
             
-            // Собрать данные
-            const data = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                category: document.getElementById('category').value,
-                problem_description: document.getElementById('problem').value,
-                address: document.getElementById('address').value
-            };
+            // Show typing indicator
+            const typingMsg = addInlineMessage('Печатает...', 'ai');
             
             try {
-                // Отправить запрос
-                const response = await fetch('/api/v1/ai/web-form', {
+                // Send request to AI
+                const response = await fetch('/api/v1/ai/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify({
+                        message: message,
+                        context: 'client_inquiry'
+                    })
                 });
                 
-                const responseData = await response.json();
-                
-                // Скрыть загрузку
-                loader.classList.remove('active');
+                // Remove typing indicator
+                typingMsg.remove();
                 
                 if (response.ok) {
-                    // Успех
-                    result.className = 'result success';
-                    result.innerHTML = `
-                        <h3>✅ Заявка принята!</h3>
-                        <p><strong>Номер заказа:</strong> #${responseData.job_id}</p>
-                        <p><strong>Примерная стоимость:</strong> ${responseData.estimated_price} ₽</p>
-                        <p>${responseData.message}</p>
-                    `;
-                    result.style.display = 'block';
-                    
-                    // Очистить форму
-                    form.reset();
+                    const data = await response.json();
+                    addInlineMessage(data.reply || 'Понял вас! Чтобы оформить заявку, напишите в Telegram: @konigelectric', 'ai');
                 } else {
-                    throw new Error(responseData.detail || 'Ошибка отправки');
+                    throw new Error('Ошибка связи с AI');
                 }
-                
             } catch (error) {
-                // Ошибка
-                loader.classList.remove('active');
-                result.className = 'result error';
-                result.innerHTML = `
-                    <h3>❌ Ошибка</h3>
-                    <p>${error.message}</p>
-                `;
-                result.style.display = 'block';
+                typingMsg.remove();
+                addInlineMessage('Ответил бы с удовольствием, но сейчас лучше написать в Telegram: @konigelectric 😊', 'ai');
             }
-        });
+        }
+        
+        function addInlineMessage(text, sender) {
+            const container = document.getElementById('inlineChatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+            
+            return messageDiv;
+        }
+        
     </script>
     
     <!-- Universal Scripts -->
@@ -1181,5 +1129,19 @@
     <!-- Chat Widget -->
     <link rel="stylesheet" href="chat-widget.css">
     <script src="chat-widget.js"></script>
+    
+    <!-- Inline Chat Container -->
+    <div class="inline-chat-container">
+        <div class="inline-chat-messages" id="inlineChatMessages">
+            <div class="message ai-message">
+                <div class="message-bubble">Привет! 👋 Я AI-помощник сервиса БалтСеть. Могу помочь подобрать специалиста и рассчитать стоимость работ. Опишите вашу задачу!</div>
+                <div class="message-time">только что</div>
+            </div>
+        </div>
+        <div class="inline-chat-input-container">
+            <input type="text" class="inline-chat-input" id="inlineChatInput" placeholder="Опишите задачу..." onkeypress="if(event.key==='Enter') sendInlineMessage()">
+            <button class="inline-chat-send" onclick="sendInlineMessage()">➤</button>
+        </div>
+    </div>
 </body>
 </html>
