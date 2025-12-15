@@ -584,38 +584,21 @@
 }
 
 .portfolio-hero-nav-bar {
-  background: white;
-  padding: 12px 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  padding: 1rem 0;
   position: sticky;
   top: 0;
-  z-index: 10;
-}
-
-.portfolio-close-btn-hero {
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  flex-shrink: 0;
-  backdrop-filter: blur(10px);
-}
-
-.portfolio-close-btn-hero:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: rotate(90deg) scale(1.1);
+  z-index: 100;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .portfolio-hero-nav {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 16px;
   flex: 1;
@@ -635,27 +618,59 @@
 
 .portfolio-hero-nav-item:hover {
   opacity: 1;
-  color: #667eea;
+  color: #000;
 }
 
-/* Continue Button */
+.portfolio-hero-nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #000;
+  transition: width 0.3s;
+}
+
+.portfolio-hero-nav-item:hover::after {
+  width: 100%;
+}
+
+.portfolio-hero-nav-item.active {
+  color: #1d1d1f;
+  font-weight: 600;
+  opacity: 1;
+}
+
+.portfolio-hero-nav-item.active::after {
+  width: 100%;
+  background: #667eea;
+}
+
+/* Continue Button - Updated Style */
 .portfolio-continue-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #2563eb; /* Professional blue color */
   color: white;
   border: none;
-  border-radius: 20px;
-  padding: 8px 16px;
-  font-size: 13px;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.1);
   flex-shrink: 0;
 }
 
 .portfolio-continue-btn:hover {
+  background: #1d4ed8; /* Darker blue on hover */
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.15);
+}
+
+.portfolio-continue-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
 }
 
 .portfolio-hero-badge {

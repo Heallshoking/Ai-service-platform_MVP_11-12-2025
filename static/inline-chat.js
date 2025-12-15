@@ -55,15 +55,12 @@ class InlineChat {
           </div>
         </div>
         
-        <!-- White Navigation Bar -->
+        <!-- White Navigation Bar - Updated Style -->
         <div class="portfolio-hero-nav-bar">
           <nav class="portfolio-hero-nav">
-            <a href="/" class="portfolio-hero-nav-item" title="Главная">
+            <a href="/" class="portfolio-hero-nav-item active" title="Главная">
               <span>🏠</span>
-            </a>
-            <a href="/catalog.html" class="portfolio-hero-nav-item">
               <span>Услуги электрика</span>
-              <span class="portfolio-hero-badge" id="selectedItemsBadge" style="display: none;">0</span>
             </a>
             <button class="portfolio-continue-btn" id="portfolioContinueBtn" style="display: none;" onclick="portfolioMenu.makeOrder()">
               Продолжить
