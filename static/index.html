@@ -1057,66 +1057,6 @@
             return messageDiv;
         }
         
-        // Inline Chat Functions
-        async function sendInlineMessage() {
-            const input = document.getElementById('inlineChatInput');
-            const message = input.value.trim();
-            if (!message) return;
-            
-            // Add user message
-            addInlineMessage(message, 'user');
-            input.value = '';
-            
-            // Show typing indicator
-            const typingMsg = addInlineMessage('Печатает...', 'ai');
-            
-            try {
-                // Send request to AI
-                const response = await fetch('/api/v1/ai/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        context: 'client_inquiry'
-                    })
-                });
-                
-                // Remove typing indicator
-                typingMsg.remove();
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    addInlineMessage(data.reply || 'Понял вас! Чтобы оформить заявку, напишите в Telegram: @konigelectric', 'ai');
-                } else {
-                    throw new Error('Ошибка связи с AI');
-                }
-            } catch (error) {
-                typingMsg.remove();
-                addInlineMessage('Ответил бы с удовольствием, но сейчас лучше написать в Telegram: @konigelectric 😊', 'ai');
-            }
-        }
-        
-        function addInlineMessage(text, sender) {
-            const container = document.getElementById('inlineChatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}-message`;
-            
-            const now = new Date();
-            const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-            
-            messageDiv.innerHTML = `
-                <div class="message-bubble">${text}</div>
-                <div class="message-time">${time}</div>
-            `;
-            
-            container.appendChild(messageDiv);
-            container.scrollTop = container.scrollHeight;
-            
-            return messageDiv;
-        }
-        
     </script>
     
     <!-- Universal Scripts -->
@@ -1126,14 +1066,5 @@
     <link rel="stylesheet" href="chat-widget.css">
     <script src="chat-widget.js"></script>
     
-    <!-- Inline Chat Container -->
-    <div class="inline-chat-container">
-        <div class="inline-chat-messages" id="inlineChatMessages">
-        </div>
-        <div class="inline-chat-input-container">
-            <input type="text" class="inline-chat-input" id="inlineChatInput" placeholder="Опишите задачу..." onkeypress="if(event.key==='Enter') sendInlineMessage()">
-            <button class="inline-chat-send" onclick="sendInlineMessage()">➤</button>
-        </div>
-    </div>
 </body>
 </html>
